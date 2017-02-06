@@ -47,7 +47,7 @@ void lcd_init(void);
 
 void lcd_init(void)
 {
-
+	lcdDdr |= (1 << lcdD7Bit) | (1 << lcdD6Bit) | (1 << lcdD5Bit) | (1 << lcdD4Bit) | (1 << lcdEBit) | (1 << lcdRSBit);
 	_delay_ms(100);
 
 	lcdPort &= ~(1 << lcdRSBit);                 // RS low
@@ -89,7 +89,7 @@ void lcd_init(void)
 
 void lcd_string(uint8_t string[])
 {
-	volatile int i = 0;                             //while the string is not empty
+	int i = 0;                             //while the string is not empty
 	while (string[i] != 0)
 	{
 		lcd_char(string[i]);
@@ -202,18 +202,23 @@ ISR(USART0_RX_vect){
 
 int main( void )
 {
-	 lcdDdr |= (1 << lcdD7Bit) | (1 << lcdD6Bit) | (1 << lcdD5Bit) | (1 << lcdD4Bit) | (1 << lcdEBit) | (1 << lcdRSBit); 
+	  
 	lcd_init();
 	USART_Init();
 	sei();
-	lcd_string((uint8_t *)"hello world!");
-
+	
+	lcd_string((uint8_t *)"Scan a tag");
 
 	while (1) {
 		
 		RFID_done();
-		lcd_instruction(setCursor | lineOne);
-		lcd_string((uint8_t *)RF.ID);
+		lcd_instruction(setCursor | lineTwo);
+		
+		for(uint8_t i = 1; i < 11; i++) {
+			lcd_char(RF.ID[i]);
+			_delay_us(50);
+		}
+		
 		USART_Send('\n');
 		RFID_ready();
 	}
