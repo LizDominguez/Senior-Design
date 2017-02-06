@@ -41,14 +41,13 @@
 void lcd_write(uint8_t);
 void lcd_instruction(uint8_t);
 void lcd_char(uint8_t);
-void lcd_string(char[]);
+void lcd_string(uint8_t string[]);
 void lcd_init(void);
 
 
 void lcd_init(void)
 {
 
-	lcdDdr |= (1 << lcdD7Bit) | (1 << lcdD6Bit) | (1 << lcdD5Bit) | (1 << lcdD4Bit) | (1 << lcdEBit) | (1 << lcdRSBit);
 	_delay_ms(100);
 
 	lcdPort &= ~(1 << lcdRSBit);                 // RS low
@@ -88,13 +87,14 @@ void lcd_init(void)
 }
 
 
-void lcd_string(char string[])
+void lcd_string(uint8_t string[])
 {
 	volatile int i = 0;                             //while the string is not empty
 	while (string[i] != 0)
 	{
 		lcd_char(string[i]);
 		i++;
+		_delay_us(50);                              //40 us delay min
 	}
 }
 
@@ -139,6 +139,7 @@ void lcd_write(uint8_t byte)
 	lcdPort &= ~(1 << lcdEBit);                // E low
 	_delay_us(1);                             // hold data
 }
+
 
 void USART_Init(void)
 {
@@ -201,19 +202,18 @@ ISR(USART0_RX_vect){
 
 int main( void )
 {
-
-	
+	 lcdDdr |= (1 << lcdD7Bit) | (1 << lcdD6Bit) | (1 << lcdD5Bit) | (1 << lcdD4Bit) | (1 << lcdEBit) | (1 << lcdRSBit); 
 	lcd_init();
 	USART_Init();
 	sei();
-	
+	lcd_string((uint8_t *)"hello world!");
 
 
 	while (1) {
 		
 		RFID_done();
 		lcd_instruction(setCursor | lineOne);
-		lcd_string((char *)RF.ID);
+		lcd_string((uint8_t *)RF.ID);
 		USART_Send('\n');
 		RFID_ready();
 	}
