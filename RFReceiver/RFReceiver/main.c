@@ -17,14 +17,14 @@
 
 /*************** LCD Configuration ****************/
 
-#define lcdDdr		DDRD		//Data direction
-#define lcdPort		PORTD		//PortD
-#define lcdD7Bit	PORTD7		//LCD D7 (pin 14) -> PORTD6
-#define lcdD6Bit	PORTD6		//LCD D6 (pin 13) -> PORTD5
-#define lcdD5Bit	PORTD5		//LCD D5 (pin 12) -> PORTD4
-#define lcdD4Bit	PORTD4		//LCD D4 (pin 11) -> PORTD3
-#define lcdEBit		PORTD3		//LCD E (pin 6)   -> PORTD2
-#define lcdRSBit	PORTD2		//LCD RS (pin 4)  -> PORTD1
+#define lcdDdr		DDRA		//Data direction
+#define lcdPort		PORTA		//PortD
+#define lcdD7Bit	PORTA0		//LCD D7 (pin 14) -> PORTD7
+#define lcdD6Bit	PORTA1		//LCD D6 (pin 13) -> PORTD6
+#define lcdD5Bit	PORTA2		//LCD D5 (pin 12) -> PORTD5
+#define lcdD4Bit	PORTA3		//LCD D4 (pin 11) -> PORTD4
+#define lcdEBit		PORTA4		//LCD E (pin 6)   -> PORTD3
+#define lcdRSBit	PORTA5		//LCD RS (pin 4)  -> PORTD2
 
 #define lineOne			0x00                // Line 1
 #define lineTwo			0x40                // Line 2
@@ -140,8 +140,9 @@ void lcd_write(uint8_t byte)
 	_delay_us(1);                             // hold data
 }
 
+/****************** USART Configuration **********************/
 
-void USART_Init(void)
+void USART_init(void)
 {
 	/*Set baud rate */
 	UBRR0H = (BAUDRATE>>8);
@@ -152,11 +153,13 @@ void USART_Init(void)
 
 	/* Set frame format: 8data, 1stop bit, no parity */
 	UCSR0C = (3<<UCSZ00);
-	UCSR0B |= (1 << RXCIE0); // enable interrupt on receive
+	
+	/* Enable interrupt */
+	UCSR0B |= (1 << RXCIE0); 
 
 }
 
-unsigned char USART_Receive(void)
+unsigned char USART_receive(void)
 {
 	/* Wait for data to be received */
 	while(~(UCSR0A) & (1<<RXC0));
@@ -165,7 +168,7 @@ unsigned char USART_Receive(void)
 	return UDR0;
 }
 
-void USART_Send(unsigned char data)
+void USART_send(unsigned char data)
 {
 	/* Wait for data to be received */
 	while (!( UCSR0A & (1<<UDRE0))); 
@@ -173,22 +176,24 @@ void USART_Send(unsigned char data)
 }
 
 struct {
+	/* RFID buffer */
 	volatile char ID[SIZE + 1];
 	volatile uint8_t index;
 	volatile bool done;
 }RF;
 
 inline void RFID_done(void) {
-	while(!RF.done); //wait until the ID array is complete
+	while(!RF.done); 
 }
 
 inline void RFID_ready(void) {
+	/* RFID buffer is ready to be refilled*/
 	RF.done = false;
 }
 
 ISR(USART0_RX_vect){
-
-	char num = USART_Receive();
+	/* load RFID into buffer */
+	char num = USART_receive();
 	if(!RF.done) {
 		RF.ID[RF.index++] = num;
 		if(RF.index == SIZE) {
@@ -196,15 +201,34 @@ ISR(USART0_RX_vect){
 			RF.done = true;
 		}
 	}
-	USART_Send(num);
+	USART_send(num);
 
+}
+
+/****************** Beeper Initialization *******************/
+void beeper_init(void) {
+	DDRB |= (1 << PORTB5);
+	TCCR0A |= (1 << WGM01);
+	TCCR0B = (1 << CS02);   
+	OCR0A = 5;             // 3kHz = F_CPU/(2*N*TOP), N=256, TOP=5
+	PORTB &= ~(1 << PORTB5);
+}
+ISR(TIMER0_COMPA_vect) {
+	PORTB  ^= (1 << PORTB5);
+}
+inline void beep_enable(void) {
+	TIMSK0 |= 1 << OCF0A;
+}
+inline void beep_disable(void) {
+	TIMSK0 &= ~(1 << OCF0A);
 }
 
 int main( void )
 {
 	  
 	lcd_init();
-	USART_Init();
+	USART_init();
+	beeper_init();
 	sei();
 	
 	lcd_string((uint8_t *)"Scan a tag");
@@ -219,7 +243,10 @@ int main( void )
 			_delay_us(50);
 		}
 		
-		USART_Send('\n');
+		USART_send('\n');
+		beep_enable();
+		_delay_ms(200);
+		beep_disable();
 		RFID_ready();
 	}
 	
