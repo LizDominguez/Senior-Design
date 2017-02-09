@@ -3,31 +3,31 @@ RFReceiver.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         0000000c  00800100  00000374  00000408  2**0
+  0 .data         0000000c  00800100  0000039e  00000432  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         00000374  00000000  00000000  00000094  2**1
+  1 .text         0000039e  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          00000013  0080010c  0080010c  00000414  2**0
+  2 .bss          00000013  0080010c  0080010c  0000043e  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  00000414  2**0
+  3 .comment      00000030  00000000  00000000  0000043e  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000444  2**2
+  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000470  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 00000078  00000000  00000000  00000484  2**0
+  5 .debug_aranges 00000080  00000000  00000000  000004b0  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   0000087e  00000000  00000000  000004fc  2**0
+  6 .debug_info   000008ac  00000000  00000000  00000530  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000278  00000000  00000000  00000d7a  2**0
+  7 .debug_abbrev 00000298  00000000  00000000  00000ddc  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00000488  00000000  00000000  00000ff2  2**0
+  8 .debug_line   000004b9  00000000  00000000  00001074  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  0000014c  00000000  00000000  0000147c  2**2
+  9 .debug_frame  0000015c  00000000  00000000  00001530  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000248  00000000  00000000  000015c8  2**0
+ 10 .debug_str    00000260  00000000  00000000  0000168c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    0000030f  00000000  00000000  00001810  2**0
+ 11 .debug_loc    0000030f  00000000  00000000  000018ec  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000098  00000000  00000000  00001b1f  2**0
+ 12 .debug_ranges 000000a0  00000000  00000000  00001bfb  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -49,7 +49,7 @@ Disassembly of section .text:
   34:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
   38:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
   3c:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
-  40:	0c 94 63 01 	jmp	0x2c6	; 0x2c6 <__vector_16>
+  40:	0c 94 64 01 	jmp	0x2c8	; 0x2c8 <__vector_16>
   44:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
   48:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
   4c:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
@@ -77,7 +77,7 @@ Disassembly of section .text:
   88:	11 e0       	ldi	r17, 0x01	; 1
   8a:	a0 e0       	ldi	r26, 0x00	; 0
   8c:	b1 e0       	ldi	r27, 0x01	; 1
-  8e:	e4 e7       	ldi	r30, 0x74	; 116
+  8e:	ee e9       	ldi	r30, 0x9E	; 158
   90:	f3 e0       	ldi	r31, 0x03	; 3
   92:	02 c0       	rjmp	.+4      	; 0x98 <__do_copy_data+0x10>
   94:	05 90       	lpm	r0, Z+
@@ -99,8 +99,8 @@ Disassembly of section .text:
   a8:	af 31       	cpi	r26, 0x1F	; 31
   aa:	b2 07       	cpc	r27, r18
   ac:	e1 f7       	brne	.-8      	; 0xa6 <.do_clear_bss_loop>
-  ae:	0e 94 75 01 	call	0x2ea	; 0x2ea <main>
-  b2:	0c 94 b8 01 	jmp	0x370	; 0x370 <_exit>
+  ae:	0e 94 88 01 	call	0x310	; 0x310 <main>
+  b2:	0c 94 cd 01 	jmp	0x39a	; 0x39a <_exit>
 
 000000b6 <__bad_interrupt>:
   b6:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -544,186 +544,216 @@ ISR(USART0_RX_vect){
 
 /****************** Beeper Initialization *******************/
 void beeper_init(void) {
-	DDRB |= (1 << PORTB5);
- 2b2:	25 9a       	sbi	0x04, 5	; 4
+	DDRB |= (1 << PORTB3);
+ 2b2:	23 9a       	sbi	0x04, 3	; 4
 	TCCR0A |= (1 << WGM01);
  2b4:	84 b5       	in	r24, 0x24	; 36
  2b6:	82 60       	ori	r24, 0x02	; 2
  2b8:	84 bd       	out	0x24, r24	; 36
-	TCCR0B = (1 << CS02);   
- 2ba:	84 e0       	ldi	r24, 0x04	; 4
- 2bc:	85 bd       	out	0x25, r24	; 37
-	OCR0A = 5;             // 3kHz = F_CPU/(2*N*TOP), N=256, TOP=5
- 2be:	85 e0       	ldi	r24, 0x05	; 5
- 2c0:	87 bd       	out	0x27, r24	; 39
-	PORTB &= ~(1 << PORTB5);
- 2c2:	2d 98       	cbi	0x05, 5	; 5
- 2c4:	08 95       	ret
+	TCCR0B |= (1 << CS02);		//N=256
+ 2ba:	85 b5       	in	r24, 0x25	; 37
+ 2bc:	84 60       	ori	r24, 0x04	; 4
+ 2be:	85 bd       	out	0x25, r24	; 37
+	OCR0A = 5;					// 3kHz = F_CPU/(2*N*TOP), TOP=5
+ 2c0:	85 e0       	ldi	r24, 0x05	; 5
+ 2c2:	87 bd       	out	0x27, r24	; 39
+	PORTB &= ~(1 << PORTB3);
+ 2c4:	2b 98       	cbi	0x05, 3	; 5
+ 2c6:	08 95       	ret
 
-000002c6 <__vector_16>:
+000002c8 <__vector_16>:
 }
 ISR(TIMER0_COMPA_vect) {
- 2c6:	1f 92       	push	r1
- 2c8:	0f 92       	push	r0
- 2ca:	0f b6       	in	r0, 0x3f	; 63
- 2cc:	0f 92       	push	r0
- 2ce:	11 24       	eor	r1, r1
- 2d0:	8f 93       	push	r24
- 2d2:	9f 93       	push	r25
-	PORTB  ^= (1 << PORTB5);
- 2d4:	95 b1       	in	r25, 0x05	; 5
- 2d6:	80 e2       	ldi	r24, 0x20	; 32
- 2d8:	89 27       	eor	r24, r25
- 2da:	85 b9       	out	0x05, r24	; 5
+ 2c8:	1f 92       	push	r1
+ 2ca:	0f 92       	push	r0
+ 2cc:	0f b6       	in	r0, 0x3f	; 63
+ 2ce:	0f 92       	push	r0
+ 2d0:	11 24       	eor	r1, r1
+ 2d2:	8f 93       	push	r24
+ 2d4:	9f 93       	push	r25
+	PORTB  ^= (1 << PORTB3);
+ 2d6:	95 b1       	in	r25, 0x05	; 5
+ 2d8:	88 e0       	ldi	r24, 0x08	; 8
+ 2da:	89 27       	eor	r24, r25
+ 2dc:	85 b9       	out	0x05, r24	; 5
 }
- 2dc:	9f 91       	pop	r25
- 2de:	8f 91       	pop	r24
- 2e0:	0f 90       	pop	r0
- 2e2:	0f be       	out	0x3f, r0	; 63
- 2e4:	0f 90       	pop	r0
- 2e6:	1f 90       	pop	r1
- 2e8:	18 95       	reti
+ 2de:	9f 91       	pop	r25
+ 2e0:	8f 91       	pop	r24
+ 2e2:	0f 90       	pop	r0
+ 2e4:	0f be       	out	0x3f, r0	; 63
+ 2e6:	0f 90       	pop	r0
+ 2e8:	1f 90       	pop	r1
+ 2ea:	18 95       	reti
 
-000002ea <main>:
+000002ec <frequency_init>:
+	TIMSK0 &= ~(1 << OCF0A);
 }
+
+/****************** 125kHz wave *******************/
+void frequency_init(void) {
+	DDRD |= (1 << PORTD5);
+ 2ec:	55 9a       	sbi	0x0a, 5	; 10
+	TCCR1A |= (1<<WGM10 | 1<<WGM11 | 1<<COM1A0);
+ 2ee:	e0 e8       	ldi	r30, 0x80	; 128
+ 2f0:	f0 e0       	ldi	r31, 0x00	; 0
+ 2f2:	80 81       	ld	r24, Z
+ 2f4:	83 64       	ori	r24, 0x43	; 67
+ 2f6:	80 83       	st	Z, r24
+	TCCR1B |= (1<<WGM13 |1<<WGM12 | 1<<CS10);
+ 2f8:	e1 e8       	ldi	r30, 0x81	; 129
+ 2fa:	f0 e0       	ldi	r31, 0x00	; 0
+ 2fc:	80 81       	ld	r24, Z
+ 2fe:	89 61       	ori	r24, 0x19	; 25
+ 300:	80 83       	st	Z, r24
+	OCR1A = 10;		// 8000000/64 = 125k, but it's half with 50% duty cycle.
+ 302:	8a e0       	ldi	r24, 0x0A	; 10
+ 304:	90 e0       	ldi	r25, 0x00	; 0
+ 306:	90 93 89 00 	sts	0x0089, r25	; 0x800089 <__TEXT_REGION_LENGTH__+0x7e0089>
+ 30a:	80 93 88 00 	sts	0x0088, r24	; 0x800088 <__TEXT_REGION_LENGTH__+0x7e0088>
+ 30e:	08 95       	ret
+
+00000310 <main>:
+
 
 int main( void )
 {
-	  
+
 	lcd_init();
- 2ea:	0e 94 a2 00 	call	0x144	; 0x144 <lcd_init>
+ 310:	0e 94 a2 00 	call	0x144	; 0x144 <lcd_init>
 	USART_init();
- 2ee:	0e 94 f8 00 	call	0x1f0	; 0x1f0 <USART_init>
+ 314:	0e 94 f8 00 	call	0x1f0	; 0x1f0 <USART_init>
 	beeper_init();
- 2f2:	0e 94 59 01 	call	0x2b2	; 0x2b2 <beeper_init>
+ 318:	0e 94 59 01 	call	0x2b2	; 0x2b2 <beeper_init>
+	frequency_init();
+ 31c:	0e 94 76 01 	call	0x2ec	; 0x2ec <frequency_init>
 	sei();
- 2f6:	78 94       	sei
+ 320:	78 94       	sei
 	
 	lcd_string((uint8_t *)"Scan a tag");
- 2f8:	80 e0       	ldi	r24, 0x00	; 0
- 2fa:	91 e0       	ldi	r25, 0x01	; 1
- 2fc:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
+ 322:	80 e0       	ldi	r24, 0x00	; 0
+ 324:	91 e0       	ldi	r25, 0x01	; 1
+ 326:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
 	volatile uint8_t index;
 	volatile bool done;
 }RF;
 
 inline void RFID_done(void) {
 	while(!RF.done); 
- 300:	0c e0       	ldi	r16, 0x0C	; 12
- 302:	11 e0       	ldi	r17, 0x01	; 1
+ 32a:	0c e0       	ldi	r16, 0x0C	; 12
+ 32c:	11 e0       	ldi	r17, 0x01	; 1
 	lcd_string((uint8_t *)"Scan a tag");
 
 	while (1) {
 		
 		RFID_done();
 		lcd_instruction(setCursor | lineTwo);
- 304:	cc 24       	eor	r12, r12
- 306:	c3 94       	inc	r12
- 308:	d1 2c       	mov	r13, r1
+ 32e:	cc 24       	eor	r12, r12
+ 330:	c3 94       	inc	r12
+ 332:	d1 2c       	mov	r13, r1
 }
 ISR(TIMER0_COMPA_vect) {
-	PORTB  ^= (1 << PORTB5);
+	PORTB  ^= (1 << PORTB3);
 }
 inline void beep_enable(void) {
 	TIMSK0 |= 1 << OCF0A;
- 30a:	0f 2e       	mov	r0, r31
- 30c:	fe e6       	ldi	r31, 0x6E	; 110
- 30e:	ef 2e       	mov	r14, r31
- 310:	f1 2c       	mov	r15, r1
- 312:	f0 2d       	mov	r31, r0
+ 334:	0f 2e       	mov	r0, r31
+ 336:	fe e6       	ldi	r31, 0x6E	; 110
+ 338:	ef 2e       	mov	r14, r31
+ 33a:	f1 2c       	mov	r15, r1
+ 33c:	f0 2d       	mov	r31, r0
 	volatile uint8_t index;
 	volatile bool done;
 }RF;
 
 inline void RFID_done(void) {
 	while(!RF.done); 
- 314:	f8 01       	movw	r30, r16
- 316:	82 89       	ldd	r24, Z+18	; 0x12
- 318:	88 23       	and	r24, r24
- 31a:	e1 f3       	breq	.-8      	; 0x314 <main+0x2a>
+ 33e:	f8 01       	movw	r30, r16
+ 340:	82 89       	ldd	r24, Z+18	; 0x12
+ 342:	88 23       	and	r24, r24
+ 344:	e1 f3       	breq	.-8      	; 0x33e <main+0x2e>
 	lcd_string((uint8_t *)"Scan a tag");
 
 	while (1) {
 		
 		RFID_done();
 		lcd_instruction(setCursor | lineTwo);
- 31c:	80 ec       	ldi	r24, 0xC0	; 192
- 31e:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
- 322:	cc 2d       	mov	r28, r12
- 324:	dd 2d       	mov	r29, r13
+ 346:	80 ec       	ldi	r24, 0xC0	; 192
+ 348:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
+ 34c:	cc 2d       	mov	r28, r12
+ 34e:	dd 2d       	mov	r29, r13
 		
 		for(uint8_t i = 1; i < 11; i++) {
 			lcd_char(RF.ID[i]);
- 326:	fe 01       	movw	r30, r28
- 328:	e4 5f       	subi	r30, 0xF4	; 244
- 32a:	fe 4f       	sbci	r31, 0xFE	; 254
- 32c:	80 81       	ld	r24, Z
- 32e:	0e 94 75 00 	call	0xea	; 0xea <lcd_char>
- 332:	85 e8       	ldi	r24, 0x85	; 133
- 334:	8a 95       	dec	r24
- 336:	f1 f7       	brne	.-4      	; 0x334 <main+0x4a>
- 338:	00 00       	nop
- 33a:	21 96       	adiw	r28, 0x01	; 1
+ 350:	fe 01       	movw	r30, r28
+ 352:	e4 5f       	subi	r30, 0xF4	; 244
+ 354:	fe 4f       	sbci	r31, 0xFE	; 254
+ 356:	80 81       	ld	r24, Z
+ 358:	0e 94 75 00 	call	0xea	; 0xea <lcd_char>
+ 35c:	85 e8       	ldi	r24, 0x85	; 133
+ 35e:	8a 95       	dec	r24
+ 360:	f1 f7       	brne	.-4      	; 0x35e <main+0x4e>
+ 362:	00 00       	nop
+ 364:	21 96       	adiw	r28, 0x01	; 1
 	while (1) {
 		
 		RFID_done();
 		lcd_instruction(setCursor | lineTwo);
 		
 		for(uint8_t i = 1; i < 11; i++) {
- 33c:	cb 30       	cpi	r28, 0x0B	; 11
- 33e:	d1 05       	cpc	r29, r1
- 340:	91 f7       	brne	.-28     	; 0x326 <main+0x3c>
+ 366:	cb 30       	cpi	r28, 0x0B	; 11
+ 368:	d1 05       	cpc	r29, r1
+ 36a:	91 f7       	brne	.-28     	; 0x350 <main+0x40>
 			lcd_char(RF.ID[i]);
 			_delay_us(50);
 		}
 		
 		USART_send('\n');
- 342:	8a e0       	ldi	r24, 0x0A	; 10
- 344:	0e 94 10 01 	call	0x220	; 0x220 <USART_send>
+ 36c:	8a e0       	ldi	r24, 0x0A	; 10
+ 36e:	0e 94 10 01 	call	0x220	; 0x220 <USART_send>
 }
 ISR(TIMER0_COMPA_vect) {
-	PORTB  ^= (1 << PORTB5);
+	PORTB  ^= (1 << PORTB3);
 }
 inline void beep_enable(void) {
 	TIMSK0 |= 1 << OCF0A;
- 348:	f7 01       	movw	r30, r14
- 34a:	80 81       	ld	r24, Z
- 34c:	82 60       	ori	r24, 0x02	; 2
- 34e:	80 83       	st	Z, r24
+ 372:	f7 01       	movw	r30, r14
+ 374:	80 81       	ld	r24, Z
+ 376:	82 60       	ori	r24, 0x02	; 2
+ 378:	80 83       	st	Z, r24
 	#else
 		//round up by default
 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
 	#endif
 
 	__builtin_avr_delay_cycles(__ticks_dc);
- 350:	ff ef       	ldi	r31, 0xFF	; 255
- 352:	21 ee       	ldi	r18, 0xE1	; 225
- 354:	84 e0       	ldi	r24, 0x04	; 4
- 356:	f1 50       	subi	r31, 0x01	; 1
- 358:	20 40       	sbci	r18, 0x00	; 0
- 35a:	80 40       	sbci	r24, 0x00	; 0
- 35c:	e1 f7       	brne	.-8      	; 0x356 <main+0x6c>
- 35e:	00 c0       	rjmp	.+0      	; 0x360 <main+0x76>
- 360:	00 00       	nop
+ 37a:	ff ef       	ldi	r31, 0xFF	; 255
+ 37c:	21 ee       	ldi	r18, 0xE1	; 225
+ 37e:	84 e0       	ldi	r24, 0x04	; 4
+ 380:	f1 50       	subi	r31, 0x01	; 1
+ 382:	20 40       	sbci	r18, 0x00	; 0
+ 384:	80 40       	sbci	r24, 0x00	; 0
+ 386:	e1 f7       	brne	.-8      	; 0x380 <main+0x70>
+ 388:	00 c0       	rjmp	.+0      	; 0x38a <main+0x7a>
+ 38a:	00 00       	nop
 }
 inline void beep_disable(void) {
 	TIMSK0 &= ~(1 << OCF0A);
- 362:	f7 01       	movw	r30, r14
- 364:	80 81       	ld	r24, Z
- 366:	8d 7f       	andi	r24, 0xFD	; 253
- 368:	80 83       	st	Z, r24
+ 38c:	f7 01       	movw	r30, r14
+ 38e:	80 81       	ld	r24, Z
+ 390:	8d 7f       	andi	r24, 0xFD	; 253
+ 392:	80 83       	st	Z, r24
 	while(!RF.done); 
 }
 
 inline void RFID_ready(void) {
 	/* RFID buffer is ready to be refilled*/
 	RF.done = false;
- 36a:	f8 01       	movw	r30, r16
- 36c:	12 8a       	std	Z+18, r1	; 0x12
- 36e:	d2 cf       	rjmp	.-92     	; 0x314 <main+0x2a>
+ 394:	f8 01       	movw	r30, r16
+ 396:	12 8a       	std	Z+18, r1	; 0x12
+ 398:	d2 cf       	rjmp	.-92     	; 0x33e <main+0x2e>
 
-00000370 <_exit>:
- 370:	f8 94       	cli
+0000039a <_exit>:
+ 39a:	f8 94       	cli
 
-00000372 <__stop_program>:
- 372:	ff cf       	rjmp	.-2      	; 0x372 <__stop_program>
+0000039c <__stop_program>:
+ 39c:	ff cf       	rjmp	.-2      	; 0x39c <__stop_program>

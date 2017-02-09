@@ -207,14 +207,14 @@ ISR(USART0_RX_vect){
 
 /****************** Beeper Initialization *******************/
 void beeper_init(void) {
-	DDRB |= (1 << PORTB5);
+	DDRB |= (1 << PORTB3);
 	TCCR0A |= (1 << WGM01);
-	TCCR0B = (1 << CS02);   
-	OCR0A = 5;             // 3kHz = F_CPU/(2*N*TOP), N=256, TOP=5
-	PORTB &= ~(1 << PORTB5);
+	TCCR0B |= (1 << CS02);		//N=256
+	OCR0A = 5;					// 3kHz = F_CPU/(2*N*TOP), TOP=5
+	PORTB &= ~(1 << PORTB3);
 }
 ISR(TIMER0_COMPA_vect) {
-	PORTB  ^= (1 << PORTB5);
+	PORTB  ^= (1 << PORTB3);
 }
 inline void beep_enable(void) {
 	TIMSK0 |= 1 << OCF0A;
@@ -223,12 +223,23 @@ inline void beep_disable(void) {
 	TIMSK0 &= ~(1 << OCF0A);
 }
 
+/****************** 125kHz wave *******************/
+void frequency_init(void) {
+	DDRD |= (1 << PORTD5);
+	TCCR1A |= (1<<WGM10 | 1<<WGM11 | 1<<COM1A0);
+	TCCR1B |= (1<<WGM13 |1<<WGM12 | 1<<CS10);
+	OCR1A = 38;		// 8000000/64 = 125k, but it's half with 50% duty cycle.
+	
+}
+
+
 int main( void )
 {
-	  
+
 	lcd_init();
 	USART_init();
 	beeper_init();
+	frequency_init();
 	sei();
 	
 	lcd_string((uint8_t *)"Scan a tag");
