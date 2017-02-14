@@ -10,7 +10,11 @@ c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/..
 Allocating common symbols
 Common symbol       size              file
 
+ov_counter          0x2               main.o
 RF                  0x13              main.o
+falling             0x2               main.o
+count               0x4               main.o
+rising              0x2               main.o
 
 Discarded input sections
 
@@ -192,7 +196,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x39e
+.text           0x00000000      0x418
  *(.vectors)
  .vectors       0x00000000       0x7c C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.0.106/gcc/dev/atmega324p/avr5/crtatmega324p.o
                 0x00000000                __vector_default
@@ -255,7 +259,6 @@ END GROUP
                 0x000000b6                __vector_28
                 0x000000b6                __vector_1
                 0x000000b6                __vector_24
-                0x000000b6                __vector_12
                 0x000000b6                __bad_interrupt
                 0x000000b6                __vector_6
                 0x000000b6                __vector_3
@@ -273,7 +276,6 @@ END GROUP
                 0x000000b6                __vector_9
                 0x000000b6                __vector_2
                 0x000000b6                __vector_21
-                0x000000b6                __vector_15
                 0x000000b6                __vector_29
                 0x000000b6                __vector_8
                 0x000000b6                __vector_26
@@ -318,13 +320,22 @@ END GROUP
  .text.frequency_init
                 0x000002ec       0x24 main.o
                 0x000002ec                frequency_init
- .text.main     0x00000310       0x8a main.o
-                0x00000310                main
-                0x0000039a                . = ALIGN (0x2)
+ .text.input_capture_init
+                0x00000310       0x10 main.o
+                0x00000310                input_capture_init
+ .text.__vector_15
+                0x00000320       0x2e main.o
+                0x00000320                __vector_15
+ .text.__vector_12
+                0x0000034e       0x38 main.o
+                0x0000034e                __vector_12
+ .text.main     0x00000386       0x8e main.o
+                0x00000386                main
+                0x00000414                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x0000039a        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
-                0x0000039a                _exit
-                0x0000039a                exit
+ .fini9         0x00000414        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
+                0x00000414                _exit
+                0x00000414                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -343,11 +354,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x0000039a        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
+ .fini0         0x00000414        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x0000039e                _etext = .
+                0x00000418                _etext = .
 
-.data           0x00800100        0xc load address 0x0000039e
+.data           0x00800100        0xc load address 0x00000418
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -361,22 +372,26 @@ END GROUP
                 0x0080010c                _edata = .
                 0x0080010c                PROVIDE (__data_end, .)
 
-.bss            0x0080010c       0x13
+.bss            0x0080010c       0x1d
                 0x0080010c                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
  *(COMMON)
- COMMON         0x0080010c       0x13 main.o
-                0x0080010c                RF
-                0x0080011f                PROVIDE (__bss_end, .)
-                0x0000039e                __data_load_start = LOADADDR (.data)
-                0x000003aa                __data_load_end = (__data_load_start + SIZEOF (.data))
+ COMMON         0x0080010c       0x1d main.o
+                0x0080010c                ov_counter
+                0x0080010e                RF
+                0x00800121                falling
+                0x00800123                count
+                0x00800127                rising
+                0x00800129                PROVIDE (__bss_end, .)
+                0x00000418                __data_load_start = LOADADDR (.data)
+                0x00000424                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x0080011f        0x0
+.noinit         0x00800129        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
  *(.noinit*)
                 [!provide]                PROVIDE (__noinit_end, .)
-                0x0080011f                _end = .
+                0x00800129                _end = .
                 [!provide]                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
@@ -441,38 +456,38 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000       0x80
+.debug_aranges  0x00000000       0x98
  *(.debug_aranges)
  .debug_aranges
-                0x00000000       0x80 main.o
+                0x00000000       0x98 main.o
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000      0x8ac
+.debug_info     0x00000000      0x943
  *(.debug_info .gnu.linkonce.wi.*)
- .debug_info    0x00000000      0x8ac main.o
+ .debug_info    0x00000000      0x943 main.o
 
-.debug_abbrev   0x00000000      0x298
+.debug_abbrev   0x00000000      0x2a9
  *(.debug_abbrev)
- .debug_abbrev  0x00000000      0x298 main.o
+ .debug_abbrev  0x00000000      0x2a9 main.o
 
-.debug_line     0x00000000      0x4b9
+.debug_line     0x00000000      0x52a
  *(.debug_line .debug_line.* .debug_line_end)
- .debug_line    0x00000000      0x4b9 main.o
+ .debug_line    0x00000000      0x52a main.o
 
-.debug_frame    0x00000000      0x15c
+.debug_frame    0x00000000      0x1b4
  *(.debug_frame)
- .debug_frame   0x00000000      0x15c main.o
+ .debug_frame   0x00000000      0x1b4 main.o
 
-.debug_str      0x00000000      0x260
+.debug_str      0x00000000      0x2ab
  *(.debug_str)
- .debug_str     0x00000000      0x260 main.o
-                                0x2b1 (size before relaxing)
+ .debug_str     0x00000000      0x2ab main.o
+                                0x2fc (size before relaxing)
 
-.debug_loc      0x00000000      0x30f
+.debug_loc      0x00000000      0x3a1
  *(.debug_loc)
- .debug_loc     0x00000000      0x30f main.o
+ .debug_loc     0x00000000      0x3a1 main.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -492,9 +507,9 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000       0xa0
+.debug_ranges   0x00000000       0xb8
  *(.debug_ranges)
- .debug_ranges  0x00000000       0xa0 main.o
+ .debug_ranges  0x00000000       0xb8 main.o
 
 .debug_macro
  *(.debug_macro)

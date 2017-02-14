@@ -12,6 +12,8 @@
 #define BAUDRATE (((F_CPU / (BAUD * 16UL))) - 1) 
 #define RXD0 PIND0
 #define SIZE 16
+#define ICP PIND6
+
 
 
 
@@ -226,11 +228,43 @@ inline void beep_disable(void) {
 /****************** 125kHz wave *******************/
 void frequency_init(void) {
 	DDRD |= (1 << PORTD5);
-	TCCR1A |= (1<<WGM10 | 1<<WGM11 | 1<<COM1A0);
-	TCCR1B |= (1<<WGM13 |1<<WGM12 | 1<<CS10);
-	OCR1A = 38;		// 8000000/64 = 125k, but it's half with 50% duty cycle.
+	TCCR1A |= (1<<WGM10 | 1<<WGM11 | 1<<COM1A0); 
+	TCCR1B |= (1<<WGM13 |1<<WGM12 | 1<<CS10); //Fast PWM
+	OCR1A = 31;		// 8000000/64 = 125k, but it's half with 50% duty cycle. 31 was value with least percent error at 126.6 kHz
+}
+
+/****************** Input Capture *******************/
+uint16_t ov_counter;
+uint16_t rising, falling;
+uint32_t count;
+
+void input_capture_init(void) {
+	DDRD |= (1<<ICP);
+	TIMSK1= 0x21;					//enable overflow and input capture interrupts
+	TCCR1B= (1<<ICNC1) | (1<<ICES1); /*Noise canceler, rising edge*/
+}
+
+ISR(TIMER1_OVF_vect){
+	ov_counter++;
+}
+
+ISR(TIMER1_CAPT_vect){
+	
+	if(ICP){						//if rising edge
+		rising = ICR1;				//save start time
+		TCCR1B = (0<<ICES1);		//trigger on falling edge
+		ov_counter = 0;
+	}
+	
+	else{							//falling edge
+		falling = ICR1;				//save falling time
+		TCCR1B = (1<<ICES1);		//trigger on rising edge
+		
+		count = (uint32_t)falling - (uint32_t)rising - (uint32_t)ov_counter;
+	}
 	
 }
+
 
 
 int main( void )
@@ -240,6 +274,7 @@ int main( void )
 	USART_init();
 	beeper_init();
 	frequency_init();
+	input_capture_init();
 	sei();
 	
 	lcd_string((uint8_t *)"Scan a tag");
