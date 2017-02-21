@@ -139,18 +139,86 @@ void lcd_write(uint8_t byte)
 	_delay_us(1);                             // hold data
 }
 
+/****************** USART Configuration **********************/
+
+void USART_init(void)
+{
+	/*Set baud rate */
+	UBRRH = (BAUDRATE>>8);
+	UBRRL = BAUDRATE;
+	
+	/* Enable receiver and transmitter */
+	UCSRB = (1<<RXEN)|(1<<TXEN);
+
+	/* Set frame format: 8data, 1stop bit, no parity */
+	UCSRC = (3<<UCSZ0);
+	
+	/* Enable interrupt */
+	UCSRB |= (1 << RXCIE);
+
+}
+
+unsigned char USART_receive(void)
+{
+	/* Wait for data to be received */
+	while(~(UCSRA) & (1<<RXC));
+
+	/* Get and return received data from buffer */
+	return UDR;
+}
+
+
+struct {
+	/* RFID buffer */
+	volatile char ID[SIZE + 1];
+	volatile uint8_t index;
+	volatile bool done;
+}RF;
+
+inline void RFID_done(void) {
+	while(!RF.done);
+}
+
+inline void RFID_ready(void) {
+	/* RFID buffer is ready to be refilled*/
+	RF.done = false;
+}
+
+ISR(USART_RXC_vect){
+	/* load RFID into buffer */
+	char num = USART_receive();
+	if(!RF.done) {
+		RF.ID[RF.index++] = num;
+		if(RF.index == SIZE) {
+			RF.index = 0;
+			RF.done = true;
+		}
+	}
+
+}
+
+
+
 
 int main( void )
 {
 
 	lcd_init();
+	USART_init();
+	sei();
 	
-	lcd_string((uint8_t *)"Wifi module is");
-	lcd_instruction(setCursor | lineTwo);
-	lcd_string((uint8_t *)"deactivated");
 
 	while (1) {
 		
+		RFID_done();
+		
+		for(uint8_t i = 1; i < 11; i++) {
+			lcd_char(RF.ID[i]);
+			_delay_us(50);
+		}
+
+		_delay_ms(200);
+		RFID_ready();
 	}
 	
 	return 0;

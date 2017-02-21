@@ -227,10 +227,10 @@ inline void beep_disable(void) {
 
 /****************** 125kHz wave *******************/
 void frequency_init(void) {
-	DDRD |= (1 << PORTD5);
-	TCCR1A |= (1<<WGM10 | 1<<WGM11 | 1<<COM1A0); 
-	TCCR1B |= (1<<WGM13 |1<<WGM12 | 1<<CS10); //Fast PWM
-	OCR1A = 31;		// 8000000/64 = 125k, but it's half with 50% duty cycle. 31 was value with least percent error at 126.6 kHz
+	DDRD |= (1 << PORTD7);
+	TCCR2A |= (1<<WGM20 | 1<<WGM21 | 1<<COM2A0); 
+	TCCR2B |= (1<<WGM22 | 1<<CS20); //Fast PWM
+	OCR2A = 31;		// 8000000/64 = 125k, but it's half with 50% duty cycle. 31 was value with least percent error at 126.6 kHz
 }
 
 /****************** Input Capture *******************/
@@ -239,7 +239,6 @@ uint16_t rising, falling;
 uint32_t count;
 
 void input_capture_init(void) {
-	DDRD |= (1<<ICP);
 	TIMSK1= 0x21;					//enable overflow and input capture interrupts
 	TCCR1B= (1<<ICNC1) | (1<<ICES1); /*Noise canceler, rising edge*/
 }
