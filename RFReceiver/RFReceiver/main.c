@@ -1,4 +1,3 @@
-
 #define F_CPU 8000000UL
 #include <avr/io.h>
 #include <inttypes.h>
@@ -9,7 +8,7 @@
 #include <util/delay.h>
 
 #define BAUD 9600
-#define BAUDRATE (((F_CPU / (BAUD * 16UL))) - 1) 
+#define BAUDRATE (((F_CPU / (BAUD * 16UL))) - 1)
 #define RXD0 PIND0
 #define SIZE 16
 #define ICP PIND6
@@ -157,7 +156,7 @@ void USART_init(void)
 	UCSR0C = (3<<UCSZ00);
 	
 	/* Enable interrupt */
-	UCSR0B |= (1 << RXCIE0); 
+	UCSR0B |= (1 << RXCIE0);
 
 }
 
@@ -173,7 +172,7 @@ unsigned char USART_receive(void)
 void USART_send(unsigned char data)
 {
 	/* Wait for data to be received */
-	while (!( UCSR0A & (1<<UDRE0))); 
+	while (!( UCSR0A & (1<<UDRE0)));
 	UDR0 = data;
 }
 
@@ -185,7 +184,7 @@ struct {
 }RF;
 
 inline void RFID_done(void) {
-	while(!RF.done); 
+	while(!RF.done);
 }
 
 inline void RFID_ready(void) {
@@ -228,7 +227,7 @@ inline void beep_disable(void) {
 /****************** 125kHz wave *******************/
 void frequency_init(void) {
 	DDRD |= (1 << PORTD7);
-	TCCR2A |= (1<<WGM20 | 1<<WGM21 | 1<<COM2A0); 
+	TCCR2A |= (1<<WGM20 | 1<<WGM21 | 1<<COM2A0);
 	TCCR2B |= (1<<WGM22 | 1<<CS20); //Fast PWM
 	OCR2A = 31;		// 8000000/64 = 125k, but it's half with 50% duty cycle. 31 was value with least percent error at 126.6 kHz
 }

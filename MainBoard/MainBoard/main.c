@@ -11,6 +11,8 @@
 #define BAUDRATE (((F_CPU / (BAUD * 16UL))) - 1)
 #define RXD0 PIND0
 #define SIZE 16
+#define ICP PIND6
+
 
 
 
@@ -144,29 +146,35 @@ void lcd_write(uint8_t byte)
 void USART_init(void)
 {
 	/*Set baud rate */
-	UBRRH = (BAUDRATE>>8);
-	UBRRL = BAUDRATE;
+	UBRR0H = (BAUDRATE>>8);
+	UBRR0L = BAUDRATE;
 	
 	/* Enable receiver and transmitter */
-	UCSRB = (1<<RXEN)|(1<<TXEN);
+	UCSR0B = (1<<RXEN0)|(1<<TXEN0);
 
 	/* Set frame format: 8data, 1stop bit, no parity */
-	UCSRC = (3<<UCSZ0);
+	UCSR0C = (3<<UCSZ00);
 	
 	/* Enable interrupt */
-	UCSRB |= (1 << RXCIE);
+	UCSR0B |= (1 << RXCIE0);
 
 }
 
 unsigned char USART_receive(void)
 {
 	/* Wait for data to be received */
-	while(~(UCSRA) & (1<<RXC));
+	while(~(UCSR0A) & (1<<RXC0));
 
 	/* Get and return received data from buffer */
-	return UDR;
+	return UDR0;
 }
 
+void USART_send(unsigned char data)
+{
+	/* Wait for data to be received */
+	while (!( UCSR0A & (1<<UDRE0)));
+	UDR0 = data;
+}
 
 struct {
 	/* RFID buffer */
@@ -184,7 +192,7 @@ inline void RFID_ready(void) {
 	RF.done = false;
 }
 
-ISR(USART_RXC_vect){
+ISR(USART0_RX_vect){
 	/* load RFID into buffer */
 	char num = USART_receive();
 	if(!RF.done) {
@@ -194,9 +202,9 @@ ISR(USART_RXC_vect){
 			RF.done = true;
 		}
 	}
+	USART_send(num);
 
 }
-
 
 
 
@@ -207,16 +215,19 @@ int main( void )
 	USART_init();
 	sei();
 	
+	lcd_string((uint8_t *)"Scan a tag");
 
 	while (1) {
 		
 		RFID_done();
+		lcd_instruction(setCursor | lineTwo);
 		
 		for(uint8_t i = 1; i < 11; i++) {
 			lcd_char(RF.ID[i]);
 			_delay_us(50);
 		}
-
+		
+		USART_send('\n');
 		_delay_ms(200);
 		RFID_ready();
 	}

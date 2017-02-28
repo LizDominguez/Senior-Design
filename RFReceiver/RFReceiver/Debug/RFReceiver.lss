@@ -418,7 +418,7 @@ void USART_init(void)
  204:	80 93 c2 00 	sts	0x00C2, r24	; 0x8000c2 <__TEXT_REGION_LENGTH__+0x7e00c2>
 	
 	/* Enable interrupt */
-	UCSR0B |= (1 << RXCIE0); 
+	UCSR0B |= (1 << RXCIE0);
  208:	80 81       	ld	r24, Z
  20a:	80 68       	ori	r24, 0x80	; 128
  20c:	80 83       	st	Z, r24
@@ -448,7 +448,7 @@ unsigned char USART_receive(void)
 void USART_send(unsigned char data)
 {
 	/* Wait for data to be received */
-	while (!( UCSR0A & (1<<UDRE0))); 
+	while (!( UCSR0A & (1<<UDRE0)));
  220:	e0 ec       	ldi	r30, 0xC0	; 192
  222:	f0 e0       	ldi	r31, 0x00	; 0
  224:	90 81       	ld	r25, Z
@@ -593,7 +593,7 @@ ISR(TIMER0_COMPA_vect) {
 void frequency_init(void) {
 	DDRD |= (1 << PORTD7);
  2ec:	57 9a       	sbi	0x0a, 7	; 10
-	TCCR2A |= (1<<WGM20 | 1<<WGM21 | 1<<COM2A0); 
+	TCCR2A |= (1<<WGM20 | 1<<WGM21 | 1<<COM2A0);
  2ee:	e0 eb       	ldi	r30, 0xB0	; 176
  2f0:	f0 e0       	ldi	r31, 0x00	; 0
  2f2:	80 81       	ld	r24, Z
@@ -714,7 +714,7 @@ int main( void )
 }RF;
 
 inline void RFID_done(void) {
-	while(!RF.done); 
+	while(!RF.done);
  39c:	0e e0       	ldi	r16, 0x0E	; 14
  39e:	11 e0       	ldi	r17, 0x01	; 1
 	lcd_string((uint8_t *)"Scan a tag");
@@ -742,7 +742,7 @@ inline void beep_enable(void) {
 }RF;
 
 inline void RFID_done(void) {
-	while(!RF.done); 
+	while(!RF.done);
  3b0:	f8 01       	movw	r30, r16
  3b2:	82 89       	ldd	r24, Z+18	; 0x12
  3b4:	88 23       	and	r24, r24
@@ -818,7 +818,7 @@ inline void beep_disable(void) {
  400:	80 81       	ld	r24, Z
  402:	8d 7f       	andi	r24, 0xFD	; 253
  404:	80 83       	st	Z, r24
-	while(!RF.done); 
+	while(!RF.done);
 }
 
 inline void RFID_ready(void) {
