@@ -14,8 +14,6 @@
 #define ICP PIND6
 
 
-
-
 /*************** LCD Configuration ****************/
 
 #define lcdDdr		DDRA		//Data direction

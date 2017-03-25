@@ -12,7 +12,7 @@
 #define RXD0 PIND0
 #define SIZE 16
 #define ICP PIND6
-
+#define REGISTERED_TAGS  2      
 
 
 
@@ -100,7 +100,6 @@ void lcd_string(uint8_t string[])
 }
 
 
-
 void lcd_char(uint8_t data)
 {
 	lcdPort |= (1 << lcdRSBit);                 // RS high
@@ -141,9 +140,9 @@ void lcd_write(uint8_t byte)
 	_delay_us(1);                             // hold data
 }
 
-/****************** USART Configuration **********************/
+/****************** RFID Configuration **********************/
 
-void USART_init(void)
+void USART_RF_init(void)
 {
 	/*Set baud rate */
 	UBRR0H = (BAUDRATE>>8);
@@ -160,7 +159,7 @@ void USART_init(void)
 
 }
 
-unsigned char USART_receive(void)
+unsigned char USART_RF_receive(void)
 {
 	/* Wait for data to be received */
 	while(~(UCSR0A) & (1<<RXC0));
@@ -169,12 +168,24 @@ unsigned char USART_receive(void)
 	return UDR0;
 }
 
-void USART_send(unsigned char data)
+void USART_RF_send(unsigned char data)
 {
 	/* Wait for data to be received */
 	while (!( UCSR0A & (1<<UDRE0)));
 	UDR0 = data;
 }
+
+struct {
+	char tag[SIZE + 1];
+	bool adopted;                   	// dog is currently in the shelter
+	} cards[REGISTERED_TAGS] = {
+	[0].tag = {0x0a, 0x30, 0x46, 0x30, 0x32, 0x44, 0x37, 0x37, 0x37, 0x43, 0x36, 0x0d, 0x00},
+	[0].adopted = false,
+	[1].tag = {0x0a, 0x30, 0x46, 0x30, 0x32, 0x44, 0x37, 0x37, 0x37, 0x43, 0x46, 0x0d, 0x00},
+	[1].adopted = false
+	[2].tag = {0x0a, 0x30, 0x46, 0x30, 0x32, 0x44, 0x37, 0x37, 0x37, 0x43, 0x46, 0x0d, 0x00},
+	[2].adopted = false
+};
 
 struct {
 	/* RFID buffer */
@@ -183,8 +194,8 @@ struct {
 	volatile bool done;
 }RF;
 
-inline void RFID_done(void) {
-	while(!RF.done);
+inline bool RFID_done(void) {
+	return RF.done;
 }
 
 inline void RFID_ready(void) {
@@ -194,7 +205,8 @@ inline void RFID_ready(void) {
 
 ISR(USART0_RX_vect){
 	/* load RFID into buffer */
-	char num = USART_receive();
+	char num = USART_RF_receive();
+	if (RF.done) return;
 	if(!RF.done) {
 		RF.ID[RF.index++] = num;
 		if(RF.index == SIZE) {
@@ -202,17 +214,66 @@ ISR(USART0_RX_vect){
 			RF.done = true;
 		}
 	}
-	USART_send(num);
+	USART_RF_send(num);
 
+
+ISR(USART0_RX_vect) {
+	char num = USART_RF_receive();
+	if (RF.done) return;
+	uint8_t index = RF.index;
+	if ((index == 0 && num != 0x0A) || (index == SIZE - 1 && num != 0x0D)) {
+		RF.index = 0;	// reset buffer 
+		return;
+	}
+	RF.ID[RF.index++] = num;
+	if (RF.index >= SIZE) {
+		RF.index = 0;
+		RF.ID[SIZE] = 0; // null terminator
+		RF.done = true; // lock the buffer 
+	}
 }
 
+int find_card(char * str) {
+	for (int i = 0; i < REGISTERED_TAGS; i++) {
+		if (strcmp(cards[i].tag, str) == 0) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+void probe_card_reader(void) {
+	if (!RFID_done()) { // no card is near the RFID scanner
+		return;
+	}
+	lcd_instruction(clear);
+	int card_index = find_card((char *)RF.ID);
+	if (card_index >= 0) {                      // check if card is found
+		cards[card_index].adopted ^= 1;     // toggle card status
+		lcd_string("Card ");
+		lcd_char(card_index + '1');
+		lcd_string(" detected!");
+		lcd_instruction(setCursor | lineTwo);
+		lcd_instruction(cards[card_index].tag, 1, SIZE - 1);
+	}
+	else {
+		lcd_string("This card is");
+		lcd_instruction(setCursor | lineTwo);
+		lcd_string("not registered.");
+	}
+	_delay_ms(3000);
+	lcd_instruction(clear);
+	RFID_ready();
+}
+
+/****************** Wifi Configuration **********************/
 
 
 int main( void )
 {
 
 	lcd_init();
-	USART_init();
+	USART_RF_init();
 	sei();
 	
 	lcd_string((uint8_t *)"Scan a tag");
@@ -227,7 +288,7 @@ int main( void )
 			_delay_us(50);
 		}
 		
-		USART_send('\n');
+		USART_RF_send('\n');
 		_delay_ms(200);
 		RFID_ready();
 	}
