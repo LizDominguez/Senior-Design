@@ -394,7 +394,7 @@ void lcd_init(void)
  1ee:	08 95       	ret
 
 000001f0 <USART_init>:
-/****************** USART Configuration **********************/
+/*********************************************************** USART Configuration *****************************************************************/
 
 void USART_init(void)
 {
@@ -542,7 +542,7 @@ ISR(USART0_RX_vect){
 
 000002b2 <beeper_init>:
 
-/****************** Beeper Initialization *******************/
+/*************************************************************** Beeper Initialization **********************************************************/
 void beeper_init(void) {
 	DDRB |= (1 << PORTB3);
  2b2:	23 9a       	sbi	0x04, 3	; 4
@@ -589,7 +589,7 @@ ISR(TIMER0_COMPA_vect) {
 	TIMSK0 &= ~(1 << OCF0A);
 }
 
-/****************** 125kHz wave *******************/
+/***************************************************************** 125kHz wave **********************************************************/
 void frequency_init(void) {
 	DDRD |= (1 << PORTD7);
  2ec:	57 9a       	sbi	0x0a, 7	; 10
@@ -705,7 +705,7 @@ int main( void )
 	sei();
  392:	78 94       	sei
 	
-	lcd_string((uint8_t *)"Scan a tag");
+	lcd_string((uint8_t *)"MY Shelter");
  394:	80 e0       	ldi	r24, 0x00	; 0
  396:	91 e0       	ldi	r25, 0x01	; 1
  398:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
@@ -717,8 +717,8 @@ inline void RFID_done(void) {
 	while(!RF.done);
  39c:	0e e0       	ldi	r16, 0x0E	; 14
  39e:	11 e0       	ldi	r17, 0x01	; 1
-	lcd_string((uint8_t *)"Scan a tag");
 
+	
 	while (1) {
 		
 		RFID_done();
@@ -747,8 +747,8 @@ inline void RFID_done(void) {
  3b2:	82 89       	ldd	r24, Z+18	; 0x12
  3b4:	88 23       	and	r24, r24
  3b6:	e1 f3       	breq	.-8      	; 0x3b0 <main+0x32>
-	lcd_string((uint8_t *)"Scan a tag");
 
+	
 	while (1) {
 		
 		RFID_done();

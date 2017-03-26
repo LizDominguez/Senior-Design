@@ -14,7 +14,7 @@
 #define ICP PIND6
 
 
-/*************** LCD Configuration ****************/
+/************************************************************************* LCD Configuration *************************************************************/
 
 #define lcdDdr		DDRA		//Data direction
 #define lcdPort		PORTA		//PortD
@@ -139,7 +139,7 @@ void lcd_write(uint8_t byte)
 	_delay_us(1);                             // hold data
 }
 
-/****************** USART Configuration **********************/
+/*********************************************************** USART Configuration *****************************************************************/
 
 void USART_init(void)
 {
@@ -204,7 +204,7 @@ ISR(USART0_RX_vect){
 
 }
 
-/****************** Beeper Initialization *******************/
+/*************************************************************** Beeper Initialization **********************************************************/
 void beeper_init(void) {
 	DDRB |= (1 << PORTB3);
 	TCCR0A |= (1 << WGM01);
@@ -222,7 +222,7 @@ inline void beep_disable(void) {
 	TIMSK0 &= ~(1 << OCF0A);
 }
 
-/****************** 125kHz wave *******************/
+/***************************************************************** 125kHz wave **********************************************************/
 void frequency_init(void) {
 	DDRD |= (1 << PORTD7);
 	TCCR2A |= (1<<WGM20 | 1<<WGM21 | 1<<COM2A0);
@@ -273,8 +273,9 @@ int main( void )
 	input_capture_init();
 	sei();
 	
-	lcd_string((uint8_t *)"Scan a tag");
+	lcd_string((uint8_t *)"MY Shelter");
 
+	
 	while (1) {
 		
 		RFID_done();
