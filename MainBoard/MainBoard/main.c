@@ -16,9 +16,6 @@
 #define IP_ADDRESS       "52.24.121.235" 
 
 
-
-       
-
 /********************************************************************** LCD Configuration ********************************************************************/
 
 #define lcdDdr		DDRA		//Data direction
@@ -116,7 +113,9 @@ void lcd_instruction(uint8_t instruction)
 	lcdPort &= ~(1 << lcdRSBit);                // RS low
 	lcdPort &= ~(1 << lcdEBit);                // E low
 	lcd_write(instruction);                   // write the upper 4 bits of data
+	 _delay_us(10);
 	lcd_write(instruction << 4);             // write the lower 4 bits of data
+	  _delay_ms(5);
 }
 
 
@@ -302,18 +301,13 @@ void ESP8266_clear_buffer(void) {
 }
 
 bool isConnected(void) {
-	lcd_instruction(setCursor | lineOne);
-	_delay_us(500);
+	lcd_instruction(clear);
 	lcd_string((uint8_t *)"Wifi is...         ");
-	lcd_instruction(setCursor | lineTwo);
-	_delay_us(500);
-	lcd_string((uint8_t *)"Status:");
 	
 	for (;;) {
+		lcd_instruction(setCursor | lineTwo);
 		UART_ESP8266_cmd("AT+CIPSTATUS");
 		_delay_ms(500);
-		lcd_instruction(setCursor | lineTwo);
-		_delay_us(500);
 		if (ESP8266_find("STATUS:2")) {
 			lcd_string((uint8_t *)"Connected!       ");
 			ESP8266_clear_buffer();
@@ -325,6 +319,7 @@ bool isConnected(void) {
 			} 
 		else {
 			lcd_string((uint8_t *)"Not Responding.   ");
+			return false;
 		}
 
 	}
@@ -347,6 +342,7 @@ void upload_to_server(char * rfid, char action) {
 }
 
 void UART_ESP8266_init(void) {
+	
 	UBRR1H = (BAUDRATE>>8);
 	UBRR1L = BAUDRATE;
 	UCSR1B = (1<<TXEN1) | (1<<RXEN1);
@@ -356,13 +352,13 @@ void UART_ESP8266_init(void) {
 	for (;;) {
 		ESP8266_clear_buffer();
 		UART_ESP8266_cmd("AT+RST");
-		lcd_instruction(setCursor | lineOne);
-		_delay_us(500);
+		
+		lcd_instruction(clear);
 		lcd_string((uint8_t *)"Configuring Wifi...");
 		_delay_ms(1000);
+		
 		if (!ESP8266_find("ready")) { // seems like the ESP8266 didn't respond...
-			lcd_instruction(setCursor | lineOne);
-			_delay_us(500);
+			lcd_instruction(clear);
 			lcd_string((uint8_t *)"timeout/UART err");
 			lcd_instruction(setCursor | lineTwo);
 			lcd_string((uint8_t *)"Restarting...");
@@ -372,8 +368,9 @@ void UART_ESP8266_init(void) {
 		
 		UART_ESP8266_cmd("ATE0"); // disable ESP8266 echo functionality
 		_delay_ms(500);
-		if (!isConnected()) continue;       // if user pressed reset, restart ESP8266
-		upload_to_server("----------",'b');  // record the restart of the system
+		
+		if (!isConnected()) continue;       // if wifi is not responding
+		upload_to_server("----------",'b');  // restart system
 		break;
 	}
 }
@@ -394,20 +391,19 @@ ISR(USART1_RX_vect) {
 }
 
 void probe_card_reader(void) {
-	if (!RFID_done()) return; // no card is near the RFID scanner
 	
-	lcd_instruction(setCursor | lineOne);
-	_delay_ms(500);
+	if (!RFID_done()) return;
+	
+	lcd_instruction(clear);
 	
 	int card_index = find_card();
 	
 	if (card_index < 0) { // card not found
 		lcd_string((uint8_t *)"This card is    ");
 		lcd_instruction(setCursor | lineTwo);
-		_delay_ms(500);
 		lcd_string((uint8_t *)"not registered.   ");
-		lcd_instruction(setCursor | lineOne);
-		_delay_us(500);
+		_delay_ms(500);
+		lcd_instruction(clear);
 		RFID_ready();
 		return;
 	}
@@ -434,13 +430,12 @@ void probe_card_reader(void) {
 	}
 
 	lcd_instruction(setCursor | lineTwo);
-	_delay_us(500);
 	lcd_string((uint8_t *)"ID: ");
 	lcd_string((uint8_t *)get_card_id(card_index));
 	upload_to_server(get_card_id(card_index), status_to_upload);
-	lcd_instruction(setCursor | lineOne);
-	_delay_us(500);
+	lcd_instruction(clear);
 	RFID_ready();
+	
 }
 
 
