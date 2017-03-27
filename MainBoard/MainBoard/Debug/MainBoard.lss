@@ -3,31 +3,31 @@ MainBoard.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000180  00800100  000007fa  0000088e  2**0
+  0 .data         00000180  00800100  000007ea  0000087e  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         000007fa  00000000  00000000  00000094  2**1
+  1 .text         000007ea  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          0000031d  00800280  00800280  00000a0e  2**0
+  2 .bss          0000031d  00800280  00800280  000009fe  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  00000a0e  2**0
+  3 .comment      00000030  00000000  00000000  000009fe  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000a40  2**2
+  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000a30  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 000000d0  00000000  00000000  00000a80  2**0
+  5 .debug_aranges 000000d0  00000000  00000000  00000a70  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   000012ea  00000000  00000000  00000b50  2**0
+  6 .debug_info   000012ef  00000000  00000000  00000b40  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 000003f4  00000000  00000000  00001e3a  2**0
+  7 .debug_abbrev 000003ab  00000000  00000000  00001e2f  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00000903  00000000  00000000  0000222e  2**0
+  8 .debug_line   000008d8  00000000  00000000  000021da  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  000002bc  00000000  00000000  00002b34  2**2
+  9 .debug_frame  000002b8  00000000  00000000  00002ab4  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    0000038c  00000000  00000000  00002df0  2**0
+ 10 .debug_str    0000038c  00000000  00000000  00002d6c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000a3f  00000000  00000000  0000317c  2**0
+ 11 .debug_loc    00000a20  00000000  00000000  000030f8  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 000000f0  00000000  00000000  00003bbb  2**0
+ 12 .debug_ranges 000000d8  00000000  00000000  00003b18  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -53,7 +53,7 @@ Disassembly of section .text:
   44:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
   48:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
   4c:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
-  50:	0c 94 41 01 	jmp	0x282	; 0x282 <__vector_20>
+  50:	0c 94 39 01 	jmp	0x272	; 0x272 <__vector_20>
   54:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
   58:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
   5c:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
@@ -61,7 +61,7 @@ Disassembly of section .text:
   64:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
   68:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
   6c:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
-  70:	0c 94 e1 02 	jmp	0x5c2	; 0x5c2 <__vector_28>
+  70:	0c 94 c6 02 	jmp	0x58c	; 0x58c <__vector_28>
   74:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
   78:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
 
@@ -77,7 +77,7 @@ Disassembly of section .text:
   88:	12 e0       	ldi	r17, 0x02	; 2
   8a:	a0 e0       	ldi	r26, 0x00	; 0
   8c:	b1 e0       	ldi	r27, 0x01	; 1
-  8e:	ea ef       	ldi	r30, 0xFA	; 250
+  8e:	ea ee       	ldi	r30, 0xEA	; 234
   90:	f7 e0       	ldi	r31, 0x07	; 7
   92:	02 c0       	rjmp	.+4      	; 0x98 <__do_copy_data+0x10>
   94:	05 90       	lpm	r0, Z+
@@ -99,8 +99,8 @@ Disassembly of section .text:
   a8:	ad 39       	cpi	r26, 0x9D	; 157
   aa:	b2 07       	cpc	r27, r18
   ac:	e1 f7       	brne	.-8      	; 0xa6 <.do_clear_bss_loop>
-  ae:	0e 94 e8 03 	call	0x7d0	; 0x7d0 <main>
-  b2:	0c 94 fb 03 	jmp	0x7f6	; 0x7f6 <_exit>
+  ae:	0e 94 dd 03 	call	0x7ba	; 0x7ba <main>
+  b2:	0c 94 f3 03 	jmp	0x7e6	; 0x7e6 <_exit>
 
 000000b6 <__bad_interrupt>:
   b6:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -296,967 +296,961 @@ Disassembly of section .text:
  22e:	80 91 c6 00 	lds	r24, 0x00C6	; 0x8000c6 <__TEXT_REGION_LENGTH__+0x7e00c6>
  232:	08 95       	ret
 
-00000234 <USART_RF_send>:
- 234:	e0 ec       	ldi	r30, 0xC0	; 192
- 236:	f0 e0       	ldi	r31, 0x00	; 0
- 238:	90 81       	ld	r25, Z
- 23a:	95 ff       	sbrs	r25, 5
- 23c:	fd cf       	rjmp	.-6      	; 0x238 <USART_RF_send+0x4>
- 23e:	80 93 c6 00 	sts	0x00C6, r24	; 0x8000c6 <__TEXT_REGION_LENGTH__+0x7e00c6>
- 242:	08 95       	ret
+00000234 <find_card>:
+ 234:	0f 93       	push	r16
+ 236:	1f 93       	push	r17
+ 238:	cf 93       	push	r28
+ 23a:	df 93       	push	r29
+ 23c:	01 e0       	ldi	r16, 0x01	; 1
+ 23e:	11 e0       	ldi	r17, 0x01	; 1
+ 240:	c0 e0       	ldi	r28, 0x00	; 0
+ 242:	d0 e0       	ldi	r29, 0x00	; 0
+ 244:	61 e8       	ldi	r22, 0x81	; 129
+ 246:	72 e0       	ldi	r23, 0x02	; 2
+ 248:	c8 01       	movw	r24, r16
+ 24a:	0e 94 ea 03 	call	0x7d4	; 0x7d4 <strcmp>
+ 24e:	89 2b       	or	r24, r25
+ 250:	49 f0       	breq	.+18     	; 0x264 <find_card+0x30>
+ 252:	21 96       	adiw	r28, 0x01	; 1
+ 254:	02 5f       	subi	r16, 0xF2	; 242
+ 256:	1f 4f       	sbci	r17, 0xFF	; 255
+ 258:	c3 30       	cpi	r28, 0x03	; 3
+ 25a:	d1 05       	cpc	r29, r1
+ 25c:	99 f7       	brne	.-26     	; 0x244 <find_card+0x10>
+ 25e:	8f ef       	ldi	r24, 0xFF	; 255
+ 260:	9f ef       	ldi	r25, 0xFF	; 255
+ 262:	02 c0       	rjmp	.+4      	; 0x268 <find_card+0x34>
+ 264:	8c 2f       	mov	r24, r28
+ 266:	9d 2f       	mov	r25, r29
+ 268:	df 91       	pop	r29
+ 26a:	cf 91       	pop	r28
+ 26c:	1f 91       	pop	r17
+ 26e:	0f 91       	pop	r16
+ 270:	08 95       	ret
 
-00000244 <find_card>:
- 244:	0f 93       	push	r16
- 246:	1f 93       	push	r17
- 248:	cf 93       	push	r28
- 24a:	df 93       	push	r29
- 24c:	01 e0       	ldi	r16, 0x01	; 1
- 24e:	11 e0       	ldi	r17, 0x01	; 1
- 250:	c0 e0       	ldi	r28, 0x00	; 0
- 252:	d0 e0       	ldi	r29, 0x00	; 0
- 254:	61 e8       	ldi	r22, 0x81	; 129
- 256:	72 e0       	ldi	r23, 0x02	; 2
- 258:	c8 01       	movw	r24, r16
- 25a:	0e 94 f2 03 	call	0x7e4	; 0x7e4 <strcmp>
- 25e:	89 2b       	or	r24, r25
- 260:	49 f0       	breq	.+18     	; 0x274 <find_card+0x30>
- 262:	21 96       	adiw	r28, 0x01	; 1
- 264:	02 5f       	subi	r16, 0xF2	; 242
- 266:	1f 4f       	sbci	r17, 0xFF	; 255
- 268:	c3 30       	cpi	r28, 0x03	; 3
- 26a:	d1 05       	cpc	r29, r1
- 26c:	99 f7       	brne	.-26     	; 0x254 <find_card+0x10>
- 26e:	8f ef       	ldi	r24, 0xFF	; 255
- 270:	9f ef       	ldi	r25, 0xFF	; 255
- 272:	02 c0       	rjmp	.+4      	; 0x278 <find_card+0x34>
- 274:	8c 2f       	mov	r24, r28
- 276:	9d 2f       	mov	r25, r29
- 278:	df 91       	pop	r29
- 27a:	cf 91       	pop	r28
- 27c:	1f 91       	pop	r17
- 27e:	0f 91       	pop	r16
- 280:	08 95       	ret
+00000272 <__vector_20>:
+ 272:	1f 92       	push	r1
+ 274:	0f 92       	push	r0
+ 276:	0f b6       	in	r0, 0x3f	; 63
+ 278:	0f 92       	push	r0
+ 27a:	11 24       	eor	r1, r1
+ 27c:	2f 93       	push	r18
+ 27e:	3f 93       	push	r19
+ 280:	4f 93       	push	r20
+ 282:	5f 93       	push	r21
+ 284:	6f 93       	push	r22
+ 286:	7f 93       	push	r23
+ 288:	8f 93       	push	r24
+ 28a:	9f 93       	push	r25
+ 28c:	af 93       	push	r26
+ 28e:	bf 93       	push	r27
+ 290:	ef 93       	push	r30
+ 292:	ff 93       	push	r31
+ 294:	0e 94 12 01 	call	0x224	; 0x224 <USART_RF_receive>
+ 298:	90 91 8e 02 	lds	r25, 0x028E	; 0x80028e <__data_end+0xe>
+ 29c:	91 11       	cpse	r25, r1
+ 29e:	19 c0       	rjmp	.+50     	; 0x2d2 <__vector_20+0x60>
+ 2a0:	a0 e8       	ldi	r26, 0x80	; 128
+ 2a2:	b2 e0       	ldi	r27, 0x02	; 2
+ 2a4:	1d 96       	adiw	r26, 0x0d	; 13
+ 2a6:	ec 91       	ld	r30, X
+ 2a8:	1d 97       	sbiw	r26, 0x0d	; 13
+ 2aa:	91 e0       	ldi	r25, 0x01	; 1
+ 2ac:	9e 0f       	add	r25, r30
+ 2ae:	1d 96       	adiw	r26, 0x0d	; 13
+ 2b0:	9c 93       	st	X, r25
+ 2b2:	1d 97       	sbiw	r26, 0x0d	; 13
+ 2b4:	f0 e0       	ldi	r31, 0x00	; 0
+ 2b6:	e0 58       	subi	r30, 0x80	; 128
+ 2b8:	fd 4f       	sbci	r31, 0xFD	; 253
+ 2ba:	80 83       	st	Z, r24
+ 2bc:	1d 96       	adiw	r26, 0x0d	; 13
+ 2be:	8c 91       	ld	r24, X
+ 2c0:	1d 97       	sbiw	r26, 0x0d	; 13
+ 2c2:	8c 30       	cpi	r24, 0x0C	; 12
+ 2c4:	30 f0       	brcs	.+12     	; 0x2d2 <__vector_20+0x60>
+ 2c6:	fd 01       	movw	r30, r26
+ 2c8:	15 86       	std	Z+13, r1	; 0x0d
+ 2ca:	10 82       	st	Z, r1
+ 2cc:	13 86       	std	Z+11, r1	; 0x0b
+ 2ce:	81 e0       	ldi	r24, 0x01	; 1
+ 2d0:	86 87       	std	Z+14, r24	; 0x0e
+ 2d2:	ff 91       	pop	r31
+ 2d4:	ef 91       	pop	r30
+ 2d6:	bf 91       	pop	r27
+ 2d8:	af 91       	pop	r26
+ 2da:	9f 91       	pop	r25
+ 2dc:	8f 91       	pop	r24
+ 2de:	7f 91       	pop	r23
+ 2e0:	6f 91       	pop	r22
+ 2e2:	5f 91       	pop	r21
+ 2e4:	4f 91       	pop	r20
+ 2e6:	3f 91       	pop	r19
+ 2e8:	2f 91       	pop	r18
+ 2ea:	0f 90       	pop	r0
+ 2ec:	0f be       	out	0x3f, r0	; 63
+ 2ee:	0f 90       	pop	r0
+ 2f0:	1f 90       	pop	r1
+ 2f2:	18 95       	reti
 
-00000282 <__vector_20>:
- 282:	1f 92       	push	r1
- 284:	0f 92       	push	r0
- 286:	0f b6       	in	r0, 0x3f	; 63
- 288:	0f 92       	push	r0
- 28a:	11 24       	eor	r1, r1
- 28c:	2f 93       	push	r18
- 28e:	3f 93       	push	r19
- 290:	4f 93       	push	r20
- 292:	5f 93       	push	r21
- 294:	6f 93       	push	r22
- 296:	7f 93       	push	r23
- 298:	8f 93       	push	r24
- 29a:	9f 93       	push	r25
- 29c:	af 93       	push	r26
- 29e:	bf 93       	push	r27
- 2a0:	cf 93       	push	r28
- 2a2:	ef 93       	push	r30
- 2a4:	ff 93       	push	r31
- 2a6:	0e 94 12 01 	call	0x224	; 0x224 <USART_RF_receive>
- 2aa:	c8 2f       	mov	r28, r24
- 2ac:	0e 94 1a 01 	call	0x234	; 0x234 <USART_RF_send>
- 2b0:	80 91 8e 02 	lds	r24, 0x028E	; 0x80028e <__data_end+0xe>
- 2b4:	81 11       	cpse	r24, r1
- 2b6:	27 c0       	rjmp	.+78     	; 0x306 <__vector_20+0x84>
- 2b8:	80 91 8d 02 	lds	r24, 0x028D	; 0x80028d <__data_end+0xd>
- 2bc:	81 11       	cpse	r24, r1
- 2be:	03 c0       	rjmp	.+6      	; 0x2c6 <__vector_20+0x44>
- 2c0:	ca 30       	cpi	r28, 0x0A	; 10
- 2c2:	29 f4       	brne	.+10     	; 0x2ce <__vector_20+0x4c>
- 2c4:	07 c0       	rjmp	.+14     	; 0x2d4 <__vector_20+0x52>
- 2c6:	8b 30       	cpi	r24, 0x0B	; 11
- 2c8:	29 f4       	brne	.+10     	; 0x2d4 <__vector_20+0x52>
- 2ca:	cd 30       	cpi	r28, 0x0D	; 13
- 2cc:	19 f0       	breq	.+6      	; 0x2d4 <__vector_20+0x52>
- 2ce:	10 92 8d 02 	sts	0x028D, r1	; 0x80028d <__data_end+0xd>
- 2d2:	19 c0       	rjmp	.+50     	; 0x306 <__vector_20+0x84>
- 2d4:	a0 e8       	ldi	r26, 0x80	; 128
- 2d6:	b2 e0       	ldi	r27, 0x02	; 2
- 2d8:	1d 96       	adiw	r26, 0x0d	; 13
- 2da:	ec 91       	ld	r30, X
- 2dc:	1d 97       	sbiw	r26, 0x0d	; 13
- 2de:	81 e0       	ldi	r24, 0x01	; 1
- 2e0:	8e 0f       	add	r24, r30
- 2e2:	1d 96       	adiw	r26, 0x0d	; 13
- 2e4:	8c 93       	st	X, r24
- 2e6:	1d 97       	sbiw	r26, 0x0d	; 13
- 2e8:	f0 e0       	ldi	r31, 0x00	; 0
- 2ea:	e0 58       	subi	r30, 0x80	; 128
- 2ec:	fd 4f       	sbci	r31, 0xFD	; 253
- 2ee:	c0 83       	st	Z, r28
- 2f0:	1d 96       	adiw	r26, 0x0d	; 13
- 2f2:	8c 91       	ld	r24, X
- 2f4:	1d 97       	sbiw	r26, 0x0d	; 13
- 2f6:	8c 30       	cpi	r24, 0x0C	; 12
- 2f8:	30 f0       	brcs	.+12     	; 0x306 <__vector_20+0x84>
- 2fa:	fd 01       	movw	r30, r26
- 2fc:	15 86       	std	Z+13, r1	; 0x0d
- 2fe:	10 82       	st	Z, r1
- 300:	13 86       	std	Z+11, r1	; 0x0b
- 302:	81 e0       	ldi	r24, 0x01	; 1
- 304:	86 87       	std	Z+14, r24	; 0x0e
- 306:	ff 91       	pop	r31
- 308:	ef 91       	pop	r30
- 30a:	cf 91       	pop	r28
- 30c:	bf 91       	pop	r27
- 30e:	af 91       	pop	r26
- 310:	9f 91       	pop	r25
- 312:	8f 91       	pop	r24
- 314:	7f 91       	pop	r23
- 316:	6f 91       	pop	r22
- 318:	5f 91       	pop	r21
- 31a:	4f 91       	pop	r20
- 31c:	3f 91       	pop	r19
- 31e:	2f 91       	pop	r18
- 320:	0f 90       	pop	r0
- 322:	0f be       	out	0x3f, r0	; 63
- 324:	0f 90       	pop	r0
- 326:	1f 90       	pop	r1
- 328:	18 95       	reti
+000002f4 <UART_ESP8266_send>:
+ 2f4:	e8 ec       	ldi	r30, 0xC8	; 200
+ 2f6:	f0 e0       	ldi	r31, 0x00	; 0
+ 2f8:	90 81       	ld	r25, Z
+ 2fa:	95 ff       	sbrs	r25, 5
+ 2fc:	fd cf       	rjmp	.-6      	; 0x2f8 <UART_ESP8266_send+0x4>
+ 2fe:	80 93 ce 00 	sts	0x00CE, r24	; 0x8000ce <__TEXT_REGION_LENGTH__+0x7e00ce>
+ 302:	08 95       	ret
 
-0000032a <UART_ESP8266_send>:
- 32a:	e8 ec       	ldi	r30, 0xC8	; 200
- 32c:	f0 e0       	ldi	r31, 0x00	; 0
- 32e:	90 81       	ld	r25, Z
- 330:	95 ff       	sbrs	r25, 5
- 332:	fd cf       	rjmp	.-6      	; 0x32e <UART_ESP8266_send+0x4>
- 334:	80 93 ce 00 	sts	0x00CE, r24	; 0x8000ce <__TEXT_REGION_LENGTH__+0x7e00ce>
- 338:	08 95       	ret
+00000304 <UART_ESP8266_cmd>:
+ 304:	cf 93       	push	r28
+ 306:	df 93       	push	r29
+ 308:	ec 01       	movw	r28, r24
+ 30a:	88 81       	ld	r24, Y
+ 30c:	88 23       	and	r24, r24
+ 30e:	31 f0       	breq	.+12     	; 0x31c <UART_ESP8266_cmd+0x18>
+ 310:	21 96       	adiw	r28, 0x01	; 1
+ 312:	0e 94 7a 01 	call	0x2f4	; 0x2f4 <UART_ESP8266_send>
+ 316:	89 91       	ld	r24, Y+
+ 318:	81 11       	cpse	r24, r1
+ 31a:	fb cf       	rjmp	.-10     	; 0x312 <UART_ESP8266_cmd+0xe>
+ 31c:	8d e0       	ldi	r24, 0x0D	; 13
+ 31e:	0e 94 7a 01 	call	0x2f4	; 0x2f4 <UART_ESP8266_send>
+ 322:	8a e0       	ldi	r24, 0x0A	; 10
+ 324:	0e 94 7a 01 	call	0x2f4	; 0x2f4 <UART_ESP8266_send>
+ 328:	df 91       	pop	r29
+ 32a:	cf 91       	pop	r28
+ 32c:	08 95       	ret
 
-0000033a <UART_ESP8266_cmd>:
- 33a:	cf 93       	push	r28
- 33c:	df 93       	push	r29
- 33e:	ec 01       	movw	r28, r24
- 340:	88 81       	ld	r24, Y
- 342:	88 23       	and	r24, r24
- 344:	31 f0       	breq	.+12     	; 0x352 <UART_ESP8266_cmd+0x18>
- 346:	21 96       	adiw	r28, 0x01	; 1
- 348:	0e 94 95 01 	call	0x32a	; 0x32a <UART_ESP8266_send>
- 34c:	89 91       	ld	r24, Y+
- 34e:	81 11       	cpse	r24, r1
- 350:	fb cf       	rjmp	.-10     	; 0x348 <UART_ESP8266_cmd+0xe>
- 352:	8d e0       	ldi	r24, 0x0D	; 13
- 354:	0e 94 95 01 	call	0x32a	; 0x32a <UART_ESP8266_send>
- 358:	8a e0       	ldi	r24, 0x0A	; 10
- 35a:	0e 94 95 01 	call	0x32a	; 0x32a <UART_ESP8266_send>
- 35e:	df 91       	pop	r29
- 360:	cf 91       	pop	r28
- 362:	08 95       	ret
+0000032e <UART_ESP8266_receive>:
+ 32e:	e8 ec       	ldi	r30, 0xC8	; 200
+ 330:	f0 e0       	ldi	r31, 0x00	; 0
+ 332:	80 81       	ld	r24, Z
+ 334:	88 23       	and	r24, r24
+ 336:	ec f7       	brge	.-6      	; 0x332 <UART_ESP8266_receive+0x4>
+ 338:	80 91 ce 00 	lds	r24, 0x00CE	; 0x8000ce <__TEXT_REGION_LENGTH__+0x7e00ce>
+ 33c:	08 95       	ret
 
-00000364 <UART_ESP8266_receive>:
- 364:	e8 ec       	ldi	r30, 0xC8	; 200
- 366:	f0 e0       	ldi	r31, 0x00	; 0
- 368:	80 81       	ld	r24, Z
- 36a:	88 23       	and	r24, r24
- 36c:	ec f7       	brge	.-6      	; 0x368 <UART_ESP8266_receive+0x4>
- 36e:	80 91 ce 00 	lds	r24, 0x00CE	; 0x8000ce <__TEXT_REGION_LENGTH__+0x7e00ce>
- 372:	08 95       	ret
-
-00000374 <ESP8266_find>:
+0000033e <ESP8266_find>:
 
 bool ESP8266_find(char string[]) {
- 374:	ef 92       	push	r14
- 376:	ff 92       	push	r15
- 378:	0f 93       	push	r16
- 37a:	1f 93       	push	r17
- 37c:	cf 93       	push	r28
- 37e:	df 93       	push	r29
- 380:	7c 01       	movw	r14, r24
- 382:	0f e8       	ldi	r16, 0x8F	; 143
- 384:	12 e0       	ldi	r17, 0x02	; 2
+ 33e:	ef 92       	push	r14
+ 340:	ff 92       	push	r15
+ 342:	0f 93       	push	r16
+ 344:	1f 93       	push	r17
+ 346:	cf 93       	push	r28
+ 348:	df 93       	push	r29
+ 34a:	7c 01       	movw	r14, r24
+ 34c:	0f e8       	ldi	r16, 0x8F	; 143
+ 34e:	12 e0       	ldi	r17, 0x02	; 2
 	for (int i = 0; i < ESP8266_ROW_SIZE - 1; i++) {
- 386:	c0 e0       	ldi	r28, 0x00	; 0
- 388:	d0 e0       	ldi	r29, 0x00	; 0
+ 350:	c0 e0       	ldi	r28, 0x00	; 0
+ 352:	d0 e0       	ldi	r29, 0x00	; 0
 		if(strcmp((char *)ESP8266.buffer[i], string) == 0) {
- 38a:	b7 01       	movw	r22, r14
- 38c:	c8 01       	movw	r24, r16
- 38e:	0e 94 f2 03 	call	0x7e4	; 0x7e4 <strcmp>
- 392:	89 2b       	or	r24, r25
- 394:	59 f4       	brne	.+22     	; 0x3ac <ESP8266_find+0x38>
+ 354:	b7 01       	movw	r22, r14
+ 356:	c8 01       	movw	r24, r16
+ 358:	0e 94 ea 03 	call	0x7d4	; 0x7d4 <strcmp>
+ 35c:	89 2b       	or	r24, r25
+ 35e:	59 f4       	brne	.+22     	; 0x376 <ESP8266_find+0x38>
 			ESP8266.buffer[i][0] = 0; // clear the string
- 396:	84 e3       	ldi	r24, 0x34	; 52
- 398:	8c 9f       	mul	r24, r28
- 39a:	f0 01       	movw	r30, r0
- 39c:	8d 9f       	mul	r24, r29
- 39e:	f0 0d       	add	r31, r0
- 3a0:	11 24       	eor	r1, r1
- 3a2:	e1 57       	subi	r30, 0x71	; 113
- 3a4:	fd 4f       	sbci	r31, 0xFD	; 253
- 3a6:	10 82       	st	Z, r1
+ 360:	84 e3       	ldi	r24, 0x34	; 52
+ 362:	8c 9f       	mul	r24, r28
+ 364:	f0 01       	movw	r30, r0
+ 366:	8d 9f       	mul	r24, r29
+ 368:	f0 0d       	add	r31, r0
+ 36a:	11 24       	eor	r1, r1
+ 36c:	e1 57       	subi	r30, 0x71	; 113
+ 36e:	fd 4f       	sbci	r31, 0xFD	; 253
+ 370:	10 82       	st	Z, r1
 			return true;
- 3a8:	81 e0       	ldi	r24, 0x01	; 1
- 3aa:	07 c0       	rjmp	.+14     	; 0x3ba <ESP8266_find+0x46>
+ 372:	81 e0       	ldi	r24, 0x01	; 1
+ 374:	07 c0       	rjmp	.+14     	; 0x384 <ESP8266_find+0x46>
 	}
 	return -1;
 }
 
 bool ESP8266_find(char string[]) {
 	for (int i = 0; i < ESP8266_ROW_SIZE - 1; i++) {
- 3ac:	21 96       	adiw	r28, 0x01	; 1
- 3ae:	0c 5c       	subi	r16, 0xCC	; 204
- 3b0:	1f 4f       	sbci	r17, 0xFF	; 255
- 3b2:	ce 30       	cpi	r28, 0x0E	; 14
- 3b4:	d1 05       	cpc	r29, r1
- 3b6:	49 f7       	brne	.-46     	; 0x38a <ESP8266_find+0x16>
+ 376:	21 96       	adiw	r28, 0x01	; 1
+ 378:	0c 5c       	subi	r16, 0xCC	; 204
+ 37a:	1f 4f       	sbci	r17, 0xFF	; 255
+ 37c:	ce 30       	cpi	r28, 0x0E	; 14
+ 37e:	d1 05       	cpc	r29, r1
+ 380:	49 f7       	brne	.-46     	; 0x354 <ESP8266_find+0x16>
 		if(strcmp((char *)ESP8266.buffer[i], string) == 0) {
 			ESP8266.buffer[i][0] = 0; // clear the string
 			return true;
 		}
 	}
 	return false;
- 3b8:	80 e0       	ldi	r24, 0x00	; 0
+ 382:	80 e0       	ldi	r24, 0x00	; 0
 }
- 3ba:	df 91       	pop	r29
- 3bc:	cf 91       	pop	r28
- 3be:	1f 91       	pop	r17
- 3c0:	0f 91       	pop	r16
- 3c2:	ff 90       	pop	r15
- 3c4:	ef 90       	pop	r14
- 3c6:	08 95       	ret
+ 384:	df 91       	pop	r29
+ 386:	cf 91       	pop	r28
+ 388:	1f 91       	pop	r17
+ 38a:	0f 91       	pop	r16
+ 38c:	ff 90       	pop	r15
+ 38e:	ef 90       	pop	r14
+ 390:	08 95       	ret
 
-000003c8 <ESP8266_clear_buffer>:
+00000392 <ESP8266_clear_buffer>:
 
 void ESP8266_clear_buffer(void) {
 	for (int i = 0; i < ESP8266_ROW_SIZE - 1; i++) {
- 3c8:	80 e0       	ldi	r24, 0x00	; 0
- 3ca:	90 e0       	ldi	r25, 0x00	; 0
+ 392:	80 e0       	ldi	r24, 0x00	; 0
+ 394:	90 e0       	ldi	r25, 0x00	; 0
 		ESP8266.buffer[i][0] = 0;
- 3cc:	24 e3       	ldi	r18, 0x34	; 52
- 3ce:	28 9f       	mul	r18, r24
- 3d0:	f0 01       	movw	r30, r0
- 3d2:	29 9f       	mul	r18, r25
- 3d4:	f0 0d       	add	r31, r0
- 3d6:	11 24       	eor	r1, r1
- 3d8:	e1 57       	subi	r30, 0x71	; 113
- 3da:	fd 4f       	sbci	r31, 0xFD	; 253
- 3dc:	10 82       	st	Z, r1
+ 396:	24 e3       	ldi	r18, 0x34	; 52
+ 398:	28 9f       	mul	r18, r24
+ 39a:	f0 01       	movw	r30, r0
+ 39c:	29 9f       	mul	r18, r25
+ 39e:	f0 0d       	add	r31, r0
+ 3a0:	11 24       	eor	r1, r1
+ 3a2:	e1 57       	subi	r30, 0x71	; 113
+ 3a4:	fd 4f       	sbci	r31, 0xFD	; 253
+ 3a6:	10 82       	st	Z, r1
 	}
 	return false;
 }
 
 void ESP8266_clear_buffer(void) {
 	for (int i = 0; i < ESP8266_ROW_SIZE - 1; i++) {
- 3de:	01 96       	adiw	r24, 0x01	; 1
- 3e0:	8e 30       	cpi	r24, 0x0E	; 14
- 3e2:	91 05       	cpc	r25, r1
- 3e4:	a1 f7       	brne	.-24     	; 0x3ce <ESP8266_clear_buffer+0x6>
+ 3a8:	01 96       	adiw	r24, 0x01	; 1
+ 3aa:	8e 30       	cpi	r24, 0x0E	; 14
+ 3ac:	91 05       	cpc	r25, r1
+ 3ae:	a1 f7       	brne	.-24     	; 0x398 <ESP8266_clear_buffer+0x6>
 		ESP8266.buffer[i][0] = 0;
 	}
 	ESP8266.row_index = 0;
- 3e6:	10 92 9b 05 	sts	0x059B, r1	; 0x80059b <ESP8266+0x30c>
+ 3b0:	10 92 9b 05 	sts	0x059B, r1	; 0x80059b <ESP8266+0x30c>
 	ESP8266.col_index = 0;
- 3ea:	10 92 9c 05 	sts	0x059C, r1	; 0x80059c <ESP8266+0x30d>
- 3ee:	08 95       	ret
+ 3b4:	10 92 9c 05 	sts	0x059C, r1	; 0x80059c <ESP8266+0x30d>
+ 3b8:	08 95       	ret
 
-000003f0 <isConnected>:
+000003ba <isConnected>:
 }
 
 bool isConnected(void) {
- 3f0:	cf 93       	push	r28
+ 3ba:	cf 93       	push	r28
 	lcd_instruction(clear);
- 3f2:	81 e0       	ldi	r24, 0x01	; 1
- 3f4:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
-	lcd_string((uint8_t *)"Wifi is...         ");
- 3f8:	8a e2       	ldi	r24, 0x2A	; 42
- 3fa:	91 e0       	ldi	r25, 0x01	; 1
- 3fc:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
+ 3bc:	81 e0       	ldi	r24, 0x01	; 1
+ 3be:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
+	lcd_string((uint8_t *) "Wifi is...         ");
+ 3c2:	8a e2       	ldi	r24, 0x2A	; 42
+ 3c4:	91 e0       	ldi	r25, 0x01	; 1
+ 3c6:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
 	
 	for (;;) {
 		lcd_instruction(setCursor | lineTwo);
- 400:	80 ec       	ldi	r24, 0xC0	; 192
- 402:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
+ 3ca:	80 ec       	ldi	r24, 0xC0	; 192
+ 3cc:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
 		UART_ESP8266_cmd("AT+CIPSTATUS");
- 406:	8e e3       	ldi	r24, 0x3E	; 62
- 408:	91 e0       	ldi	r25, 0x01	; 1
- 40a:	0e 94 9d 01 	call	0x33a	; 0x33a <UART_ESP8266_cmd>
+ 3d0:	8e e3       	ldi	r24, 0x3E	; 62
+ 3d2:	91 e0       	ldi	r25, 0x01	; 1
+ 3d4:	0e 94 82 01 	call	0x304	; 0x304 <UART_ESP8266_cmd>
 	#else
 		//round up by default
 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
 	#endif
 
 	__builtin_avr_delay_cycles(__ticks_dc);
- 40e:	2f ef       	ldi	r18, 0xFF	; 255
- 410:	84 e3       	ldi	r24, 0x34	; 52
- 412:	9c e0       	ldi	r25, 0x0C	; 12
- 414:	21 50       	subi	r18, 0x01	; 1
- 416:	80 40       	sbci	r24, 0x00	; 0
- 418:	90 40       	sbci	r25, 0x00	; 0
- 41a:	e1 f7       	brne	.-8      	; 0x414 <__FUSE_REGION_LENGTH__+0x14>
- 41c:	00 c0       	rjmp	.+0      	; 0x41e <__FUSE_REGION_LENGTH__+0x1e>
- 41e:	00 00       	nop
+ 3d8:	2f ef       	ldi	r18, 0xFF	; 255
+ 3da:	84 e3       	ldi	r24, 0x34	; 52
+ 3dc:	9c e0       	ldi	r25, 0x0C	; 12
+ 3de:	21 50       	subi	r18, 0x01	; 1
+ 3e0:	80 40       	sbci	r24, 0x00	; 0
+ 3e2:	90 40       	sbci	r25, 0x00	; 0
+ 3e4:	e1 f7       	brne	.-8      	; 0x3de <isConnected+0x24>
+ 3e6:	00 c0       	rjmp	.+0      	; 0x3e8 <isConnected+0x2e>
+ 3e8:	00 00       	nop
 		_delay_ms(500);
 		if (ESP8266_find("STATUS:2")) {
- 420:	8b e4       	ldi	r24, 0x4B	; 75
- 422:	91 e0       	ldi	r25, 0x01	; 1
- 424:	0e 94 ba 01 	call	0x374	; 0x374 <ESP8266_find>
- 428:	c8 2f       	mov	r28, r24
- 42a:	88 23       	and	r24, r24
- 42c:	39 f0       	breq	.+14     	; 0x43c <__FUSE_REGION_LENGTH__+0x3c>
+ 3ea:	8b e4       	ldi	r24, 0x4B	; 75
+ 3ec:	91 e0       	ldi	r25, 0x01	; 1
+ 3ee:	0e 94 9f 01 	call	0x33e	; 0x33e <ESP8266_find>
+ 3f2:	c8 2f       	mov	r28, r24
+ 3f4:	88 23       	and	r24, r24
+ 3f6:	39 f0       	breq	.+14     	; 0x406 <__FUSE_REGION_LENGTH__+0x6>
 			lcd_string((uint8_t *)"Connected!       ");
- 42e:	84 e5       	ldi	r24, 0x54	; 84
- 430:	91 e0       	ldi	r25, 0x01	; 1
- 432:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
+ 3f8:	84 e5       	ldi	r24, 0x54	; 84
+ 3fa:	91 e0       	ldi	r25, 0x01	; 1
+ 3fc:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
 			ESP8266_clear_buffer();
- 436:	0e 94 e4 01 	call	0x3c8	; 0x3c8 <ESP8266_clear_buffer>
+ 400:	0e 94 c9 01 	call	0x392	; 0x392 <ESP8266_clear_buffer>
 			return true;
- 43a:	12 c0       	rjmp	.+36     	; 0x460 <__FUSE_REGION_LENGTH__+0x60>
+ 404:	12 c0       	rjmp	.+36     	; 0x42a <__FUSE_REGION_LENGTH__+0x2a>
 			} 
 		else if (ESP8266_find("STATUS:5")) {
- 43c:	86 e6       	ldi	r24, 0x66	; 102
- 43e:	91 e0       	ldi	r25, 0x01	; 1
- 440:	0e 94 ba 01 	call	0x374	; 0x374 <ESP8266_find>
- 444:	c8 2f       	mov	r28, r24
- 446:	88 23       	and	r24, r24
- 448:	39 f0       	breq	.+14     	; 0x458 <__FUSE_REGION_LENGTH__+0x58>
+ 406:	86 e6       	ldi	r24, 0x66	; 102
+ 408:	91 e0       	ldi	r25, 0x01	; 1
+ 40a:	0e 94 9f 01 	call	0x33e	; 0x33e <ESP8266_find>
+ 40e:	c8 2f       	mov	r28, r24
+ 410:	88 23       	and	r24, r24
+ 412:	39 f0       	breq	.+14     	; 0x422 <__FUSE_REGION_LENGTH__+0x22>
 			lcd_string((uint8_t *)"Not Connected.  ");
- 44a:	8f e6       	ldi	r24, 0x6F	; 111
- 44c:	91 e0       	ldi	r25, 0x01	; 1
- 44e:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
+ 414:	8f e6       	ldi	r24, 0x6F	; 111
+ 416:	91 e0       	ldi	r25, 0x01	; 1
+ 418:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
 			ESP8266_clear_buffer();
- 452:	0e 94 e4 01 	call	0x3c8	; 0x3c8 <ESP8266_clear_buffer>
+ 41c:	0e 94 c9 01 	call	0x392	; 0x392 <ESP8266_clear_buffer>
 		else {
 			lcd_string((uint8_t *)"Not Responding.   ");
 			return false;
 		}
 
 	}
- 456:	d4 cf       	rjmp	.-88     	; 0x400 <__FUSE_REGION_LENGTH__>
+ 420:	d4 cf       	rjmp	.-88     	; 0x3ca <isConnected+0x10>
 		else if (ESP8266_find("STATUS:5")) {
 			lcd_string((uint8_t *)"Not Connected.  ");
 			ESP8266_clear_buffer();
 			} 
 		else {
 			lcd_string((uint8_t *)"Not Responding.   ");
- 458:	80 e8       	ldi	r24, 0x80	; 128
- 45a:	91 e0       	ldi	r25, 0x01	; 1
- 45c:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
+ 422:	80 e8       	ldi	r24, 0x80	; 128
+ 424:	91 e0       	ldi	r25, 0x01	; 1
+ 426:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
 			return false;
 		}
 
 	}
 }
- 460:	8c 2f       	mov	r24, r28
- 462:	cf 91       	pop	r28
- 464:	08 95       	ret
+ 42a:	8c 2f       	mov	r24, r28
+ 42c:	cf 91       	pop	r28
+ 42e:	08 95       	ret
 
-00000466 <upload_to_server>:
+00000430 <upload_to_server>:
 
 
 void upload_to_server(char * rfid, char action) {
- 466:	cf 93       	push	r28
- 468:	df 93       	push	r29
- 46a:	cd b7       	in	r28, 0x3d	; 61
- 46c:	de b7       	in	r29, 0x3e	; 62
- 46e:	6f 97       	sbiw	r28, 0x1f	; 31
- 470:	0f b6       	in	r0, 0x3f	; 63
- 472:	f8 94       	cli
- 474:	de bf       	out	0x3e, r29	; 62
- 476:	0f be       	out	0x3f, r0	; 63
- 478:	cd bf       	out	0x3d, r28	; 61
+ 430:	cf 93       	push	r28
+ 432:	df 93       	push	r29
+ 434:	cd b7       	in	r28, 0x3d	; 61
+ 436:	de b7       	in	r29, 0x3e	; 62
+ 438:	6f 97       	sbiw	r28, 0x1f	; 31
+ 43a:	0f b6       	in	r0, 0x3f	; 63
+ 43c:	f8 94       	cli
+ 43e:	de bf       	out	0x3e, r29	; 62
+ 440:	0f be       	out	0x3f, r0	; 63
+ 442:	cd bf       	out	0x3d, r28	; 61
 	char HTTP_request_buffer[] = "GET /add/##########/& HTTP/1.0";
- 47a:	2f e1       	ldi	r18, 0x1F	; 31
- 47c:	e6 ec       	ldi	r30, 0xC6	; 198
- 47e:	f1 e0       	ldi	r31, 0x01	; 1
- 480:	de 01       	movw	r26, r28
- 482:	11 96       	adiw	r26, 0x01	; 1
- 484:	01 90       	ld	r0, Z+
- 486:	0d 92       	st	X+, r0
- 488:	2a 95       	dec	r18
- 48a:	e1 f7       	brne	.-8      	; 0x484 <upload_to_server+0x1e>
- 48c:	dc 01       	movw	r26, r24
- 48e:	fe 01       	movw	r30, r28
- 490:	3a 96       	adiw	r30, 0x0a	; 10
- 492:	9e 01       	movw	r18, r28
- 494:	2c 5e       	subi	r18, 0xEC	; 236
- 496:	3f 4f       	sbci	r19, 0xFF	; 255
+ 444:	2f e1       	ldi	r18, 0x1F	; 31
+ 446:	e6 ec       	ldi	r30, 0xC6	; 198
+ 448:	f1 e0       	ldi	r31, 0x01	; 1
+ 44a:	de 01       	movw	r26, r28
+ 44c:	11 96       	adiw	r26, 0x01	; 1
+ 44e:	01 90       	ld	r0, Z+
+ 450:	0d 92       	st	X+, r0
+ 452:	2a 95       	dec	r18
+ 454:	e1 f7       	brne	.-8      	; 0x44e <upload_to_server+0x1e>
+ 456:	dc 01       	movw	r26, r24
+ 458:	fe 01       	movw	r30, r28
+ 45a:	3a 96       	adiw	r30, 0x0a	; 10
+ 45c:	9e 01       	movw	r18, r28
+ 45e:	2c 5e       	subi	r18, 0xEC	; 236
+ 460:	3f 4f       	sbci	r19, 0xFF	; 255
 	for (int i = 0 ; i < 10; i++) { // copy the RFID to the buffer (starting at first # which is index 9)
 		HTTP_request_buffer[9 + i] = rfid[i];
- 498:	8d 91       	ld	r24, X+
- 49a:	81 93       	st	Z+, r24
+ 462:	8d 91       	ld	r24, X+
+ 464:	81 93       	st	Z+, r24
 }
 
 
 void upload_to_server(char * rfid, char action) {
 	char HTTP_request_buffer[] = "GET /add/##########/& HTTP/1.0";
 	for (int i = 0 ; i < 10; i++) { // copy the RFID to the buffer (starting at first # which is index 9)
- 49c:	e2 17       	cp	r30, r18
- 49e:	f3 07       	cpc	r31, r19
- 4a0:	d9 f7       	brne	.-10     	; 0x498 <upload_to_server+0x32>
+ 466:	e2 17       	cp	r30, r18
+ 468:	f3 07       	cpc	r31, r19
+ 46a:	d9 f7       	brne	.-10     	; 0x462 <upload_to_server+0x32>
 		HTTP_request_buffer[9 + i] = rfid[i];
 	}
 	HTTP_request_buffer[20] = action; // copy the action (index 20 which is &)
- 4a2:	6d 8b       	std	Y+21, r22	; 0x15
+ 46c:	6d 8b       	std	Y+21, r22	; 0x15
 	UART_ESP8266_cmd("AT+CIPSTART=\"TCP\",\""IP_ADDRESS"\",80");
- 4a4:	83 e9       	ldi	r24, 0x93	; 147
- 4a6:	91 e0       	ldi	r25, 0x01	; 1
- 4a8:	0e 94 9d 01 	call	0x33a	; 0x33a <UART_ESP8266_cmd>
- 4ac:	2f ef       	ldi	r18, 0xFF	; 255
- 4ae:	89 e6       	ldi	r24, 0x69	; 105
- 4b0:	98 e1       	ldi	r25, 0x18	; 24
- 4b2:	21 50       	subi	r18, 0x01	; 1
- 4b4:	80 40       	sbci	r24, 0x00	; 0
- 4b6:	90 40       	sbci	r25, 0x00	; 0
- 4b8:	e1 f7       	brne	.-8      	; 0x4b2 <upload_to_server+0x4c>
- 4ba:	00 c0       	rjmp	.+0      	; 0x4bc <upload_to_server+0x56>
- 4bc:	00 00       	nop
+ 46e:	83 e9       	ldi	r24, 0x93	; 147
+ 470:	91 e0       	ldi	r25, 0x01	; 1
+ 472:	0e 94 82 01 	call	0x304	; 0x304 <UART_ESP8266_cmd>
+ 476:	2f ef       	ldi	r18, 0xFF	; 255
+ 478:	89 e6       	ldi	r24, 0x69	; 105
+ 47a:	98 e1       	ldi	r25, 0x18	; 24
+ 47c:	21 50       	subi	r18, 0x01	; 1
+ 47e:	80 40       	sbci	r24, 0x00	; 0
+ 480:	90 40       	sbci	r25, 0x00	; 0
+ 482:	e1 f7       	brne	.-8      	; 0x47c <upload_to_server+0x4c>
+ 484:	00 c0       	rjmp	.+0      	; 0x486 <upload_to_server+0x56>
+ 486:	00 00       	nop
 	_delay_ms(1000);
 	UART_ESP8266_cmd("AT+CIPSEND=34");
- 4be:	88 eb       	ldi	r24, 0xB8	; 184
- 4c0:	91 e0       	ldi	r25, 0x01	; 1
- 4c2:	0e 94 9d 01 	call	0x33a	; 0x33a <UART_ESP8266_cmd>
- 4c6:	2f ef       	ldi	r18, 0xFF	; 255
- 4c8:	89 e6       	ldi	r24, 0x69	; 105
- 4ca:	98 e1       	ldi	r25, 0x18	; 24
- 4cc:	21 50       	subi	r18, 0x01	; 1
- 4ce:	80 40       	sbci	r24, 0x00	; 0
- 4d0:	90 40       	sbci	r25, 0x00	; 0
- 4d2:	e1 f7       	brne	.-8      	; 0x4cc <upload_to_server+0x66>
- 4d4:	00 c0       	rjmp	.+0      	; 0x4d6 <upload_to_server+0x70>
- 4d6:	00 00       	nop
+ 488:	88 eb       	ldi	r24, 0xB8	; 184
+ 48a:	91 e0       	ldi	r25, 0x01	; 1
+ 48c:	0e 94 82 01 	call	0x304	; 0x304 <UART_ESP8266_cmd>
+ 490:	2f ef       	ldi	r18, 0xFF	; 255
+ 492:	89 e6       	ldi	r24, 0x69	; 105
+ 494:	98 e1       	ldi	r25, 0x18	; 24
+ 496:	21 50       	subi	r18, 0x01	; 1
+ 498:	80 40       	sbci	r24, 0x00	; 0
+ 49a:	90 40       	sbci	r25, 0x00	; 0
+ 49c:	e1 f7       	brne	.-8      	; 0x496 <upload_to_server+0x66>
+ 49e:	00 c0       	rjmp	.+0      	; 0x4a0 <upload_to_server+0x70>
+ 4a0:	00 00       	nop
 	_delay_ms(1000);
 	UART_ESP8266_cmd(HTTP_request_buffer);
- 4d8:	ce 01       	movw	r24, r28
- 4da:	01 96       	adiw	r24, 0x01	; 1
- 4dc:	0e 94 9d 01 	call	0x33a	; 0x33a <UART_ESP8266_cmd>
+ 4a2:	ce 01       	movw	r24, r28
+ 4a4:	01 96       	adiw	r24, 0x01	; 1
+ 4a6:	0e 94 82 01 	call	0x304	; 0x304 <UART_ESP8266_cmd>
 	UART_ESP8266_cmd("");
- 4e0:	8d e3       	ldi	r24, 0x3D	; 61
- 4e2:	91 e0       	ldi	r25, 0x01	; 1
- 4e4:	0e 94 9d 01 	call	0x33a	; 0x33a <UART_ESP8266_cmd>
- 4e8:	2f ef       	ldi	r18, 0xFF	; 255
- 4ea:	89 e6       	ldi	r24, 0x69	; 105
- 4ec:	98 e1       	ldi	r25, 0x18	; 24
- 4ee:	21 50       	subi	r18, 0x01	; 1
- 4f0:	80 40       	sbci	r24, 0x00	; 0
- 4f2:	90 40       	sbci	r25, 0x00	; 0
- 4f4:	e1 f7       	brne	.-8      	; 0x4ee <upload_to_server+0x88>
- 4f6:	00 c0       	rjmp	.+0      	; 0x4f8 <upload_to_server+0x92>
- 4f8:	00 00       	nop
+ 4aa:	8d e3       	ldi	r24, 0x3D	; 61
+ 4ac:	91 e0       	ldi	r25, 0x01	; 1
+ 4ae:	0e 94 82 01 	call	0x304	; 0x304 <UART_ESP8266_cmd>
+ 4b2:	2f ef       	ldi	r18, 0xFF	; 255
+ 4b4:	89 e6       	ldi	r24, 0x69	; 105
+ 4b6:	98 e1       	ldi	r25, 0x18	; 24
+ 4b8:	21 50       	subi	r18, 0x01	; 1
+ 4ba:	80 40       	sbci	r24, 0x00	; 0
+ 4bc:	90 40       	sbci	r25, 0x00	; 0
+ 4be:	e1 f7       	brne	.-8      	; 0x4b8 <upload_to_server+0x88>
+ 4c0:	00 c0       	rjmp	.+0      	; 0x4c2 <upload_to_server+0x92>
+ 4c2:	00 00       	nop
 	_delay_ms(1000);
 }
- 4fa:	6f 96       	adiw	r28, 0x1f	; 31
- 4fc:	0f b6       	in	r0, 0x3f	; 63
- 4fe:	f8 94       	cli
- 500:	de bf       	out	0x3e, r29	; 62
- 502:	0f be       	out	0x3f, r0	; 63
- 504:	cd bf       	out	0x3d, r28	; 61
- 506:	df 91       	pop	r29
- 508:	cf 91       	pop	r28
- 50a:	08 95       	ret
+ 4c4:	6f 96       	adiw	r28, 0x1f	; 31
+ 4c6:	0f b6       	in	r0, 0x3f	; 63
+ 4c8:	f8 94       	cli
+ 4ca:	de bf       	out	0x3e, r29	; 62
+ 4cc:	0f be       	out	0x3f, r0	; 63
+ 4ce:	cd bf       	out	0x3d, r28	; 61
+ 4d0:	df 91       	pop	r29
+ 4d2:	cf 91       	pop	r28
+ 4d4:	08 95       	ret
 
-0000050c <UART_ESP8266_init>:
+000004d6 <UART_ESP8266_init>:
 
 void UART_ESP8266_init(void) {
 	
 	UBRR1H = (BAUDRATE>>8);
- 50c:	10 92 cd 00 	sts	0x00CD, r1	; 0x8000cd <__TEXT_REGION_LENGTH__+0x7e00cd>
+ 4d6:	10 92 cd 00 	sts	0x00CD, r1	; 0x8000cd <__TEXT_REGION_LENGTH__+0x7e00cd>
 	UBRR1L = BAUDRATE;
- 510:	83 e3       	ldi	r24, 0x33	; 51
- 512:	80 93 cc 00 	sts	0x00CC, r24	; 0x8000cc <__TEXT_REGION_LENGTH__+0x7e00cc>
+ 4da:	83 e3       	ldi	r24, 0x33	; 51
+ 4dc:	80 93 cc 00 	sts	0x00CC, r24	; 0x8000cc <__TEXT_REGION_LENGTH__+0x7e00cc>
 	UCSR1B = (1<<TXEN1) | (1<<RXEN1);
- 516:	e9 ec       	ldi	r30, 0xC9	; 201
- 518:	f0 e0       	ldi	r31, 0x00	; 0
- 51a:	88 e1       	ldi	r24, 0x18	; 24
- 51c:	80 83       	st	Z, r24
+ 4e0:	e9 ec       	ldi	r30, 0xC9	; 201
+ 4e2:	f0 e0       	ldi	r31, 0x00	; 0
+ 4e4:	88 e1       	ldi	r24, 0x18	; 24
+ 4e6:	80 83       	st	Z, r24
 	UCSR1C = (3<<UCSZ10);
- 51e:	86 e0       	ldi	r24, 0x06	; 6
- 520:	80 93 ca 00 	sts	0x00CA, r24	; 0x8000ca <__TEXT_REGION_LENGTH__+0x7e00ca>
+ 4e8:	86 e0       	ldi	r24, 0x06	; 6
+ 4ea:	80 93 ca 00 	sts	0x00CA, r24	; 0x8000ca <__TEXT_REGION_LENGTH__+0x7e00ca>
 	UCSR1B |= (1 << RXCIE1); 
- 524:	80 81       	ld	r24, Z
- 526:	80 68       	ori	r24, 0x80	; 128
- 528:	80 83       	st	Z, r24
+ 4ee:	80 81       	ld	r24, Z
+ 4f0:	80 68       	ori	r24, 0x80	; 128
+ 4f2:	80 83       	st	Z, r24
 	
 	for (;;) {
 		ESP8266_clear_buffer();
- 52a:	0e 94 e4 01 	call	0x3c8	; 0x3c8 <ESP8266_clear_buffer>
+ 4f4:	0e 94 c9 01 	call	0x392	; 0x392 <ESP8266_clear_buffer>
 		UART_ESP8266_cmd("AT+RST");
- 52e:	85 ee       	ldi	r24, 0xE5	; 229
- 530:	91 e0       	ldi	r25, 0x01	; 1
- 532:	0e 94 9d 01 	call	0x33a	; 0x33a <UART_ESP8266_cmd>
+ 4f8:	85 ee       	ldi	r24, 0xE5	; 229
+ 4fa:	91 e0       	ldi	r25, 0x01	; 1
+ 4fc:	0e 94 82 01 	call	0x304	; 0x304 <UART_ESP8266_cmd>
 		
 		lcd_instruction(clear);
- 536:	81 e0       	ldi	r24, 0x01	; 1
- 538:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
+ 500:	81 e0       	ldi	r24, 0x01	; 1
+ 502:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
 		lcd_string((uint8_t *)"Configuring Wifi...");
- 53c:	8c ee       	ldi	r24, 0xEC	; 236
- 53e:	91 e0       	ldi	r25, 0x01	; 1
- 540:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
- 544:	2f ef       	ldi	r18, 0xFF	; 255
- 546:	89 e6       	ldi	r24, 0x69	; 105
- 548:	98 e1       	ldi	r25, 0x18	; 24
- 54a:	21 50       	subi	r18, 0x01	; 1
- 54c:	80 40       	sbci	r24, 0x00	; 0
- 54e:	90 40       	sbci	r25, 0x00	; 0
- 550:	e1 f7       	brne	.-8      	; 0x54a <UART_ESP8266_init+0x3e>
- 552:	00 c0       	rjmp	.+0      	; 0x554 <UART_ESP8266_init+0x48>
- 554:	00 00       	nop
+ 506:	8c ee       	ldi	r24, 0xEC	; 236
+ 508:	91 e0       	ldi	r25, 0x01	; 1
+ 50a:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
+ 50e:	2f ef       	ldi	r18, 0xFF	; 255
+ 510:	89 e6       	ldi	r24, 0x69	; 105
+ 512:	98 e1       	ldi	r25, 0x18	; 24
+ 514:	21 50       	subi	r18, 0x01	; 1
+ 516:	80 40       	sbci	r24, 0x00	; 0
+ 518:	90 40       	sbci	r25, 0x00	; 0
+ 51a:	e1 f7       	brne	.-8      	; 0x514 <UART_ESP8266_init+0x3e>
+ 51c:	00 c0       	rjmp	.+0      	; 0x51e <UART_ESP8266_init+0x48>
+ 51e:	00 00       	nop
 		_delay_ms(1000);
 		
 		if (!ESP8266_find("ready")) { // seems like the ESP8266 didn't respond...
- 556:	80 e0       	ldi	r24, 0x00	; 0
- 558:	92 e0       	ldi	r25, 0x02	; 2
- 55a:	0e 94 ba 01 	call	0x374	; 0x374 <ESP8266_find>
- 55e:	81 11       	cpse	r24, r1
- 560:	18 c0       	rjmp	.+48     	; 0x592 <UART_ESP8266_init+0x86>
+ 520:	80 e0       	ldi	r24, 0x00	; 0
+ 522:	92 e0       	ldi	r25, 0x02	; 2
+ 524:	0e 94 9f 01 	call	0x33e	; 0x33e <ESP8266_find>
+ 528:	81 11       	cpse	r24, r1
+ 52a:	18 c0       	rjmp	.+48     	; 0x55c <UART_ESP8266_init+0x86>
 			lcd_instruction(clear);
- 562:	81 e0       	ldi	r24, 0x01	; 1
- 564:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
+ 52c:	81 e0       	ldi	r24, 0x01	; 1
+ 52e:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
 			lcd_string((uint8_t *)"timeout/UART err");
- 568:	86 e0       	ldi	r24, 0x06	; 6
- 56a:	92 e0       	ldi	r25, 0x02	; 2
- 56c:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
+ 532:	86 e0       	ldi	r24, 0x06	; 6
+ 534:	92 e0       	ldi	r25, 0x02	; 2
+ 536:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
 			lcd_instruction(setCursor | lineTwo);
- 570:	80 ec       	ldi	r24, 0xC0	; 192
- 572:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
+ 53a:	80 ec       	ldi	r24, 0xC0	; 192
+ 53c:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
 			lcd_string((uint8_t *)"Restarting...");
- 576:	87 e1       	ldi	r24, 0x17	; 23
- 578:	92 e0       	ldi	r25, 0x02	; 2
- 57a:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
- 57e:	2f ef       	ldi	r18, 0xFF	; 255
- 580:	89 e6       	ldi	r24, 0x69	; 105
- 582:	98 e1       	ldi	r25, 0x18	; 24
- 584:	21 50       	subi	r18, 0x01	; 1
- 586:	80 40       	sbci	r24, 0x00	; 0
- 588:	90 40       	sbci	r25, 0x00	; 0
- 58a:	e1 f7       	brne	.-8      	; 0x584 <UART_ESP8266_init+0x78>
- 58c:	00 c0       	rjmp	.+0      	; 0x58e <UART_ESP8266_init+0x82>
- 58e:	00 00       	nop
+ 540:	87 e1       	ldi	r24, 0x17	; 23
+ 542:	92 e0       	ldi	r25, 0x02	; 2
+ 544:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
+ 548:	2f ef       	ldi	r18, 0xFF	; 255
+ 54a:	89 e6       	ldi	r24, 0x69	; 105
+ 54c:	98 e1       	ldi	r25, 0x18	; 24
+ 54e:	21 50       	subi	r18, 0x01	; 1
+ 550:	80 40       	sbci	r24, 0x00	; 0
+ 552:	90 40       	sbci	r25, 0x00	; 0
+ 554:	e1 f7       	brne	.-8      	; 0x54e <UART_ESP8266_init+0x78>
+ 556:	00 c0       	rjmp	.+0      	; 0x558 <UART_ESP8266_init+0x82>
+ 558:	00 00       	nop
 			_delay_ms(1000);
 			continue;
- 590:	cc cf       	rjmp	.-104    	; 0x52a <UART_ESP8266_init+0x1e>
+ 55a:	cc cf       	rjmp	.-104    	; 0x4f4 <UART_ESP8266_init+0x1e>
 		}
 		
 		UART_ESP8266_cmd("ATE0"); // disable ESP8266 echo functionality
- 592:	85 e2       	ldi	r24, 0x25	; 37
- 594:	92 e0       	ldi	r25, 0x02	; 2
- 596:	0e 94 9d 01 	call	0x33a	; 0x33a <UART_ESP8266_cmd>
- 59a:	2f ef       	ldi	r18, 0xFF	; 255
- 59c:	84 e3       	ldi	r24, 0x34	; 52
- 59e:	9c e0       	ldi	r25, 0x0C	; 12
- 5a0:	21 50       	subi	r18, 0x01	; 1
- 5a2:	80 40       	sbci	r24, 0x00	; 0
- 5a4:	90 40       	sbci	r25, 0x00	; 0
- 5a6:	e1 f7       	brne	.-8      	; 0x5a0 <UART_ESP8266_init+0x94>
- 5a8:	00 c0       	rjmp	.+0      	; 0x5aa <UART_ESP8266_init+0x9e>
- 5aa:	00 00       	nop
+ 55c:	85 e2       	ldi	r24, 0x25	; 37
+ 55e:	92 e0       	ldi	r25, 0x02	; 2
+ 560:	0e 94 82 01 	call	0x304	; 0x304 <UART_ESP8266_cmd>
+ 564:	2f ef       	ldi	r18, 0xFF	; 255
+ 566:	84 e3       	ldi	r24, 0x34	; 52
+ 568:	9c e0       	ldi	r25, 0x0C	; 12
+ 56a:	21 50       	subi	r18, 0x01	; 1
+ 56c:	80 40       	sbci	r24, 0x00	; 0
+ 56e:	90 40       	sbci	r25, 0x00	; 0
+ 570:	e1 f7       	brne	.-8      	; 0x56a <UART_ESP8266_init+0x94>
+ 572:	00 c0       	rjmp	.+0      	; 0x574 <UART_ESP8266_init+0x9e>
+ 574:	00 00       	nop
 		_delay_ms(500);
 		
 		if (!isConnected()) continue;       // if wifi is not responding
- 5ac:	0e 94 f8 01 	call	0x3f0	; 0x3f0 <isConnected>
- 5b0:	88 23       	and	r24, r24
- 5b2:	09 f4       	brne	.+2      	; 0x5b6 <UART_ESP8266_init+0xaa>
- 5b4:	ba cf       	rjmp	.-140    	; 0x52a <UART_ESP8266_init+0x1e>
+ 576:	0e 94 dd 01 	call	0x3ba	; 0x3ba <isConnected>
+ 57a:	88 23       	and	r24, r24
+ 57c:	09 f4       	brne	.+2      	; 0x580 <UART_ESP8266_init+0xaa>
+ 57e:	ba cf       	rjmp	.-140    	; 0x4f4 <UART_ESP8266_init+0x1e>
 		upload_to_server("----------",'b');  // restart system
- 5b6:	62 e6       	ldi	r22, 0x62	; 98
- 5b8:	8a e2       	ldi	r24, 0x2A	; 42
- 5ba:	92 e0       	ldi	r25, 0x02	; 2
- 5bc:	0e 94 33 02 	call	0x466	; 0x466 <upload_to_server>
- 5c0:	08 95       	ret
+ 580:	62 e6       	ldi	r22, 0x62	; 98
+ 582:	8a e2       	ldi	r24, 0x2A	; 42
+ 584:	92 e0       	ldi	r25, 0x02	; 2
+ 586:	0e 94 18 02 	call	0x430	; 0x430 <upload_to_server>
+ 58a:	08 95       	ret
 
-000005c2 <__vector_28>:
+0000058c <__vector_28>:
 		break;
 	}
 }
 
 
 ISR(USART1_RX_vect) {
- 5c2:	1f 92       	push	r1
- 5c4:	0f 92       	push	r0
- 5c6:	0f b6       	in	r0, 0x3f	; 63
- 5c8:	0f 92       	push	r0
- 5ca:	11 24       	eor	r1, r1
- 5cc:	2f 93       	push	r18
- 5ce:	3f 93       	push	r19
- 5d0:	4f 93       	push	r20
- 5d2:	5f 93       	push	r21
- 5d4:	6f 93       	push	r22
- 5d6:	7f 93       	push	r23
- 5d8:	8f 93       	push	r24
- 5da:	9f 93       	push	r25
- 5dc:	af 93       	push	r26
- 5de:	bf 93       	push	r27
- 5e0:	ef 93       	push	r30
- 5e2:	ff 93       	push	r31
+ 58c:	1f 92       	push	r1
+ 58e:	0f 92       	push	r0
+ 590:	0f b6       	in	r0, 0x3f	; 63
+ 592:	0f 92       	push	r0
+ 594:	11 24       	eor	r1, r1
+ 596:	2f 93       	push	r18
+ 598:	3f 93       	push	r19
+ 59a:	4f 93       	push	r20
+ 59c:	5f 93       	push	r21
+ 59e:	6f 93       	push	r22
+ 5a0:	7f 93       	push	r23
+ 5a2:	8f 93       	push	r24
+ 5a4:	9f 93       	push	r25
+ 5a6:	af 93       	push	r26
+ 5a8:	bf 93       	push	r27
+ 5aa:	ef 93       	push	r30
+ 5ac:	ff 93       	push	r31
 	char c = UART_ESP8266_receive();
- 5e4:	0e 94 b2 01 	call	0x364	; 0x364 <UART_ESP8266_receive>
+ 5ae:	0e 94 97 01 	call	0x32e	; 0x32e <UART_ESP8266_receive>
 	int row = ESP8266.row_index, col = ESP8266.col_index;
- 5e8:	90 91 9b 05 	lds	r25, 0x059B	; 0x80059b <ESP8266+0x30c>
- 5ec:	20 91 9c 05 	lds	r18, 0x059C	; 0x80059c <ESP8266+0x30d>
- 5f0:	30 e0       	ldi	r19, 0x00	; 0
+ 5b2:	90 91 9b 05 	lds	r25, 0x059B	; 0x80059b <ESP8266+0x30c>
+ 5b6:	20 91 9c 05 	lds	r18, 0x059C	; 0x80059c <ESP8266+0x30d>
+ 5ba:	30 e0       	ldi	r19, 0x00	; 0
 	ESP8266.buffer[row][col] = c;
- 5f2:	49 2f       	mov	r20, r25
- 5f4:	50 e0       	ldi	r21, 0x00	; 0
- 5f6:	f9 01       	movw	r30, r18
- 5f8:	64 e3       	ldi	r22, 0x34	; 52
- 5fa:	96 9f       	mul	r25, r22
- 5fc:	e0 0d       	add	r30, r0
- 5fe:	f1 1d       	adc	r31, r1
- 600:	11 24       	eor	r1, r1
+ 5bc:	49 2f       	mov	r20, r25
+ 5be:	50 e0       	ldi	r21, 0x00	; 0
+ 5c0:	f9 01       	movw	r30, r18
+ 5c2:	64 e3       	ldi	r22, 0x34	; 52
+ 5c4:	96 9f       	mul	r25, r22
+ 5c6:	e0 0d       	add	r30, r0
+ 5c8:	f1 1d       	adc	r31, r1
+ 5ca:	11 24       	eor	r1, r1
+ 5cc:	e1 57       	subi	r30, 0x71	; 113
+ 5ce:	fd 4f       	sbci	r31, 0xFD	; 253
+ 5d0:	80 83       	st	Z, r24
+	if ((col > 0 && ESP8266.buffer[row][col - 1] == 0x0D && ESP8266.buffer[row][col] == 0x0A)
+ 5d2:	12 16       	cp	r1, r18
+ 5d4:	13 06       	cpc	r1, r19
+ 5d6:	d4 f4       	brge	.+52     	; 0x60c <__vector_28+0x80>
+ 5d8:	84 e3       	ldi	r24, 0x34	; 52
+ 5da:	84 9f       	mul	r24, r20
+ 5dc:	f0 01       	movw	r30, r0
+ 5de:	85 9f       	mul	r24, r21
+ 5e0:	f0 0d       	add	r31, r0
+ 5e2:	11 24       	eor	r1, r1
+ 5e4:	e2 0f       	add	r30, r18
+ 5e6:	f3 1f       	adc	r31, r19
+ 5e8:	e2 57       	subi	r30, 0x72	; 114
+ 5ea:	fd 4f       	sbci	r31, 0xFD	; 253
+ 5ec:	80 81       	ld	r24, Z
+ 5ee:	8d 30       	cpi	r24, 0x0D	; 13
+ 5f0:	69 f4       	brne	.+26     	; 0x60c <__vector_28+0x80>
+ 5f2:	84 e3       	ldi	r24, 0x34	; 52
+ 5f4:	84 9f       	mul	r24, r20
+ 5f6:	f0 01       	movw	r30, r0
+ 5f8:	85 9f       	mul	r24, r21
+ 5fa:	f0 0d       	add	r31, r0
+ 5fc:	11 24       	eor	r1, r1
+ 5fe:	e2 0f       	add	r30, r18
+ 600:	f3 1f       	adc	r31, r19
  602:	e1 57       	subi	r30, 0x71	; 113
  604:	fd 4f       	sbci	r31, 0xFD	; 253
- 606:	80 83       	st	Z, r24
-	if ((col > 0 && ESP8266.buffer[row][col - 1] == 0x0D && ESP8266.buffer[row][col] == 0x0A)
- 608:	12 16       	cp	r1, r18
- 60a:	13 06       	cpc	r1, r19
- 60c:	d4 f4       	brge	.+52     	; 0x642 <__vector_28+0x80>
- 60e:	84 e3       	ldi	r24, 0x34	; 52
- 610:	84 9f       	mul	r24, r20
- 612:	f0 01       	movw	r30, r0
- 614:	85 9f       	mul	r24, r21
- 616:	f0 0d       	add	r31, r0
- 618:	11 24       	eor	r1, r1
- 61a:	e2 0f       	add	r30, r18
- 61c:	f3 1f       	adc	r31, r19
- 61e:	e2 57       	subi	r30, 0x72	; 114
- 620:	fd 4f       	sbci	r31, 0xFD	; 253
- 622:	80 81       	ld	r24, Z
- 624:	8d 30       	cpi	r24, 0x0D	; 13
- 626:	69 f4       	brne	.+26     	; 0x642 <__vector_28+0x80>
- 628:	84 e3       	ldi	r24, 0x34	; 52
- 62a:	84 9f       	mul	r24, r20
- 62c:	f0 01       	movw	r30, r0
- 62e:	85 9f       	mul	r24, r21
- 630:	f0 0d       	add	r31, r0
- 632:	11 24       	eor	r1, r1
- 634:	e2 0f       	add	r30, r18
- 636:	f3 1f       	adc	r31, r19
- 638:	e1 57       	subi	r30, 0x71	; 113
- 63a:	fd 4f       	sbci	r31, 0xFD	; 253
- 63c:	80 81       	ld	r24, Z
- 63e:	8a 30       	cpi	r24, 0x0A	; 10
- 640:	19 f0       	breq	.+6      	; 0x648 <__vector_28+0x86>
+ 606:	80 81       	ld	r24, Z
+ 608:	8a 30       	cpi	r24, 0x0A	; 10
+ 60a:	19 f0       	breq	.+6      	; 0x612 <__vector_28+0x86>
 	|| (col == ESP8266_COL_SIZE - 1)) {
- 642:	23 33       	cpi	r18, 0x33	; 51
- 644:	31 05       	cpc	r19, r1
- 646:	b9 f4       	brne	.+46     	; 0x676 <__vector_28+0xb4>
+ 60c:	23 33       	cpi	r18, 0x33	; 51
+ 60e:	31 05       	cpc	r19, r1
+ 610:	b9 f4       	brne	.+46     	; 0x640 <__vector_28+0xb4>
 		ESP8266.buffer[row][col - 1] = 0; // insert null terminator
- 648:	84 e3       	ldi	r24, 0x34	; 52
- 64a:	84 9f       	mul	r24, r20
- 64c:	f0 01       	movw	r30, r0
- 64e:	85 9f       	mul	r24, r21
- 650:	f0 0d       	add	r31, r0
- 652:	11 24       	eor	r1, r1
- 654:	2e 0f       	add	r18, r30
- 656:	3f 1f       	adc	r19, r31
- 658:	f9 01       	movw	r30, r18
- 65a:	e2 57       	subi	r30, 0x72	; 114
- 65c:	fd 4f       	sbci	r31, 0xFD	; 253
- 65e:	10 82       	st	Z, r1
+ 612:	84 e3       	ldi	r24, 0x34	; 52
+ 614:	84 9f       	mul	r24, r20
+ 616:	f0 01       	movw	r30, r0
+ 618:	85 9f       	mul	r24, r21
+ 61a:	f0 0d       	add	r31, r0
+ 61c:	11 24       	eor	r1, r1
+ 61e:	2e 0f       	add	r18, r30
+ 620:	3f 1f       	adc	r19, r31
+ 622:	f9 01       	movw	r30, r18
+ 624:	e2 57       	subi	r30, 0x72	; 114
+ 626:	fd 4f       	sbci	r31, 0xFD	; 253
+ 628:	10 82       	st	Z, r1
 		ESP8266.row_index = (row == ESP8266_ROW_SIZE - 1)? 0: row + 1;
- 660:	4e 30       	cpi	r20, 0x0E	; 14
- 662:	51 05       	cpc	r21, r1
- 664:	11 f0       	breq	.+4      	; 0x66a <__vector_28+0xa8>
- 666:	9f 5f       	subi	r25, 0xFF	; 255
- 668:	01 c0       	rjmp	.+2      	; 0x66c <__vector_28+0xaa>
- 66a:	90 e0       	ldi	r25, 0x00	; 0
- 66c:	90 93 9b 05 	sts	0x059B, r25	; 0x80059b <ESP8266+0x30c>
+ 62a:	4e 30       	cpi	r20, 0x0E	; 14
+ 62c:	51 05       	cpc	r21, r1
+ 62e:	11 f0       	breq	.+4      	; 0x634 <__vector_28+0xa8>
+ 630:	9f 5f       	subi	r25, 0xFF	; 255
+ 632:	01 c0       	rjmp	.+2      	; 0x636 <__vector_28+0xaa>
+ 634:	90 e0       	ldi	r25, 0x00	; 0
+ 636:	90 93 9b 05 	sts	0x059B, r25	; 0x80059b <ESP8266+0x30c>
 		ESP8266.col_index = 0;  // return to the beginning of the line
- 670:	10 92 9c 05 	sts	0x059C, r1	; 0x80059c <ESP8266+0x30d>
+ 63a:	10 92 9c 05 	sts	0x059C, r1	; 0x80059c <ESP8266+0x30d>
 		return;
- 674:	05 c0       	rjmp	.+10     	; 0x680 <__vector_28+0xbe>
+ 63e:	05 c0       	rjmp	.+10     	; 0x64a <__vector_28+0xbe>
 	}
 	ESP8266.col_index++;
- 676:	ec e9       	ldi	r30, 0x9C	; 156
- 678:	f5 e0       	ldi	r31, 0x05	; 5
- 67a:	80 81       	ld	r24, Z
- 67c:	8f 5f       	subi	r24, 0xFF	; 255
- 67e:	80 83       	st	Z, r24
+ 640:	ec e9       	ldi	r30, 0x9C	; 156
+ 642:	f5 e0       	ldi	r31, 0x05	; 5
+ 644:	80 81       	ld	r24, Z
+ 646:	8f 5f       	subi	r24, 0xFF	; 255
+ 648:	80 83       	st	Z, r24
 }
- 680:	ff 91       	pop	r31
- 682:	ef 91       	pop	r30
- 684:	bf 91       	pop	r27
- 686:	af 91       	pop	r26
- 688:	9f 91       	pop	r25
- 68a:	8f 91       	pop	r24
- 68c:	7f 91       	pop	r23
- 68e:	6f 91       	pop	r22
- 690:	5f 91       	pop	r21
- 692:	4f 91       	pop	r20
- 694:	3f 91       	pop	r19
- 696:	2f 91       	pop	r18
- 698:	0f 90       	pop	r0
- 69a:	0f be       	out	0x3f, r0	; 63
- 69c:	0f 90       	pop	r0
- 69e:	1f 90       	pop	r1
- 6a0:	18 95       	reti
+ 64a:	ff 91       	pop	r31
+ 64c:	ef 91       	pop	r30
+ 64e:	bf 91       	pop	r27
+ 650:	af 91       	pop	r26
+ 652:	9f 91       	pop	r25
+ 654:	8f 91       	pop	r24
+ 656:	7f 91       	pop	r23
+ 658:	6f 91       	pop	r22
+ 65a:	5f 91       	pop	r21
+ 65c:	4f 91       	pop	r20
+ 65e:	3f 91       	pop	r19
+ 660:	2f 91       	pop	r18
+ 662:	0f 90       	pop	r0
+ 664:	0f be       	out	0x3f, r0	; 63
+ 666:	0f 90       	pop	r0
+ 668:	1f 90       	pop	r1
+ 66a:	18 95       	reti
 
-000006a2 <probe_card_reader>:
+0000066c <probe_card_reader>:
+
 
 void probe_card_reader(void) {
- 6a2:	1f 93       	push	r17
- 6a4:	cf 93       	push	r28
- 6a6:	df 93       	push	r29
-	UDR0 = data;
-}
-
-
-inline bool RFID_done(void) {
-	return RF.done;
- 6a8:	80 91 8e 02 	lds	r24, 0x028E	; 0x80028e <__data_end+0xe>
-	ESP8266.col_index++;
-}
-
-void probe_card_reader(void) {
-	
-	if (!RFID_done()) return;
- 6ac:	88 23       	and	r24, r24
- 6ae:	09 f4       	brne	.+2      	; 0x6b2 <probe_card_reader+0x10>
- 6b0:	8b c0       	rjmp	.+278    	; 0x7c8 <probe_card_reader+0x126>
+ 66c:	1f 93       	push	r17
+ 66e:	cf 93       	push	r28
+ 670:	df 93       	push	r29
 	
 	lcd_instruction(clear);
- 6b2:	81 e0       	ldi	r24, 0x01	; 1
- 6b4:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
+ 672:	81 e0       	ldi	r24, 0x01	; 1
+ 674:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
+	lcd_string((uint8_t *)"Ready to Scan");
+ 678:	85 e3       	ldi	r24, 0x35	; 53
+ 67a:	92 e0       	ldi	r25, 0x02	; 2
+ 67c:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
+ 680:	2f ef       	ldi	r18, 0xFF	; 255
+ 682:	83 ed       	ldi	r24, 0xD3	; 211
+ 684:	90 e3       	ldi	r25, 0x30	; 48
+ 686:	21 50       	subi	r18, 0x01	; 1
+ 688:	80 40       	sbci	r24, 0x00	; 0
+ 68a:	90 40       	sbci	r25, 0x00	; 0
+ 68c:	e1 f7       	brne	.-8      	; 0x686 <probe_card_reader+0x1a>
+ 68e:	00 c0       	rjmp	.+0      	; 0x690 <probe_card_reader+0x24>
+ 690:	00 00       	nop
+	volatile uint8_t index;
+	volatile bool done;
+}RF;
+
+inline void RFID_done(void) {
+	while(!RF.done);
+ 692:	e0 e8       	ldi	r30, 0x80	; 128
+ 694:	f2 e0       	ldi	r31, 0x02	; 2
+ 696:	86 85       	ldd	r24, Z+14	; 0x0e
+ 698:	88 23       	and	r24, r24
+ 69a:	e9 f3       	breq	.-6      	; 0x696 <probe_card_reader+0x2a>
+	lcd_string((uint8_t *)"Ready to Scan");
+	_delay_ms(2000);
+	
+	RFID_done();
+	
+	lcd_instruction(clear);
+ 69c:	81 e0       	ldi	r24, 0x01	; 1
+ 69e:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
 	
 	int card_index = find_card();
- 6b8:	0e 94 22 01 	call	0x244	; 0x244 <find_card>
- 6bc:	ec 01       	movw	r28, r24
+ 6a2:	0e 94 1a 01 	call	0x234	; 0x234 <find_card>
+ 6a6:	ec 01       	movw	r28, r24
 	
 	if (card_index < 0) { // card not found
- 6be:	99 23       	and	r25, r25
- 6c0:	d4 f4       	brge	.+52     	; 0x6f6 <probe_card_reader+0x54>
-		lcd_string((uint8_t *)"This card is    ");
- 6c2:	85 e3       	ldi	r24, 0x35	; 53
- 6c4:	92 e0       	ldi	r25, 0x02	; 2
- 6c6:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
+ 6a8:	99 23       	and	r25, r25
+ 6aa:	d4 f4       	brge	.+52     	; 0x6e0 <probe_card_reader+0x74>
+		lcd_string((uint8_t *)"This card is");
+ 6ac:	83 e4       	ldi	r24, 0x43	; 67
+ 6ae:	92 e0       	ldi	r25, 0x02	; 2
+ 6b0:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
 		lcd_instruction(setCursor | lineTwo);
- 6ca:	80 ec       	ldi	r24, 0xC0	; 192
- 6cc:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
-		lcd_string((uint8_t *)"not registered.   ");
- 6d0:	86 e4       	ldi	r24, 0x46	; 70
- 6d2:	92 e0       	ldi	r25, 0x02	; 2
- 6d4:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
- 6d8:	2f ef       	ldi	r18, 0xFF	; 255
- 6da:	84 e3       	ldi	r24, 0x34	; 52
- 6dc:	9c e0       	ldi	r25, 0x0C	; 12
- 6de:	21 50       	subi	r18, 0x01	; 1
- 6e0:	80 40       	sbci	r24, 0x00	; 0
- 6e2:	90 40       	sbci	r25, 0x00	; 0
- 6e4:	e1 f7       	brne	.-8      	; 0x6de <probe_card_reader+0x3c>
- 6e6:	00 c0       	rjmp	.+0      	; 0x6e8 <probe_card_reader+0x46>
- 6e8:	00 00       	nop
-		_delay_ms(500);
+ 6b4:	80 ec       	ldi	r24, 0xC0	; 192
+ 6b6:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
+		lcd_string((uint8_t *)"not registered.");
+ 6ba:	80 e5       	ldi	r24, 0x50	; 80
+ 6bc:	92 e0       	ldi	r25, 0x02	; 2
+ 6be:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
+ 6c2:	2f ef       	ldi	r18, 0xFF	; 255
+ 6c4:	83 ed       	ldi	r24, 0xD3	; 211
+ 6c6:	90 e3       	ldi	r25, 0x30	; 48
+ 6c8:	21 50       	subi	r18, 0x01	; 1
+ 6ca:	80 40       	sbci	r24, 0x00	; 0
+ 6cc:	90 40       	sbci	r25, 0x00	; 0
+ 6ce:	e1 f7       	brne	.-8      	; 0x6c8 <probe_card_reader+0x5c>
+ 6d0:	00 c0       	rjmp	.+0      	; 0x6d2 <probe_card_reader+0x66>
+ 6d2:	00 00       	nop
+		_delay_ms(2000);
 		lcd_instruction(clear);
- 6ea:	81 e0       	ldi	r24, 0x01	; 1
- 6ec:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
-	return RF.done;
+ 6d4:	81 e0       	ldi	r24, 0x01	; 1
+ 6d6:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
+	while(!RF.done);
 }
 
 inline void RFID_ready(void) {
 	/* RFID buffer is ready to be refilled*/
 	RF.done = false;
- 6f0:	10 92 8e 02 	sts	0x028E, r1	; 0x80028e <__data_end+0xe>
- 6f4:	69 c0       	rjmp	.+210    	; 0x7c8 <probe_card_reader+0x126>
+ 6da:	10 92 8e 02 	sts	0x028E, r1	; 0x80028e <__data_end+0xe>
+ 6de:	69 c0       	rjmp	.+210    	; 0x7b2 <probe_card_reader+0x146>
 		lcd_instruction(clear);
 		RFID_ready();
 		return;
 	}
 	
 	lcd_string((uint8_t *)"Dog ");
- 6f6:	89 e5       	ldi	r24, 0x59	; 89
- 6f8:	92 e0       	ldi	r25, 0x02	; 2
- 6fa:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
+ 6e0:	80 e6       	ldi	r24, 0x60	; 96
+ 6e2:	92 e0       	ldi	r25, 0x02	; 2
+ 6e4:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
 	lcd_char(card_index + '1');
- 6fe:	8c 2f       	mov	r24, r28
- 700:	8f 5c       	subi	r24, 0xCF	; 207
- 702:	0e 94 75 00 	call	0xea	; 0xea <lcd_char>
-	return RF.done;
+ 6e8:	8c 2f       	mov	r24, r28
+ 6ea:	8f 5c       	subi	r24, 0xCF	; 207
+ 6ec:	0e 94 75 00 	call	0xea	; 0xea <lcd_char>
+	while(!RF.done);
 }
 
 inline void RFID_ready(void) {
 	/* RFID buffer is ready to be refilled*/
 	RF.done = false;
- 706:	10 92 8e 02 	sts	0x028E, r1	; 0x80028e <__data_end+0xe>
+ 6f0:	10 92 8e 02 	sts	0x028E, r1	; 0x80028e <__data_end+0xe>
+	}
+	
 	lcd_string((uint8_t *)"Dog ");
 	lcd_char(card_index + '1');
-	
 	RFID_ready();
-	
 	dog_status current_status = cards[card_index].status;
- 70a:	ce 01       	movw	r24, r28
- 70c:	88 0f       	add	r24, r24
- 70e:	99 1f       	adc	r25, r25
- 710:	fc 01       	movw	r30, r24
- 712:	ee 0f       	add	r30, r30
- 714:	ff 1f       	adc	r31, r31
- 716:	ee 0f       	add	r30, r30
- 718:	ff 1f       	adc	r31, r31
- 71a:	ee 0f       	add	r30, r30
- 71c:	ff 1f       	adc	r31, r31
- 71e:	e8 1b       	sub	r30, r24
- 720:	f9 0b       	sbc	r31, r25
- 722:	e0 50       	subi	r30, 0x00	; 0
- 724:	ff 4f       	sbci	r31, 0xFF	; 255
+ 6f4:	ce 01       	movw	r24, r28
+ 6f6:	88 0f       	add	r24, r24
+ 6f8:	99 1f       	adc	r25, r25
+ 6fa:	fc 01       	movw	r30, r24
+ 6fc:	ee 0f       	add	r30, r30
+ 6fe:	ff 1f       	adc	r31, r31
+ 700:	ee 0f       	add	r30, r30
+ 702:	ff 1f       	adc	r31, r31
+ 704:	ee 0f       	add	r30, r30
+ 706:	ff 1f       	adc	r31, r31
+ 708:	e8 1b       	sub	r30, r24
+ 70a:	f9 0b       	sbc	r31, r25
+ 70c:	e0 50       	subi	r30, 0x00	; 0
+ 70e:	ff 4f       	sbci	r31, 0xFF	; 255
 	char status_to_upload = '?';
-	
 	switch(current_status) {
- 726:	85 85       	ldd	r24, Z+13	; 0x0d
- 728:	88 23       	and	r24, r24
- 72a:	19 f0       	breq	.+6      	; 0x732 <probe_card_reader+0x90>
- 72c:	81 30       	cpi	r24, 0x01	; 1
- 72e:	b9 f0       	breq	.+46     	; 0x75e <probe_card_reader+0xbc>
- 730:	2b c0       	rjmp	.+86     	; 0x788 <probe_card_reader+0xe6>
+ 710:	85 85       	ldd	r24, Z+13	; 0x0d
+ 712:	88 23       	and	r24, r24
+ 714:	19 f0       	breq	.+6      	; 0x71c <probe_card_reader+0xb0>
+ 716:	81 30       	cpi	r24, 0x01	; 1
+ 718:	b9 f0       	breq	.+46     	; 0x748 <probe_card_reader+0xdc>
+ 71a:	2b c0       	rjmp	.+86     	; 0x772 <probe_card_reader+0x106>
 		case adopted:
-			cards[card_index].status = surrendered;
- 732:	ce 01       	movw	r24, r28
- 734:	88 0f       	add	r24, r24
- 736:	99 1f       	adc	r25, r25
- 738:	fc 01       	movw	r30, r24
- 73a:	ee 0f       	add	r30, r30
- 73c:	ff 1f       	adc	r31, r31
- 73e:	ee 0f       	add	r30, r30
- 740:	ff 1f       	adc	r31, r31
- 742:	ee 0f       	add	r30, r30
- 744:	ff 1f       	adc	r31, r31
- 746:	e8 1b       	sub	r30, r24
- 748:	f9 0b       	sbc	r31, r25
- 74a:	e0 50       	subi	r30, 0x00	; 0
- 74c:	ff 4f       	sbci	r31, 0xFF	; 255
- 74e:	81 e0       	ldi	r24, 0x01	; 1
- 750:	85 87       	std	Z+13, r24	; 0x0d
-			lcd_string((uint8_t *)"surrendered    ");
- 752:	8e e5       	ldi	r24, 0x5E	; 94
- 754:	92 e0       	ldi	r25, 0x02	; 2
- 756:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
-			status_to_upload = 's';
- 75a:	13 e7       	ldi	r17, 0x73	; 115
-			break;
- 75c:	16 c0       	rjmp	.+44     	; 0x78a <probe_card_reader+0xe8>
+		cards[card_index].status = surrendered;
+ 71c:	ce 01       	movw	r24, r28
+ 71e:	88 0f       	add	r24, r24
+ 720:	99 1f       	adc	r25, r25
+ 722:	fc 01       	movw	r30, r24
+ 724:	ee 0f       	add	r30, r30
+ 726:	ff 1f       	adc	r31, r31
+ 728:	ee 0f       	add	r30, r30
+ 72a:	ff 1f       	adc	r31, r31
+ 72c:	ee 0f       	add	r30, r30
+ 72e:	ff 1f       	adc	r31, r31
+ 730:	e8 1b       	sub	r30, r24
+ 732:	f9 0b       	sbc	r31, r25
+ 734:	e0 50       	subi	r30, 0x00	; 0
+ 736:	ff 4f       	sbci	r31, 0xFF	; 255
+ 738:	81 e0       	ldi	r24, 0x01	; 1
+ 73a:	85 87       	std	Z+13, r24	; 0x0d
+		lcd_string((uint8_t *) " surrendered");
+ 73c:	85 e6       	ldi	r24, 0x65	; 101
+ 73e:	92 e0       	ldi	r25, 0x02	; 2
+ 740:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
+		status_to_upload = 's';
+ 744:	13 e7       	ldi	r17, 0x73	; 115
+		break;
+ 746:	16 c0       	rjmp	.+44     	; 0x774 <probe_card_reader+0x108>
 		case surrendered:
-			cards[card_index].status = adopted;
- 75e:	ce 01       	movw	r24, r28
- 760:	88 0f       	add	r24, r24
- 762:	99 1f       	adc	r25, r25
- 764:	fc 01       	movw	r30, r24
- 766:	ee 0f       	add	r30, r30
- 768:	ff 1f       	adc	r31, r31
- 76a:	ee 0f       	add	r30, r30
- 76c:	ff 1f       	adc	r31, r31
- 76e:	ee 0f       	add	r30, r30
- 770:	ff 1f       	adc	r31, r31
- 772:	e8 1b       	sub	r30, r24
- 774:	f9 0b       	sbc	r31, r25
- 776:	e0 50       	subi	r30, 0x00	; 0
- 778:	ff 4f       	sbci	r31, 0xFF	; 255
- 77a:	15 86       	std	Z+13, r1	; 0x0d
-			lcd_string((uint8_t *)"adopted    ");
- 77c:	8e e6       	ldi	r24, 0x6E	; 110
- 77e:	92 e0       	ldi	r25, 0x02	; 2
- 780:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
-			status_to_upload = 'a';
- 784:	11 e6       	ldi	r17, 0x61	; 97
-			break;
- 786:	01 c0       	rjmp	.+2      	; 0x78a <probe_card_reader+0xe8>
+		cards[card_index].status = adopted;
+ 748:	ce 01       	movw	r24, r28
+ 74a:	88 0f       	add	r24, r24
+ 74c:	99 1f       	adc	r25, r25
+ 74e:	fc 01       	movw	r30, r24
+ 750:	ee 0f       	add	r30, r30
+ 752:	ff 1f       	adc	r31, r31
+ 754:	ee 0f       	add	r30, r30
+ 756:	ff 1f       	adc	r31, r31
+ 758:	ee 0f       	add	r30, r30
+ 75a:	ff 1f       	adc	r31, r31
+ 75c:	e8 1b       	sub	r30, r24
+ 75e:	f9 0b       	sbc	r31, r25
+ 760:	e0 50       	subi	r30, 0x00	; 0
+ 762:	ff 4f       	sbci	r31, 0xFF	; 255
+ 764:	15 86       	std	Z+13, r1	; 0x0d
+		lcd_string((uint8_t *) " adopted");
+ 766:	82 e7       	ldi	r24, 0x72	; 114
+ 768:	92 e0       	ldi	r25, 0x02	; 2
+ 76a:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
+		status_to_upload = 'a';
+ 76e:	11 e6       	ldi	r17, 0x61	; 97
+		break;
+ 770:	01 c0       	rjmp	.+2      	; 0x774 <probe_card_reader+0x108>
+	
+	lcd_string((uint8_t *)"Dog ");
 	lcd_char(card_index + '1');
-	
 	RFID_ready();
-	
 	dog_status current_status = cards[card_index].status;
 	char status_to_upload = '?';
- 788:	1f e3       	ldi	r17, 0x3F	; 63
-			lcd_string((uint8_t *)"adopted    ");
-			status_to_upload = 'a';
-			break;
+ 772:	1f e3       	ldi	r17, 0x3F	; 63
+		lcd_string((uint8_t *) " adopted");
+		status_to_upload = 'a';
+		break;
 	}
-
+	
 	lcd_instruction(setCursor | lineTwo);
- 78a:	80 ec       	ldi	r24, 0xC0	; 192
- 78c:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
+ 774:	80 ec       	ldi	r24, 0xC0	; 192
+ 776:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
 	lcd_string((uint8_t *)"ID: ");
- 790:	8a e7       	ldi	r24, 0x7A	; 122
- 792:	92 e0       	ldi	r25, 0x02	; 2
- 794:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
+ 77a:	8b e7       	ldi	r24, 0x7B	; 123
+ 77c:	92 e0       	ldi	r25, 0x02	; 2
+ 77e:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
 	/* RFID buffer is ready to be refilled*/
 	RF.done = false;
 }
 
 char * get_card_id(int8_t index) {
 	char * rfid = (index == CREADER_INDEX)? (char *) RF.ID : cards[index].tag;
- 798:	cf 3f       	cpi	r28, 0xFF	; 255
- 79a:	39 f0       	breq	.+14     	; 0x7aa <probe_card_reader+0x108>
- 79c:	8e e0       	ldi	r24, 0x0E	; 14
- 79e:	c8 02       	muls	r28, r24
- 7a0:	e0 01       	movw	r28, r0
- 7a2:	11 24       	eor	r1, r1
- 7a4:	c0 50       	subi	r28, 0x00	; 0
- 7a6:	df 4f       	sbci	r29, 0xFF	; 255
- 7a8:	02 c0       	rjmp	.+4      	; 0x7ae <probe_card_reader+0x10c>
- 7aa:	c0 e8       	ldi	r28, 0x80	; 128
- 7ac:	d2 e0       	ldi	r29, 0x02	; 2
+ 782:	cf 3f       	cpi	r28, 0xFF	; 255
+ 784:	39 f0       	breq	.+14     	; 0x794 <probe_card_reader+0x128>
+ 786:	8e e0       	ldi	r24, 0x0E	; 14
+ 788:	c8 02       	muls	r28, r24
+ 78a:	e0 01       	movw	r28, r0
+ 78c:	11 24       	eor	r1, r1
+ 78e:	c0 50       	subi	r28, 0x00	; 0
+ 790:	df 4f       	sbci	r29, 0xFF	; 255
+ 792:	02 c0       	rjmp	.+4      	; 0x798 <probe_card_reader+0x12c>
+ 794:	c0 e8       	ldi	r28, 0x80	; 128
+ 796:	d2 e0       	ldi	r29, 0x02	; 2
 	return  (rfid + 1); // actually return a pointer to index 1 as index 0 is always 0x00
- 7ae:	21 96       	adiw	r28, 0x01	; 1
-			break;
+ 798:	21 96       	adiw	r28, 0x01	; 1
+		break;
 	}
-
+	
 	lcd_instruction(setCursor | lineTwo);
 	lcd_string((uint8_t *)"ID: ");
 	lcd_string((uint8_t *)get_card_id(card_index));
- 7b0:	ce 01       	movw	r24, r28
- 7b2:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
+ 79a:	ce 01       	movw	r24, r28
+ 79c:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
 	upload_to_server(get_card_id(card_index), status_to_upload);
- 7b6:	61 2f       	mov	r22, r17
- 7b8:	ce 01       	movw	r24, r28
- 7ba:	0e 94 33 02 	call	0x466	; 0x466 <upload_to_server>
+ 7a0:	61 2f       	mov	r22, r17
+ 7a2:	ce 01       	movw	r24, r28
+ 7a4:	0e 94 18 02 	call	0x430	; 0x430 <upload_to_server>
 	lcd_instruction(clear);
- 7be:	81 e0       	ldi	r24, 0x01	; 1
- 7c0:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
-	return RF.done;
+ 7a8:	81 e0       	ldi	r24, 0x01	; 1
+ 7aa:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
+	while(!RF.done);
 }
 
 inline void RFID_ready(void) {
 	/* RFID buffer is ready to be refilled*/
 	RF.done = false;
- 7c4:	10 92 8e 02 	sts	0x028E, r1	; 0x80028e <__data_end+0xe>
+ 7ae:	10 92 8e 02 	sts	0x028E, r1	; 0x80028e <__data_end+0xe>
+	lcd_string((uint8_t *)"ID: ");
 	lcd_string((uint8_t *)get_card_id(card_index));
 	upload_to_server(get_card_id(card_index), status_to_upload);
 	lcd_instruction(clear);
 	RFID_ready();
-	
 }
- 7c8:	df 91       	pop	r29
- 7ca:	cf 91       	pop	r28
- 7cc:	1f 91       	pop	r17
- 7ce:	08 95       	ret
+ 7b2:	df 91       	pop	r29
+ 7b4:	cf 91       	pop	r28
+ 7b6:	1f 91       	pop	r17
+ 7b8:	08 95       	ret
 
-000007d0 <main>:
+000007ba <main>:
 
 
 int main( void )
 {
 	
 	sei();
- 7d0:	78 94       	sei
+ 7ba:	78 94       	sei
 	lcd_init();
- 7d2:	0e 94 ac 00 	call	0x158	; 0x158 <lcd_init>
+ 7bc:	0e 94 ac 00 	call	0x158	; 0x158 <lcd_init>
 	USART_RF_init();
- 7d6:	0e 94 02 01 	call	0x204	; 0x204 <USART_RF_init>
+ 7c0:	0e 94 02 01 	call	0x204	; 0x204 <USART_RF_init>
 	UART_ESP8266_init();
- 7da:	0e 94 86 02 	call	0x50c	; 0x50c <UART_ESP8266_init>
-
-
-	while (1) {
+ 7c4:	0e 94 6b 02 	call	0x4d6	; 0x4d6 <UART_ESP8266_init>
+	lcd_instruction(clear);
+ 7c8:	81 e0       	ldi	r24, 0x01	; 1
+ 7ca:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
+	
+	while(1)
+	{
 		
-	probe_card_reader();
- 7de:	0e 94 51 03 	call	0x6a2	; 0x6a2 <probe_card_reader>
 		
+		probe_card_reader();
+ 7ce:	0e 94 36 03 	call	0x66c	; 0x66c <probe_card_reader>
 	}
- 7e2:	fd cf       	rjmp	.-6      	; 0x7de <main+0xe>
+ 7d2:	fd cf       	rjmp	.-6      	; 0x7ce <main+0x14>
 
-000007e4 <strcmp>:
- 7e4:	fb 01       	movw	r30, r22
- 7e6:	dc 01       	movw	r26, r24
- 7e8:	8d 91       	ld	r24, X+
- 7ea:	01 90       	ld	r0, Z+
- 7ec:	80 19       	sub	r24, r0
- 7ee:	01 10       	cpse	r0, r1
- 7f0:	d9 f3       	breq	.-10     	; 0x7e8 <strcmp+0x4>
- 7f2:	99 0b       	sbc	r25, r25
- 7f4:	08 95       	ret
+000007d4 <strcmp>:
+ 7d4:	fb 01       	movw	r30, r22
+ 7d6:	dc 01       	movw	r26, r24
+ 7d8:	8d 91       	ld	r24, X+
+ 7da:	01 90       	ld	r0, Z+
+ 7dc:	80 19       	sub	r24, r0
+ 7de:	01 10       	cpse	r0, r1
+ 7e0:	d9 f3       	breq	.-10     	; 0x7d8 <strcmp+0x4>
+ 7e2:	99 0b       	sbc	r25, r25
+ 7e4:	08 95       	ret
 
-000007f6 <_exit>:
- 7f6:	f8 94       	cli
+000007e6 <_exit>:
+ 7e6:	f8 94       	cli
 
-000007f8 <__stop_program>:
- 7f8:	ff cf       	rjmp	.-2      	; 0x7f8 <__stop_program>
+000007e8 <__stop_program>:
+ 7e8:	ff cf       	rjmp	.-2      	; 0x7e8 <__stop_program>

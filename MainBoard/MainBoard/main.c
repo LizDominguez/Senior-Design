@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <util/delay.h>
+#include <string.h>
 
 #define BAUD 9600
 #define BAUDRATE (((F_CPU / (BAUD * 16UL))) - 1)
@@ -14,6 +15,24 @@
 #define ICP PIND6
 #define REGISTERED_TAGS  3 
 #define IP_ADDRESS       "52.24.121.235" 
+
+#define CREADER_INDEX -1
+
+typedef enum {adopted, surrendered} dog_status;
+
+struct {
+	char tag[SIZE + 1]; //RFID Tag
+	dog_status status;
+}
+
+cards[REGISTERED_TAGS] = {
+	[0].tag = {0x00, 0x32, 0x43, 0x30, 0x30, 0x41, 0x43, 0x36, 0x39, 0x33, 0x45, 0x00, 0x00},
+	[0].status = surrendered,
+	[1].tag = {0x00, 0x33, 0x31, 0x30, 0x30, 0x33, 0x37, 0x44, 0x39, 0x33, 0x44, 0x00, 0x00},
+	[1].status = surrendered,
+	[2].tag = {0x00, 0x54, 0x46, 0x30, 0x30, 0x35, 0x43, 0x41, 0x44, 0x36, 0x30, 0x00, 0x00},
+	[2].status = surrendered
+};
 
 
 /********************************************************************** LCD Configuration ********************************************************************/
@@ -142,30 +161,6 @@ void lcd_write(uint8_t byte)
 }
 
 /******************************************************************* RFID Configuration ********************************************************************/
-#define CREADER_INDEX -1
-
-typedef enum {adopted, surrendered} dog_status;
-
-struct {
-	char tag[SIZE + 1]; //RFID Tag
-	dog_status status;           
-	} 
-	
-	cards[REGISTERED_TAGS] = {            
-	[0].tag = {0x00, 0x32, 0x43, 0x30, 0x30, 0x41, 0x43, 0x36, 0x39, 0x33, 0x45, 0x00, 0x00},
-	[0].status = surrendered, 
-	[1].tag = {0x00, 0x33, 0x31, 0x30, 0x30, 0x33, 0x37, 0x44, 0x39, 0x33, 0x44, 0x00, 0x00},
-	[1].status = surrendered, 
-	[2].tag = {0x00, 0x54, 0x46, 0x30, 0x30, 0x35, 0x43, 0x41, 0x44, 0x36, 0x30, 0x00, 0x00},
-	[2].status = surrendered
-};
-
-struct {
-	/* RFID buffer */
-	volatile char ID[SIZE + 1];
-	volatile uint8_t index;
-	volatile bool done;
-}RF;
 
 
 void USART_RF_init(void)
@@ -201,9 +196,15 @@ void USART_RF_send(unsigned char data)
 	UDR0 = data;
 }
 
+struct {
+	/* RFID buffer */
+	volatile char ID[SIZE + 1];
+	volatile uint8_t index;
+	volatile bool done;
+}RF;
 
-inline bool RFID_done(void) {
-	return RF.done;
+inline void RFID_done(void) {
+	while(!RF.done);
 }
 
 inline void RFID_ready(void) {
@@ -226,19 +227,16 @@ int find_card(void) {
 }
 
 ISR(USART0_RX_vect) {
-	char num = USART_RF_receive();
-	USART_RF_send(num); // debug:: echo
-	if (RF.done) return;
-	int8_t index = RF.index;
-	if ((index == 0 && num != 0x0A) || (index == SIZE - 1 && num != 0x0D)) {
-		RF.index = 0; // reset buffer since data is not valid
-		return;
-	}
-	RF.ID[RF.index++] = num;
+	char c = USART_RF_receive();
+	
+	if (!RF.done) {
+
+	RF.ID[RF.index++] = c;
 	if (RF.index >= SIZE) { // we successfully scanned a card.
 		RF.index = 0;
 		RF.ID[SIZE - 1] = RF.ID[0] = 0; // insert null at the beginning and at the end
 		RF.done = true; // lock the buffer so it won't be modified until consumed by user
+	}
 	}
 }
 
@@ -302,7 +300,7 @@ void ESP8266_clear_buffer(void) {
 
 bool isConnected(void) {
 	lcd_instruction(clear);
-	lcd_string((uint8_t *)"Wifi is...         ");
+	lcd_string((uint8_t *) "Wifi is...         ");
 	
 	for (;;) {
 		lcd_instruction(setCursor | lineTwo);
@@ -390,19 +388,24 @@ ISR(USART1_RX_vect) {
 	ESP8266.col_index++;
 }
 
+
 void probe_card_reader(void) {
 	
-	if (!RFID_done()) return;
+	lcd_instruction(clear);
+	lcd_string((uint8_t *)"Ready to Scan");
+	_delay_ms(2000);
+	
+	RFID_done();
 	
 	lcd_instruction(clear);
 	
 	int card_index = find_card();
 	
 	if (card_index < 0) { // card not found
-		lcd_string((uint8_t *)"This card is    ");
+		lcd_string((uint8_t *)"This card is");
 		lcd_instruction(setCursor | lineTwo);
-		lcd_string((uint8_t *)"not registered.   ");
-		_delay_ms(500);
+		lcd_string((uint8_t *)"not registered.");
+		_delay_ms(2000);
 		lcd_instruction(clear);
 		RFID_ready();
 		return;
@@ -410,32 +413,28 @@ void probe_card_reader(void) {
 	
 	lcd_string((uint8_t *)"Dog ");
 	lcd_char(card_index + '1');
-	
 	RFID_ready();
-	
 	dog_status current_status = cards[card_index].status;
 	char status_to_upload = '?';
-	
 	switch(current_status) {
 		case adopted:
-			cards[card_index].status = surrendered;
-			lcd_string((uint8_t *)"surrendered    ");
-			status_to_upload = 's';
-			break;
+		cards[card_index].status = surrendered;
+		lcd_string((uint8_t *) " surrendered");
+		status_to_upload = 's';
+		break;
 		case surrendered:
-			cards[card_index].status = adopted;
-			lcd_string((uint8_t *)"adopted    ");
-			status_to_upload = 'a';
-			break;
+		cards[card_index].status = adopted;
+		lcd_string((uint8_t *) " adopted");
+		status_to_upload = 'a';
+		break;
 	}
-
+	
 	lcd_instruction(setCursor | lineTwo);
 	lcd_string((uint8_t *)"ID: ");
 	lcd_string((uint8_t *)get_card_id(card_index));
 	upload_to_server(get_card_id(card_index), status_to_upload);
 	lcd_instruction(clear);
 	RFID_ready();
-	
 }
 
 
@@ -446,12 +445,14 @@ int main( void )
 	lcd_init();
 	USART_RF_init();
 	UART_ESP8266_init();
-
-
-	while (1) {
+	lcd_instruction(clear);
+	
+	
+	while(1)
+	{
 		
-	probe_card_reader();
 		
+		probe_card_reader();
 	}
 	
 	return 0;
