@@ -1046,7 +1046,7 @@ inline void RFID_ready(void) {
 		return;
 	}
 	
-	lcd_string((uint8_t *)"Dog ");
+	lcd_string((uint8_t *)"Dog");
  6e0:	80 e6       	ldi	r24, 0x60	; 96
  6e2:	92 e0       	ldi	r25, 0x02	; 2
  6e4:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
@@ -1063,7 +1063,7 @@ inline void RFID_ready(void) {
  6f0:	10 92 8e 02 	sts	0x028E, r1	; 0x80028e <__data_end+0xe>
 	}
 	
-	lcd_string((uint8_t *)"Dog ");
+	lcd_string((uint8_t *)"Dog");
 	lcd_char(card_index + '1');
 	RFID_ready();
 	dog_status current_status = cards[card_index].status;
@@ -1108,7 +1108,7 @@ inline void RFID_ready(void) {
  738:	81 e0       	ldi	r24, 0x01	; 1
  73a:	85 87       	std	Z+13, r24	; 0x0d
 		lcd_string((uint8_t *) " surrendered");
- 73c:	85 e6       	ldi	r24, 0x65	; 101
+ 73c:	84 e6       	ldi	r24, 0x64	; 100
  73e:	92 e0       	ldi	r25, 0x02	; 2
  740:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
 		status_to_upload = 's';
@@ -1133,7 +1133,7 @@ inline void RFID_ready(void) {
  762:	ff 4f       	sbci	r31, 0xFF	; 255
  764:	15 86       	std	Z+13, r1	; 0x0d
 		lcd_string((uint8_t *) " adopted");
- 766:	82 e7       	ldi	r24, 0x72	; 114
+ 766:	81 e7       	ldi	r24, 0x71	; 113
  768:	92 e0       	ldi	r25, 0x02	; 2
  76a:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
 		status_to_upload = 'a';
@@ -1141,7 +1141,7 @@ inline void RFID_ready(void) {
 		break;
  770:	01 c0       	rjmp	.+2      	; 0x774 <probe_card_reader+0x108>
 	
-	lcd_string((uint8_t *)"Dog ");
+	lcd_string((uint8_t *)"Dog");
 	lcd_char(card_index + '1');
 	RFID_ready();
 	dog_status current_status = cards[card_index].status;
@@ -1156,7 +1156,7 @@ inline void RFID_ready(void) {
  774:	80 ec       	ldi	r24, 0xC0	; 192
  776:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
 	lcd_string((uint8_t *)"ID: ");
- 77a:	8b e7       	ldi	r24, 0x7B	; 123
+ 77a:	8a e7       	ldi	r24, 0x7A	; 122
  77c:	92 e0       	ldi	r25, 0x02	; 2
  77e:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
 	/* RFID buffer is ready to be refilled*/
