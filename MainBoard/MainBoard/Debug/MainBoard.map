@@ -26,8 +26,6 @@ Discarded input sections
                 0x00000000       0x10 main.o
  .text.get_card_id
                 0x00000000       0x1a main.o
- .text.ESP8266_search_for_str
-                0x00000000       0x58 main.o
  .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
  .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
  .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
@@ -321,36 +319,36 @@ END GROUP
  .text.__vector_20
                 0x00000272       0x82 main.o
                 0x00000272                __vector_20
- .text.UART_ESP8266_send
+ .text.USART_Wifi_send
                 0x000002f4       0x10 main.o
-                0x000002f4                UART_ESP8266_send
- .text.UART_ESP8266_cmd
+                0x000002f4                USART_Wifi_send
+ .text.USART_Wifi_cmd
                 0x00000304       0x2a main.o
-                0x00000304                UART_ESP8266_cmd
- .text.UART_ESP8266_receive
+                0x00000304                USART_Wifi_cmd
+ .text.USART_Wifi_receive
                 0x0000032e       0x10 main.o
-                0x0000032e                UART_ESP8266_receive
- .text.ESP8266_find
+                0x0000032e                USART_Wifi_receive
+ .text.Wifi_response
                 0x0000033e       0x54 main.o
-                0x0000033e                ESP8266_find
- .text.ESP8266_clear_buffer
+                0x0000033e                Wifi_response
+ .text.clear_Wifi_buffer
                 0x00000392       0x28 main.o
-                0x00000392                ESP8266_clear_buffer
- .text.isConnected
+                0x00000392                clear_Wifi_buffer
+ .text.is_connected
                 0x000003ba       0x76 main.o
-                0x000003ba                isConnected
+                0x000003ba                is_connected
  .text.upload_to_server
                 0x00000430       0xa6 main.o
                 0x00000430                upload_to_server
- .text.UART_ESP8266_init
+ .text.USART_Wifi_init
                 0x000004d6       0xb6 main.o
-                0x000004d6                UART_ESP8266_init
+                0x000004d6                USART_Wifi_init
  .text.__vector_28
                 0x0000058c       0xe0 main.o
                 0x0000058c                __vector_28
- .text.probe_card_reader
+ .text.Scan_for_tag
                 0x0000066c      0x14e main.o
-                0x0000066c                probe_card_reader
+                0x0000066c                Scan_for_tag
  .text.main     0x000007ba       0x1a main.o
                 0x000007ba                main
  .text.avr-libc
@@ -383,7 +381,7 @@ END GROUP
  *(.fini0)
                 0x000007ea                _etext = .
 
-.data           0x00800100      0x180 load address 0x000007ea
+.data           0x00800100      0x17a load address 0x000007ea
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -392,31 +390,31 @@ END GROUP
  *(.rodata)
  *(.rodata*)
  .rodata.str1.1
-                0x0080012a      0x155 main.o
-                                0x156 (size before relaxing)
+                0x0080012a      0x14f main.o
+                                0x150 (size before relaxing)
  *(.gnu.linkonce.d*)
-                0x00800280                . = ALIGN (0x2)
- *fill*         0x0080027f        0x1 
-                0x00800280                _edata = .
-                0x00800280                PROVIDE (__data_end, .)
+                0x0080027a                . = ALIGN (0x2)
+ *fill*         0x00800279        0x1 
+                0x0080027a                _edata = .
+                0x0080027a                PROVIDE (__data_end, .)
 
-.bss            0x00800280      0x31d
-                0x00800280                PROVIDE (__bss_start, .)
+.bss            0x0080027a      0x31d
+                0x0080027a                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
  *(COMMON)
- COMMON         0x00800280      0x31d main.o
-                0x00800280                RF
-                0x0080028f                ESP8266
-                0x0080059d                PROVIDE (__bss_end, .)
+ COMMON         0x0080027a      0x31d main.o
+                0x0080027a                RF
+                0x00800289                ESP8266
+                0x00800597                PROVIDE (__bss_end, .)
                 0x000007ea                __data_load_start = LOADADDR (.data)
-                0x0000096a                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x00000964                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x0080059d        0x0
+.noinit         0x00800597        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
  *(.noinit*)
                 [!provide]                PROVIDE (__noinit_end, .)
-                0x0080059d                _end = .
+                0x00800597                _end = .
                 [!provide]                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
@@ -481,38 +479,38 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000       0xd0
+.debug_aranges  0x00000000       0xc8
  *(.debug_aranges)
  .debug_aranges
-                0x00000000       0xd0 main.o
+                0x00000000       0xc8 main.o
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x12ef
+.debug_info     0x00000000     0x1287
  *(.debug_info .gnu.linkonce.wi.*)
- .debug_info    0x00000000     0x12ef main.o
+ .debug_info    0x00000000     0x1287 main.o
 
 .debug_abbrev   0x00000000      0x3ab
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x3ab main.o
 
-.debug_line     0x00000000      0x8d8
+.debug_line     0x00000000      0x899
  *(.debug_line .debug_line.* .debug_line_end)
- .debug_line    0x00000000      0x8d8 main.o
+ .debug_line    0x00000000      0x899 main.o
 
-.debug_frame    0x00000000      0x2b8
+.debug_frame    0x00000000      0x288
  *(.debug_frame)
- .debug_frame   0x00000000      0x2b8 main.o
+ .debug_frame   0x00000000      0x288 main.o
 
-.debug_str      0x00000000      0x38c
+.debug_str      0x00000000      0x364
  *(.debug_str)
- .debug_str     0x00000000      0x38c main.o
-                                0x3f8 (size before relaxing)
+ .debug_str     0x00000000      0x364 main.o
+                                0x3d0 (size before relaxing)
 
-.debug_loc      0x00000000      0xa20
+.debug_loc      0x00000000      0x963
  *(.debug_loc)
- .debug_loc     0x00000000      0xa20 main.o
+ .debug_loc     0x00000000      0x963 main.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -532,9 +530,9 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000       0xd8
+.debug_ranges   0x00000000       0xd0
  *(.debug_ranges)
- .debug_ranges  0x00000000       0xd8 main.o
+ .debug_ranges  0x00000000       0xd0 main.o
 
 .debug_macro
  *(.debug_macro)

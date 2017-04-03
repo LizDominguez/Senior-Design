@@ -243,14 +243,14 @@ ISR(USART0_RX_vect) {
 
 /******************************************************************* Wifi Configuration *****************************************************************/
 
-#define ESP8266_ROW_SIZE 15
-#define ESP8266_COL_SIZE 52
+#define ROW_SIZE 15
+#define COL_SIZE 52
 
 struct Wifi_buff {
-	volatile char buffer[ESP8266_ROW_SIZE][ESP8266_COL_SIZE];
+	volatile char buffer[ROW_SIZE][COL_SIZE];
 	volatile uint8_t row_index;
 	volatile uint8_t col_index;
-} ESP8266;
+} Wifi;
 
 void USART_Wifi_send(unsigned char data) {
 	while (!( UCSR1A & (1<<UDRE1)));
@@ -270,35 +270,26 @@ unsigned char USART_Wifi_receive(void) {
 	return UDR1;
 }
 
-int ESP8266_search_for_str(char string[]) {
-	for (int i = 0; i < ESP8266_ROW_SIZE - 1; i++) {
-		if(strcmp((char *)ESP8266.buffer[i], string) == 0) {
-			ESP8266.buffer[i][0] = 0; // clear the string
-			return i;
-		}
-	}
-	return -1;
-}
-
-bool ESP8266_find(char string[]) {
-	for (int i = 0; i < ESP8266_ROW_SIZE - 1; i++) {
-		if(strcmp((char *)ESP8266.buffer[i], string) == 0) {
-			ESP8266.buffer[i][0] = 0; // clear the string
+bool Wifi_response(char string[]) {
+	for (int i = 0; i < ROW_SIZE - 1; i++) {
+		if(strcmp((char *)Wifi.buffer[i], string) == 0) {
+			Wifi.buffer[i][0] = 0; 
 			return true;
 		}
 	}
 	return false;
 }
 
-void ESP8266_clear_buffer(void) {
-	for (int i = 0; i < ESP8266_ROW_SIZE - 1; i++) {
-		ESP8266.buffer[i][0] = 0;
+void clear_Wifi_buffer(void) {
+	for (int i = 0; i < ROW_SIZE - 1; i++) {
+		Wifi.buffer[i][0] = 0;
 	}
-	ESP8266.row_index = 0;
-	ESP8266.col_index = 0;
+	Wifi.row_index = 0;
+	Wifi.col_index = 0;
 }
 
-bool isConnected(void) {
+bool is_connected(void) {
+	
 	lcd_instruction(clear);
 	lcd_string((uint8_t *) "Wifi is...         ");
 	
@@ -306,15 +297,18 @@ bool isConnected(void) {
 		lcd_instruction(setCursor | lineTwo);
 		USART_Wifi_cmd("AT+CIPSTATUS");
 		_delay_ms(500);
-		if (ESP8266_find("STATUS:2")) {
+		
+		if (Wifi_response("STATUS:2")) {
 			lcd_string((uint8_t *)"Connected!       ");
-			ESP8266_clear_buffer();
+			clear_Wifi_buffer();
 			return true;
 			} 
-		else if (ESP8266_find("STATUS:5")) {
+			
+		else if (Wifi_response("STATUS:5")) {
 			lcd_string((uint8_t *)"Not Connected.  ");
-			ESP8266_clear_buffer();
+			clear_Wifi_buffer();
 			} 
+			
 		else {
 			lcd_string((uint8_t *)"Not Responding.   ");
 			return false;
@@ -325,11 +319,14 @@ bool isConnected(void) {
 
 
 void upload_to_server(char * rfid, char action) {
+	
 	char HTTP_request_buffer[] = "GET /add/##########/& HTTP/1.0";
-	for (int i = 0 ; i < 10; i++) { // copy the RFID to the buffer (starting at first # which is index 9)
+	
+	for (int i = 0 ; i < 10; i++) { 
 		HTTP_request_buffer[9 + i] = rfid[i];
 	}
-	HTTP_request_buffer[20] = action; // copy the action (index 20 which is &)
+	
+	HTTP_request_buffer[20] = action; 
 	USART_Wifi_cmd("AT+CIPSTART=\"TCP\",\""IP_ADDRESS"\",80");
 	_delay_ms(1000);
 	USART_Wifi_cmd("AT+CIPSEND=34");
@@ -348,27 +345,27 @@ void USART_Wifi_init(void) {
 	UCSR1B |= (1 << RXCIE1); 
 	
 	for (;;) {
-		ESP8266_clear_buffer();
+		clear_Wifi_buffer();
 		USART_Wifi_cmd("AT+RST");
 		
 		lcd_instruction(clear);
 		lcd_string((uint8_t *)"Configuring Wifi...");
 		_delay_ms(1000);
 		
-		if (!ESP8266_find("ready")) { // seems like the ESP8266 didn't respond...
+		if (!Wifi_response("ready")) { 
 			lcd_instruction(clear);
-			lcd_string((uint8_t *)"timeout/UART err");
+			lcd_string((uint8_t *)"UART error"); //usually a hardware issue
 			lcd_instruction(setCursor | lineTwo);
 			lcd_string((uint8_t *)"Restarting...");
 			_delay_ms(1000);
 			continue;
 		}
 		
-		USART_Wifi_cmd("ATE0"); // disable ESP8266 echo functionality
+		USART_Wifi_cmd("ATE0"); // disable Wifi echo
 		_delay_ms(500);
 		
-		if (!isConnected()) continue;       // if wifi is not responding
-		upload_to_server("----------",'b');  // restart system
+		if (!is_connected()) continue;       // restarting if wifi is not responding
+		upload_to_server("----------",'b');  
 		break;
 	}
 }
@@ -376,20 +373,23 @@ void USART_Wifi_init(void) {
 
 ISR(USART1_RX_vect) {
 	char c = USART_Wifi_receive();
-	int row = ESP8266.row_index, col = ESP8266.col_index;
-	ESP8266.buffer[row][col] = c;
-	if ((col > 0 && ESP8266.buffer[row][col - 1] == 0x0D && ESP8266.buffer[row][col] == 0x0A)
-	|| (col == ESP8266_COL_SIZE - 1)) {
-		ESP8266.buffer[row][col - 1] = 0; // insert null terminator
-		ESP8266.row_index = (row == ESP8266_ROW_SIZE - 1)? 0: row + 1;
-		ESP8266.col_index = 0;  // return to the beginning of the line
+	
+	int row = Wifi.row_index, col = Wifi.col_index;
+	
+	Wifi.buffer[row][col] = c;
+	
+	if ((col > 0 && Wifi.buffer[row][col - 1] == 0x0D && Wifi.buffer[row][col] == 0x0A)
+	|| (col == COL_SIZE - 1)) {
+		Wifi.buffer[row][col - 1] = 0; //null terminator
+		Wifi.row_index = (row == ROW_SIZE - 1)? 0: row + 1;
+		Wifi.col_index = 0;  // return to the beginning of the line
 		return;
 	}
-	ESP8266.col_index++;
+	Wifi.col_index++;
 }
 
 
-void probe_card_reader(void) {
+void Scan_for_tag(void) {
 	
 	lcd_instruction(clear);
 	lcd_string((uint8_t *)"Ready to Scan");
@@ -401,8 +401,8 @@ void probe_card_reader(void) {
 	
 	int card_index = find_card();
 	
-	if (card_index < 0) { // card not found
-		lcd_string((uint8_t *)"This card is");
+	if (card_index < 0) { 
+		lcd_string((uint8_t *)"This card is"); //unregistered card scanned
 		lcd_instruction(setCursor | lineTwo);
 		lcd_string((uint8_t *)"not registered.");
 		_delay_ms(2000);
@@ -450,7 +450,7 @@ int main( void )
 	
 	while(1)
 	{	
-		probe_card_reader();
+		Scan_for_tag();
 	}
 	
 	return 0;
