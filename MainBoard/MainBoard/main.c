@@ -214,7 +214,7 @@ inline void RFID_ready(void) {
 
 char * get_card_id(int8_t index) {
 	char * rfid = (index == CREADER_INDEX)? (char *) RF.ID : cards[index].tag;
-	return  (rfid + 1); // actually return a pointer to index 1 as index 0 is always 0x00
+	return  (rfid + 1); 
 }
 
 int find_card(void) {
@@ -232,10 +232,10 @@ ISR(USART0_RX_vect) {
 	if (!RF.done) {
 
 	RF.ID[RF.index++] = c;
-	if (RF.index >= SIZE) { // we successfully scanned a card.
+	if (RF.index >= SIZE) { 
 		RF.index = 0;
-		RF.ID[SIZE - 1] = RF.ID[0] = 0; // insert null at the beginning and at the end
-		RF.done = true; // lock the buffer so it won't be modified until consumed by user
+		RF.ID[SIZE - 1] = RF.ID[0] = 0; 
+		RF.done = true; 
 	}
 	}
 }
@@ -246,26 +246,26 @@ ISR(USART0_RX_vect) {
 #define ESP8266_ROW_SIZE 15
 #define ESP8266_COL_SIZE 52
 
-struct ESP8266_buff {
+struct Wifi_buff {
 	volatile char buffer[ESP8266_ROW_SIZE][ESP8266_COL_SIZE];
 	volatile uint8_t row_index;
 	volatile uint8_t col_index;
 } ESP8266;
 
-void UART_ESP8266_send(unsigned char data) {
+void USART_Wifi_send(unsigned char data) {
 	while (!( UCSR1A & (1<<UDRE1)));
 	UDR1 = data;
 }
 
-void UART_ESP8266_cmd(char string[]) {
+void USART_Wifi_cmd(char string[]) {
 	for (int i = 0; string[i] != 0; i++) {
-		UART_ESP8266_send(string[i]);
+		USART_Wifi_send(string[i]);
 	}
-	UART_ESP8266_send(0x0D);
-	UART_ESP8266_send(0x0A);
+	USART_Wifi_send(0x0D);
+	USART_Wifi_send(0x0A);
 }
 
-unsigned char UART_ESP8266_receive(void) {
+unsigned char USART_Wifi_receive(void) {
 	while(~(UCSR1A) & (1<<RXC1));
 	return UDR1;
 }
@@ -304,7 +304,7 @@ bool isConnected(void) {
 	
 	for (;;) {
 		lcd_instruction(setCursor | lineTwo);
-		UART_ESP8266_cmd("AT+CIPSTATUS");
+		USART_Wifi_cmd("AT+CIPSTATUS");
 		_delay_ms(500);
 		if (ESP8266_find("STATUS:2")) {
 			lcd_string((uint8_t *)"Connected!       ");
@@ -330,16 +330,16 @@ void upload_to_server(char * rfid, char action) {
 		HTTP_request_buffer[9 + i] = rfid[i];
 	}
 	HTTP_request_buffer[20] = action; // copy the action (index 20 which is &)
-	UART_ESP8266_cmd("AT+CIPSTART=\"TCP\",\""IP_ADDRESS"\",80");
+	USART_Wifi_cmd("AT+CIPSTART=\"TCP\",\""IP_ADDRESS"\",80");
 	_delay_ms(1000);
-	UART_ESP8266_cmd("AT+CIPSEND=34");
+	USART_Wifi_cmd("AT+CIPSEND=34");
 	_delay_ms(1000);
-	UART_ESP8266_cmd(HTTP_request_buffer);
-	UART_ESP8266_cmd("");
+	USART_Wifi_cmd(HTTP_request_buffer);
+	USART_Wifi_cmd("");
 	_delay_ms(1000);
 }
 
-void UART_ESP8266_init(void) {
+void USART_Wifi_init(void) {
 	
 	UBRR1H = (BAUDRATE>>8);
 	UBRR1L = BAUDRATE;
@@ -349,7 +349,7 @@ void UART_ESP8266_init(void) {
 	
 	for (;;) {
 		ESP8266_clear_buffer();
-		UART_ESP8266_cmd("AT+RST");
+		USART_Wifi_cmd("AT+RST");
 		
 		lcd_instruction(clear);
 		lcd_string((uint8_t *)"Configuring Wifi...");
@@ -364,7 +364,7 @@ void UART_ESP8266_init(void) {
 			continue;
 		}
 		
-		UART_ESP8266_cmd("ATE0"); // disable ESP8266 echo functionality
+		USART_Wifi_cmd("ATE0"); // disable ESP8266 echo functionality
 		_delay_ms(500);
 		
 		if (!isConnected()) continue;       // if wifi is not responding
@@ -375,7 +375,7 @@ void UART_ESP8266_init(void) {
 
 
 ISR(USART1_RX_vect) {
-	char c = UART_ESP8266_receive();
+	char c = USART_Wifi_receive();
 	int row = ESP8266.row_index, col = ESP8266.col_index;
 	ESP8266.buffer[row][col] = c;
 	if ((col > 0 && ESP8266.buffer[row][col - 1] == 0x0D && ESP8266.buffer[row][col] == 0x0A)
@@ -444,14 +444,12 @@ int main( void )
 	sei();
 	lcd_init();
 	USART_RF_init();
-	UART_ESP8266_init();
+	USART_Wifi_init();
 	lcd_instruction(clear);
 	
 	
 	while(1)
-	{
-		
-		
+	{	
 		probe_card_reader();
 	}
 	

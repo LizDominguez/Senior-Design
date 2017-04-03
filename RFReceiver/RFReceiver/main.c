@@ -110,10 +110,12 @@ void lcd_char(uint8_t data)
 
 void lcd_instruction(uint8_t instruction)
 {
-	lcdPort &= ~(1 << lcdRSBit);                // RS low
-	lcdPort &= ~(1 << lcdEBit);                // E low
-	lcd_write(instruction);                   // write the upper 4 bits of data
-	lcd_write(instruction << 4);             // write the lower 4 bits of data
+		lcdPort &= ~(1 << lcdRSBit);                // RS low
+		lcdPort &= ~(1 << lcdEBit);                // E low
+		lcd_write(instruction);                   // write the upper 4 bits of data
+		_delay_us(10);
+		lcd_write(instruction << 4);             // write the lower 4 bits of data
+		_delay_ms(5);
 }
 
 
@@ -272,14 +274,15 @@ int main( void )
 	frequency_init();
 	input_capture_init();
 	sei();
-	
-	lcd_string((uint8_t *)"MY Shelter");
 
 	
 	while (1) {
 		
-		RFID_done();
+		lcd_instruction(clear);
+		lcd_string((uint8_t *)"Ready to Scan");
 		lcd_instruction(setCursor | lineTwo);
+		
+		RFID_done();
 		
 		for(uint8_t i = 1; i < 11; i++) {
 			lcd_char(RF.ID[i]);
@@ -289,8 +292,9 @@ int main( void )
 		USART_send('\n');
 		beep_enable();
 		_delay_ms(200);
-		beep_disable();
+		beep_disable();	
 		RFID_ready();
+		_delay_ms(2000);
 	}
 	
 	return 0;

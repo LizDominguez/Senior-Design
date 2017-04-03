@@ -3,31 +3,31 @@ RFReceiver.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         0000000c  00800100  00000410  000004a4  2**0
+  0 .data         0000000e  00800100  0000043c  000004d0  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         00000410  00000000  00000000  00000094  2**1
+  1 .text         0000043c  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          0000001d  0080010c  0080010c  000004b0  2**0
+  2 .bss          0000001d  0080010e  0080010e  000004de  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  000004b0  2**0
+  3 .comment      00000030  00000000  00000000  000004de  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000004e0  2**2
+  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000510  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 00000098  00000000  00000000  00000520  2**0
+  5 .debug_aranges 00000098  00000000  00000000  00000550  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00000943  00000000  00000000  000005b8  2**0
+  6 .debug_info   00000a04  00000000  00000000  000005e8  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 000002a9  00000000  00000000  00000efb  2**0
+  7 .debug_abbrev 000002a9  00000000  00000000  00000fec  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00000524  00000000  00000000  000011a4  2**0
+  8 .debug_line   00000544  00000000  00000000  00001295  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  000001b4  00000000  00000000  000016c8  2**2
+  9 .debug_frame  000001b4  00000000  00000000  000017dc  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000002ab  00000000  00000000  0000187c  2**0
+ 10 .debug_str    000002ab  00000000  00000000  00001990  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    000003a1  00000000  00000000  00001b27  2**0
+ 11 .debug_loc    00000395  00000000  00000000  00001c3b  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 000000b8  00000000  00000000  00001ec8  2**0
+ 12 .debug_ranges 000000b8  00000000  00000000  00001fd0  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -45,15 +45,15 @@ Disassembly of section .text:
   24:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
   28:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
   2c:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
-  30:	0c 94 a3 01 	jmp	0x346	; 0x346 <__vector_12>
+  30:	0c 94 ad 01 	jmp	0x35a	; 0x35a <__vector_12>
   34:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
   38:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
-  3c:	0c 94 8c 01 	jmp	0x318	; 0x318 <__vector_15>
-  40:	0c 94 64 01 	jmp	0x2c8	; 0x2c8 <__vector_16>
+  3c:	0c 94 96 01 	jmp	0x32c	; 0x32c <__vector_15>
+  40:	0c 94 6e 01 	jmp	0x2dc	; 0x2dc <__vector_16>
   44:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
   48:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
   4c:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
-  50:	0c 94 18 01 	jmp	0x230	; 0x230 <__vector_20>
+  50:	0c 94 22 01 	jmp	0x244	; 0x244 <__vector_20>
   54:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
   58:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
   5c:	0c 94 5b 00 	jmp	0xb6	; 0xb6 <__bad_interrupt>
@@ -69,7 +69,7 @@ Disassembly of section .text:
   7c:	11 24       	eor	r1, r1
   7e:	1f be       	out	0x3f, r1	; 63
   80:	cf ef       	ldi	r28, 0xFF	; 255
-  82:	d8 e0       	ldi	r29, 0x08	; 8
+  82:	d0 e1       	ldi	r29, 0x10	; 16
   84:	de bf       	out	0x3e, r29	; 62
   86:	cd bf       	out	0x3d, r28	; 61
 
@@ -77,18 +77,18 @@ Disassembly of section .text:
   88:	11 e0       	ldi	r17, 0x01	; 1
   8a:	a0 e0       	ldi	r26, 0x00	; 0
   8c:	b1 e0       	ldi	r27, 0x01	; 1
-  8e:	e0 e1       	ldi	r30, 0x10	; 16
+  8e:	ec e3       	ldi	r30, 0x3C	; 60
   90:	f4 e0       	ldi	r31, 0x04	; 4
   92:	02 c0       	rjmp	.+4      	; 0x98 <__do_copy_data+0x10>
   94:	05 90       	lpm	r0, Z+
   96:	0d 92       	st	X+, r0
-  98:	ac 30       	cpi	r26, 0x0C	; 12
+  98:	ae 30       	cpi	r26, 0x0E	; 14
   9a:	b1 07       	cpc	r27, r17
   9c:	d9 f7       	brne	.-10     	; 0x94 <__do_copy_data+0xc>
 
 0000009e <__do_clear_bss>:
   9e:	21 e0       	ldi	r18, 0x01	; 1
-  a0:	ac e0       	ldi	r26, 0x0C	; 12
+  a0:	ae e0       	ldi	r26, 0x0E	; 14
   a2:	b1 e0       	ldi	r27, 0x01	; 1
   a4:	01 c0       	rjmp	.+2      	; 0xa8 <.do_clear_bss_start>
 
@@ -96,11 +96,11 @@ Disassembly of section .text:
   a6:	1d 92       	st	X+, r1
 
 000000a8 <.do_clear_bss_start>:
-  a8:	a9 32       	cpi	r26, 0x29	; 41
+  a8:	ab 32       	cpi	r26, 0x2B	; 43
   aa:	b2 07       	cpc	r27, r18
   ac:	e1 f7       	brne	.-8      	; 0xa6 <.do_clear_bss_loop>
-  ae:	0e 94 bf 01 	call	0x37e	; 0x37e <main>
-  b2:	0c 94 06 02 	jmp	0x40c	; 0x40c <_exit>
+  ae:	0e 94 c9 01 	call	0x392	; 0x392 <main>
+  b2:	0c 94 1c 02 	jmp	0x438	; 0x438 <_exit>
 
 000000b6 <__bad_interrupt>:
   b6:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -234,602 +234,622 @@ void lcd_instruction(uint8_t instruction)
 {
  12a:	cf 93       	push	r28
  12c:	c8 2f       	mov	r28, r24
-	lcdPort &= ~(1 << lcdRSBit);                // RS low
+		lcdPort &= ~(1 << lcdRSBit);                // RS low
  12e:	15 98       	cbi	0x02, 5	; 2
-	lcdPort &= ~(1 << lcdEBit);                // E low
+		lcdPort &= ~(1 << lcdEBit);                // E low
  130:	14 98       	cbi	0x02, 4	; 2
-	lcd_write(instruction);                   // write the upper 4 bits of data
+		lcd_write(instruction);                   // write the upper 4 bits of data
  132:	0e 94 5d 00 	call	0xba	; 0xba <lcd_write>
-	lcd_write(instruction << 4);             // write the lower 4 bits of data
- 136:	8c 2f       	mov	r24, r28
- 138:	82 95       	swap	r24
- 13a:	80 7f       	andi	r24, 0xF0	; 240
- 13c:	0e 94 5d 00 	call	0xba	; 0xba <lcd_write>
-}
- 140:	cf 91       	pop	r28
- 142:	08 95       	ret
+ 136:	8a e1       	ldi	r24, 0x1A	; 26
+ 138:	8a 95       	dec	r24
+ 13a:	f1 f7       	brne	.-4      	; 0x138 <lcd_instruction+0xe>
+ 13c:	00 c0       	rjmp	.+0      	; 0x13e <lcd_instruction+0x14>
+		_delay_us(10);
+		lcd_write(instruction << 4);             // write the lower 4 bits of data
+ 13e:	8c 2f       	mov	r24, r28
+ 140:	82 95       	swap	r24
+ 142:	80 7f       	andi	r24, 0xF0	; 240
+ 144:	0e 94 5d 00 	call	0xba	; 0xba <lcd_write>
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
 
-00000144 <lcd_init>:
+	__builtin_avr_delay_cycles(__ticks_dc);
+ 148:	8f e0       	ldi	r24, 0x0F	; 15
+ 14a:	97 e2       	ldi	r25, 0x27	; 39
+ 14c:	01 97       	sbiw	r24, 0x01	; 1
+ 14e:	f1 f7       	brne	.-4      	; 0x14c <lcd_instruction+0x22>
+ 150:	00 c0       	rjmp	.+0      	; 0x152 <lcd_instruction+0x28>
+ 152:	00 00       	nop
+		_delay_ms(5);
+}
+ 154:	cf 91       	pop	r28
+ 156:	08 95       	ret
+
+00000158 <lcd_init>:
 void lcd_init(void);
 
 
 void lcd_init(void)
 {
 	lcdDdr |= (1 << lcdD7Bit) | (1 << lcdD6Bit) | (1 << lcdD5Bit) | (1 << lcdD4Bit) | (1 << lcdEBit) | (1 << lcdRSBit);
- 144:	81 b1       	in	r24, 0x01	; 1
- 146:	8f 63       	ori	r24, 0x3F	; 63
- 148:	81 b9       	out	0x01, r24	; 1
-	#else
-		//round up by default
-		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
-	#endif
-
-	__builtin_avr_delay_cycles(__ticks_dc);
- 14a:	2f ef       	ldi	r18, 0xFF	; 255
- 14c:	80 e7       	ldi	r24, 0x70	; 112
- 14e:	92 e0       	ldi	r25, 0x02	; 2
- 150:	21 50       	subi	r18, 0x01	; 1
- 152:	80 40       	sbci	r24, 0x00	; 0
- 154:	90 40       	sbci	r25, 0x00	; 0
- 156:	e1 f7       	brne	.-8      	; 0x150 <lcd_init+0xc>
- 158:	00 c0       	rjmp	.+0      	; 0x15a <lcd_init+0x16>
- 15a:	00 00       	nop
+ 158:	81 b1       	in	r24, 0x01	; 1
+ 15a:	8f 63       	ori	r24, 0x3F	; 63
+ 15c:	81 b9       	out	0x01, r24	; 1
+ 15e:	2f ef       	ldi	r18, 0xFF	; 255
+ 160:	80 e7       	ldi	r24, 0x70	; 112
+ 162:	92 e0       	ldi	r25, 0x02	; 2
+ 164:	21 50       	subi	r18, 0x01	; 1
+ 166:	80 40       	sbci	r24, 0x00	; 0
+ 168:	90 40       	sbci	r25, 0x00	; 0
+ 16a:	e1 f7       	brne	.-8      	; 0x164 <lcd_init+0xc>
+ 16c:	00 c0       	rjmp	.+0      	; 0x16e <lcd_init+0x16>
+ 16e:	00 00       	nop
 	_delay_ms(100);
 
 	lcdPort &= ~(1 << lcdRSBit);                 // RS low
- 15c:	15 98       	cbi	0x02, 5	; 2
+ 170:	15 98       	cbi	0x02, 5	; 2
 	lcdPort &= ~(1 << lcdEBit);                 // E low
- 15e:	14 98       	cbi	0x02, 4	; 2
+ 172:	14 98       	cbi	0x02, 4	; 2
 
 	// LCD resets
 	lcd_write(reset);
- 160:	80 e3       	ldi	r24, 0x30	; 48
- 162:	0e 94 5d 00 	call	0xba	; 0xba <lcd_write>
- 166:	8f e7       	ldi	r24, 0x7F	; 127
- 168:	9e e3       	ldi	r25, 0x3E	; 62
- 16a:	01 97       	sbiw	r24, 0x01	; 1
- 16c:	f1 f7       	brne	.-4      	; 0x16a <lcd_init+0x26>
- 16e:	00 c0       	rjmp	.+0      	; 0x170 <lcd_init+0x2c>
- 170:	00 00       	nop
+ 174:	80 e3       	ldi	r24, 0x30	; 48
+ 176:	0e 94 5d 00 	call	0xba	; 0xba <lcd_write>
+ 17a:	8f e7       	ldi	r24, 0x7F	; 127
+ 17c:	9e e3       	ldi	r25, 0x3E	; 62
+ 17e:	01 97       	sbiw	r24, 0x01	; 1
+ 180:	f1 f7       	brne	.-4      	; 0x17e <lcd_init+0x26>
+ 182:	00 c0       	rjmp	.+0      	; 0x184 <lcd_init+0x2c>
+ 184:	00 00       	nop
 	_delay_ms(8);                           // 5 ms delay min
 
 	lcd_write(reset);
- 172:	80 e3       	ldi	r24, 0x30	; 48
- 174:	0e 94 5d 00 	call	0xba	; 0xba <lcd_write>
+ 186:	80 e3       	ldi	r24, 0x30	; 48
+ 188:	0e 94 5d 00 	call	0xba	; 0xba <lcd_write>
 	#else
 		//round up by default
 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
 	#endif
 
 	__builtin_avr_delay_cycles(__ticks_dc);
- 178:	8f e8       	ldi	r24, 0x8F	; 143
- 17a:	91 e0       	ldi	r25, 0x01	; 1
- 17c:	01 97       	sbiw	r24, 0x01	; 1
- 17e:	f1 f7       	brne	.-4      	; 0x17c <lcd_init+0x38>
- 180:	00 c0       	rjmp	.+0      	; 0x182 <lcd_init+0x3e>
- 182:	00 00       	nop
+ 18c:	8f e8       	ldi	r24, 0x8F	; 143
+ 18e:	91 e0       	ldi	r25, 0x01	; 1
+ 190:	01 97       	sbiw	r24, 0x01	; 1
+ 192:	f1 f7       	brne	.-4      	; 0x190 <lcd_init+0x38>
+ 194:	00 c0       	rjmp	.+0      	; 0x196 <lcd_init+0x3e>
+ 196:	00 00       	nop
 	_delay_us(200);                       // 100 us delay min
 
 	lcd_write(reset);
- 184:	80 e3       	ldi	r24, 0x30	; 48
- 186:	0e 94 5d 00 	call	0xba	; 0xba <lcd_write>
- 18a:	8f e8       	ldi	r24, 0x8F	; 143
- 18c:	91 e0       	ldi	r25, 0x01	; 1
- 18e:	01 97       	sbiw	r24, 0x01	; 1
- 190:	f1 f7       	brne	.-4      	; 0x18e <lcd_init+0x4a>
- 192:	00 c0       	rjmp	.+0      	; 0x194 <lcd_init+0x50>
- 194:	00 00       	nop
+ 198:	80 e3       	ldi	r24, 0x30	; 48
+ 19a:	0e 94 5d 00 	call	0xba	; 0xba <lcd_write>
+ 19e:	8f e8       	ldi	r24, 0x8F	; 143
+ 1a0:	91 e0       	ldi	r25, 0x01	; 1
+ 1a2:	01 97       	sbiw	r24, 0x01	; 1
+ 1a4:	f1 f7       	brne	.-4      	; 0x1a2 <lcd_init+0x4a>
+ 1a6:	00 c0       	rjmp	.+0      	; 0x1a8 <lcd_init+0x50>
+ 1a8:	00 00       	nop
 	_delay_us(200);
 	
 	lcd_write(bit4Mode);               	//set to 4 bit mode
- 196:	88 e2       	ldi	r24, 0x28	; 40
- 198:	0e 94 5d 00 	call	0xba	; 0xba <lcd_write>
- 19c:	95 e8       	ldi	r25, 0x85	; 133
- 19e:	9a 95       	dec	r25
- 1a0:	f1 f7       	brne	.-4      	; 0x19e <lcd_init+0x5a>
- 1a2:	00 00       	nop
+ 1aa:	88 e2       	ldi	r24, 0x28	; 40
+ 1ac:	0e 94 5d 00 	call	0xba	; 0xba <lcd_write>
+ 1b0:	95 e8       	ldi	r25, 0x85	; 133
+ 1b2:	9a 95       	dec	r25
+ 1b4:	f1 f7       	brne	.-4      	; 0x1b2 <lcd_init+0x5a>
+ 1b6:	00 00       	nop
 	_delay_us(50);                     // 40us delay min
 
 	lcd_instruction(bit4Mode);   	 // set 4 bit mode
- 1a4:	88 e2       	ldi	r24, 0x28	; 40
- 1a6:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
- 1aa:	25 e8       	ldi	r18, 0x85	; 133
- 1ac:	2a 95       	dec	r18
- 1ae:	f1 f7       	brne	.-4      	; 0x1ac <lcd_init+0x68>
- 1b0:	00 00       	nop
+ 1b8:	88 e2       	ldi	r24, 0x28	; 40
+ 1ba:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
+ 1be:	25 e8       	ldi	r18, 0x85	; 133
+ 1c0:	2a 95       	dec	r18
+ 1c2:	f1 f7       	brne	.-4      	; 0x1c0 <lcd_init+0x68>
+ 1c4:	00 00       	nop
 	_delay_us(50);                  // 40 us delay min
 
 	// display off
 	lcd_instruction(off);        	// turn off display
- 1b2:	88 e0       	ldi	r24, 0x08	; 8
- 1b4:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
- 1b8:	85 e8       	ldi	r24, 0x85	; 133
- 1ba:	8a 95       	dec	r24
- 1bc:	f1 f7       	brne	.-4      	; 0x1ba <lcd_init+0x76>
- 1be:	00 00       	nop
+ 1c6:	88 e0       	ldi	r24, 0x08	; 8
+ 1c8:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
+ 1cc:	85 e8       	ldi	r24, 0x85	; 133
+ 1ce:	8a 95       	dec	r24
+ 1d0:	f1 f7       	brne	.-4      	; 0x1ce <lcd_init+0x76>
+ 1d2:	00 00       	nop
 	_delay_us(50);
 
 	// Clear display
 	lcd_instruction(clear);              // clear display
- 1c0:	81 e0       	ldi	r24, 0x01	; 1
- 1c2:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
+ 1d4:	81 e0       	ldi	r24, 0x01	; 1
+ 1d6:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
 	#else
 		//round up by default
 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
 	#endif
 
 	__builtin_avr_delay_cycles(__ticks_dc);
- 1c6:	8f e6       	ldi	r24, 0x6F	; 111
- 1c8:	97 e1       	ldi	r25, 0x17	; 23
- 1ca:	01 97       	sbiw	r24, 0x01	; 1
- 1cc:	f1 f7       	brne	.-4      	; 0x1ca <lcd_init+0x86>
- 1ce:	00 c0       	rjmp	.+0      	; 0x1d0 <lcd_init+0x8c>
- 1d0:	00 00       	nop
+ 1da:	8f e6       	ldi	r24, 0x6F	; 111
+ 1dc:	97 e1       	ldi	r25, 0x17	; 23
+ 1de:	01 97       	sbiw	r24, 0x01	; 1
+ 1e0:	f1 f7       	brne	.-4      	; 0x1de <lcd_init+0x86>
+ 1e2:	00 c0       	rjmp	.+0      	; 0x1e4 <lcd_init+0x8c>
+ 1e4:	00 00       	nop
 	_delay_ms(3);                       // 1.64 ms delay min
 
 	// entry mode
 	lcd_instruction(entryMode);          // this instruction shifts the cursor
- 1d2:	86 e0       	ldi	r24, 0x06	; 6
- 1d4:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
+ 1e6:	86 e0       	ldi	r24, 0x06	; 6
+ 1e8:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
 	#else
 		//round up by default
 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
 	#endif
 
 	__builtin_avr_delay_cycles(__ticks_dc);
- 1d8:	9a e6       	ldi	r25, 0x6A	; 106
- 1da:	9a 95       	dec	r25
- 1dc:	f1 f7       	brne	.-4      	; 0x1da <lcd_init+0x96>
- 1de:	00 c0       	rjmp	.+0      	; 0x1e0 <lcd_init+0x9c>
+ 1ec:	9a e6       	ldi	r25, 0x6A	; 106
+ 1ee:	9a 95       	dec	r25
+ 1f0:	f1 f7       	brne	.-4      	; 0x1ee <lcd_init+0x96>
+ 1f2:	00 c0       	rjmp	.+0      	; 0x1f4 <lcd_init+0x9c>
 	_delay_us(40);                      // 40 us delay min
 
 	// Display on
 	lcd_instruction(on);          // turn on the display
- 1e0:	8c e0       	ldi	r24, 0x0C	; 12
- 1e2:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
- 1e6:	25 e8       	ldi	r18, 0x85	; 133
- 1e8:	2a 95       	dec	r18
- 1ea:	f1 f7       	brne	.-4      	; 0x1e8 <lcd_init+0xa4>
- 1ec:	00 00       	nop
- 1ee:	08 95       	ret
+ 1f4:	8c e0       	ldi	r24, 0x0C	; 12
+ 1f6:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
+ 1fa:	25 e8       	ldi	r18, 0x85	; 133
+ 1fc:	2a 95       	dec	r18
+ 1fe:	f1 f7       	brne	.-4      	; 0x1fc <lcd_init+0xa4>
+ 200:	00 00       	nop
+ 202:	08 95       	ret
 
-000001f0 <USART_init>:
+00000204 <USART_init>:
 /*********************************************************** USART Configuration *****************************************************************/
 
 void USART_init(void)
 {
 	/*Set baud rate */
 	UBRR0H = (BAUDRATE>>8);
- 1f0:	10 92 c5 00 	sts	0x00C5, r1	; 0x8000c5 <__TEXT_REGION_LENGTH__+0x7e00c5>
+ 204:	10 92 c5 00 	sts	0x00C5, r1	; 0x8000c5 <__TEXT_REGION_LENGTH__+0x7e00c5>
 	UBRR0L = BAUDRATE;
- 1f4:	83 e3       	ldi	r24, 0x33	; 51
- 1f6:	80 93 c4 00 	sts	0x00C4, r24	; 0x8000c4 <__TEXT_REGION_LENGTH__+0x7e00c4>
+ 208:	83 e3       	ldi	r24, 0x33	; 51
+ 20a:	80 93 c4 00 	sts	0x00C4, r24	; 0x8000c4 <__TEXT_REGION_LENGTH__+0x7e00c4>
 	
 	/* Enable receiver and transmitter */
 	UCSR0B = (1<<RXEN0)|(1<<TXEN0);
- 1fa:	e1 ec       	ldi	r30, 0xC1	; 193
- 1fc:	f0 e0       	ldi	r31, 0x00	; 0
- 1fe:	88 e1       	ldi	r24, 0x18	; 24
- 200:	80 83       	st	Z, r24
+ 20e:	e1 ec       	ldi	r30, 0xC1	; 193
+ 210:	f0 e0       	ldi	r31, 0x00	; 0
+ 212:	88 e1       	ldi	r24, 0x18	; 24
+ 214:	80 83       	st	Z, r24
 
 	/* Set frame format: 8data, 1stop bit, no parity */
 	UCSR0C = (3<<UCSZ00);
- 202:	86 e0       	ldi	r24, 0x06	; 6
- 204:	80 93 c2 00 	sts	0x00C2, r24	; 0x8000c2 <__TEXT_REGION_LENGTH__+0x7e00c2>
+ 216:	86 e0       	ldi	r24, 0x06	; 6
+ 218:	80 93 c2 00 	sts	0x00C2, r24	; 0x8000c2 <__TEXT_REGION_LENGTH__+0x7e00c2>
 	
 	/* Enable interrupt */
 	UCSR0B |= (1 << RXCIE0);
- 208:	80 81       	ld	r24, Z
- 20a:	80 68       	ori	r24, 0x80	; 128
- 20c:	80 83       	st	Z, r24
- 20e:	08 95       	ret
+ 21c:	80 81       	ld	r24, Z
+ 21e:	80 68       	ori	r24, 0x80	; 128
+ 220:	80 83       	st	Z, r24
+ 222:	08 95       	ret
 
-00000210 <USART_receive>:
+00000224 <USART_receive>:
 }
 
 unsigned char USART_receive(void)
 {
 	/* Wait for data to be received */
 	while(~(UCSR0A) & (1<<RXC0));
- 210:	e0 ec       	ldi	r30, 0xC0	; 192
- 212:	f0 e0       	ldi	r31, 0x00	; 0
- 214:	80 81       	ld	r24, Z
- 216:	88 23       	and	r24, r24
- 218:	ec f7       	brge	.-6      	; 0x214 <USART_receive+0x4>
+ 224:	e0 ec       	ldi	r30, 0xC0	; 192
+ 226:	f0 e0       	ldi	r31, 0x00	; 0
+ 228:	80 81       	ld	r24, Z
+ 22a:	88 23       	and	r24, r24
+ 22c:	ec f7       	brge	.-6      	; 0x228 <USART_receive+0x4>
 
 	/* Get and return received data from buffer */
 	return UDR0;
- 21a:	80 91 c6 00 	lds	r24, 0x00C6	; 0x8000c6 <__TEXT_REGION_LENGTH__+0x7e00c6>
+ 22e:	80 91 c6 00 	lds	r24, 0x00C6	; 0x8000c6 <__TEXT_REGION_LENGTH__+0x7e00c6>
 }
- 21e:	08 95       	ret
+ 232:	08 95       	ret
 
-00000220 <USART_send>:
+00000234 <USART_send>:
 
 void USART_send(unsigned char data)
 {
 	/* Wait for data to be received */
 	while (!( UCSR0A & (1<<UDRE0)));
- 220:	e0 ec       	ldi	r30, 0xC0	; 192
- 222:	f0 e0       	ldi	r31, 0x00	; 0
- 224:	90 81       	ld	r25, Z
- 226:	95 ff       	sbrs	r25, 5
- 228:	fd cf       	rjmp	.-6      	; 0x224 <USART_send+0x4>
+ 234:	e0 ec       	ldi	r30, 0xC0	; 192
+ 236:	f0 e0       	ldi	r31, 0x00	; 0
+ 238:	90 81       	ld	r25, Z
+ 23a:	95 ff       	sbrs	r25, 5
+ 23c:	fd cf       	rjmp	.-6      	; 0x238 <USART_send+0x4>
 	UDR0 = data;
- 22a:	80 93 c6 00 	sts	0x00C6, r24	; 0x8000c6 <__TEXT_REGION_LENGTH__+0x7e00c6>
- 22e:	08 95       	ret
+ 23e:	80 93 c6 00 	sts	0x00C6, r24	; 0x8000c6 <__TEXT_REGION_LENGTH__+0x7e00c6>
+ 242:	08 95       	ret
 
-00000230 <__vector_20>:
+00000244 <__vector_20>:
 inline void RFID_ready(void) {
 	/* RFID buffer is ready to be refilled*/
 	RF.done = false;
 }
 
 ISR(USART0_RX_vect){
- 230:	1f 92       	push	r1
- 232:	0f 92       	push	r0
- 234:	0f b6       	in	r0, 0x3f	; 63
- 236:	0f 92       	push	r0
- 238:	11 24       	eor	r1, r1
- 23a:	2f 93       	push	r18
- 23c:	3f 93       	push	r19
- 23e:	4f 93       	push	r20
- 240:	5f 93       	push	r21
- 242:	6f 93       	push	r22
- 244:	7f 93       	push	r23
- 246:	8f 93       	push	r24
- 248:	9f 93       	push	r25
- 24a:	af 93       	push	r26
- 24c:	bf 93       	push	r27
- 24e:	ef 93       	push	r30
- 250:	ff 93       	push	r31
+ 244:	1f 92       	push	r1
+ 246:	0f 92       	push	r0
+ 248:	0f b6       	in	r0, 0x3f	; 63
+ 24a:	0f 92       	push	r0
+ 24c:	11 24       	eor	r1, r1
+ 24e:	2f 93       	push	r18
+ 250:	3f 93       	push	r19
+ 252:	4f 93       	push	r20
+ 254:	5f 93       	push	r21
+ 256:	6f 93       	push	r22
+ 258:	7f 93       	push	r23
+ 25a:	8f 93       	push	r24
+ 25c:	9f 93       	push	r25
+ 25e:	af 93       	push	r26
+ 260:	bf 93       	push	r27
+ 262:	ef 93       	push	r30
+ 264:	ff 93       	push	r31
 	/* load RFID into buffer */
 	char num = USART_receive();
- 252:	0e 94 08 01 	call	0x210	; 0x210 <USART_receive>
+ 266:	0e 94 12 01 	call	0x224	; 0x224 <USART_receive>
 	if(!RF.done) {
- 256:	90 91 20 01 	lds	r25, 0x0120	; 0x800120 <RF+0x12>
- 25a:	91 11       	cpse	r25, r1
- 25c:	17 c0       	rjmp	.+46     	; 0x28c <__vector_20+0x5c>
+ 26a:	90 91 22 01 	lds	r25, 0x0122	; 0x800122 <RF+0x12>
+ 26e:	91 11       	cpse	r25, r1
+ 270:	17 c0       	rjmp	.+46     	; 0x2a0 <__vector_20+0x5c>
 		RF.ID[RF.index++] = num;
- 25e:	ae e0       	ldi	r26, 0x0E	; 14
- 260:	b1 e0       	ldi	r27, 0x01	; 1
- 262:	51 96       	adiw	r26, 0x11	; 17
- 264:	ec 91       	ld	r30, X
- 266:	51 97       	sbiw	r26, 0x11	; 17
- 268:	91 e0       	ldi	r25, 0x01	; 1
- 26a:	9e 0f       	add	r25, r30
- 26c:	51 96       	adiw	r26, 0x11	; 17
- 26e:	9c 93       	st	X, r25
- 270:	51 97       	sbiw	r26, 0x11	; 17
- 272:	f0 e0       	ldi	r31, 0x00	; 0
- 274:	e2 5f       	subi	r30, 0xF2	; 242
- 276:	fe 4f       	sbci	r31, 0xFE	; 254
- 278:	80 83       	st	Z, r24
+ 272:	a0 e1       	ldi	r26, 0x10	; 16
+ 274:	b1 e0       	ldi	r27, 0x01	; 1
+ 276:	51 96       	adiw	r26, 0x11	; 17
+ 278:	ec 91       	ld	r30, X
+ 27a:	51 97       	sbiw	r26, 0x11	; 17
+ 27c:	91 e0       	ldi	r25, 0x01	; 1
+ 27e:	9e 0f       	add	r25, r30
+ 280:	51 96       	adiw	r26, 0x11	; 17
+ 282:	9c 93       	st	X, r25
+ 284:	51 97       	sbiw	r26, 0x11	; 17
+ 286:	f0 e0       	ldi	r31, 0x00	; 0
+ 288:	e0 5f       	subi	r30, 0xF0	; 240
+ 28a:	fe 4f       	sbci	r31, 0xFE	; 254
+ 28c:	80 83       	st	Z, r24
 		if(RF.index == SIZE) {
- 27a:	51 96       	adiw	r26, 0x11	; 17
- 27c:	9c 91       	ld	r25, X
- 27e:	51 97       	sbiw	r26, 0x11	; 17
- 280:	90 31       	cpi	r25, 0x10	; 16
- 282:	21 f4       	brne	.+8      	; 0x28c <__vector_20+0x5c>
+ 28e:	51 96       	adiw	r26, 0x11	; 17
+ 290:	9c 91       	ld	r25, X
+ 292:	51 97       	sbiw	r26, 0x11	; 17
+ 294:	90 31       	cpi	r25, 0x10	; 16
+ 296:	21 f4       	brne	.+8      	; 0x2a0 <__vector_20+0x5c>
 			RF.index = 0;
- 284:	fd 01       	movw	r30, r26
- 286:	11 8a       	std	Z+17, r1	; 0x11
+ 298:	fd 01       	movw	r30, r26
+ 29a:	11 8a       	std	Z+17, r1	; 0x11
 			RF.done = true;
- 288:	91 e0       	ldi	r25, 0x01	; 1
- 28a:	92 8b       	std	Z+18, r25	; 0x12
+ 29c:	91 e0       	ldi	r25, 0x01	; 1
+ 29e:	92 8b       	std	Z+18, r25	; 0x12
 		}
 	}
 	USART_send(num);
- 28c:	0e 94 10 01 	call	0x220	; 0x220 <USART_send>
+ 2a0:	0e 94 1a 01 	call	0x234	; 0x234 <USART_send>
 
 }
- 290:	ff 91       	pop	r31
- 292:	ef 91       	pop	r30
- 294:	bf 91       	pop	r27
- 296:	af 91       	pop	r26
- 298:	9f 91       	pop	r25
- 29a:	8f 91       	pop	r24
- 29c:	7f 91       	pop	r23
- 29e:	6f 91       	pop	r22
- 2a0:	5f 91       	pop	r21
- 2a2:	4f 91       	pop	r20
- 2a4:	3f 91       	pop	r19
- 2a6:	2f 91       	pop	r18
- 2a8:	0f 90       	pop	r0
- 2aa:	0f be       	out	0x3f, r0	; 63
- 2ac:	0f 90       	pop	r0
- 2ae:	1f 90       	pop	r1
- 2b0:	18 95       	reti
+ 2a4:	ff 91       	pop	r31
+ 2a6:	ef 91       	pop	r30
+ 2a8:	bf 91       	pop	r27
+ 2aa:	af 91       	pop	r26
+ 2ac:	9f 91       	pop	r25
+ 2ae:	8f 91       	pop	r24
+ 2b0:	7f 91       	pop	r23
+ 2b2:	6f 91       	pop	r22
+ 2b4:	5f 91       	pop	r21
+ 2b6:	4f 91       	pop	r20
+ 2b8:	3f 91       	pop	r19
+ 2ba:	2f 91       	pop	r18
+ 2bc:	0f 90       	pop	r0
+ 2be:	0f be       	out	0x3f, r0	; 63
+ 2c0:	0f 90       	pop	r0
+ 2c2:	1f 90       	pop	r1
+ 2c4:	18 95       	reti
 
-000002b2 <beeper_init>:
+000002c6 <beeper_init>:
 
 /*************************************************************** Beeper Initialization **********************************************************/
 void beeper_init(void) {
 	DDRB |= (1 << PORTB3);
- 2b2:	23 9a       	sbi	0x04, 3	; 4
+ 2c6:	23 9a       	sbi	0x04, 3	; 4
 	TCCR0A |= (1 << WGM01);
- 2b4:	84 b5       	in	r24, 0x24	; 36
- 2b6:	82 60       	ori	r24, 0x02	; 2
- 2b8:	84 bd       	out	0x24, r24	; 36
+ 2c8:	84 b5       	in	r24, 0x24	; 36
+ 2ca:	82 60       	ori	r24, 0x02	; 2
+ 2cc:	84 bd       	out	0x24, r24	; 36
 	TCCR0B |= (1 << CS02);		//N=256
- 2ba:	85 b5       	in	r24, 0x25	; 37
- 2bc:	84 60       	ori	r24, 0x04	; 4
- 2be:	85 bd       	out	0x25, r24	; 37
+ 2ce:	85 b5       	in	r24, 0x25	; 37
+ 2d0:	84 60       	ori	r24, 0x04	; 4
+ 2d2:	85 bd       	out	0x25, r24	; 37
 	OCR0A = 5;					// 3kHz = F_CPU/(2*N*TOP), TOP=5
- 2c0:	85 e0       	ldi	r24, 0x05	; 5
- 2c2:	87 bd       	out	0x27, r24	; 39
+ 2d4:	85 e0       	ldi	r24, 0x05	; 5
+ 2d6:	87 bd       	out	0x27, r24	; 39
 	PORTB &= ~(1 << PORTB3);
- 2c4:	2b 98       	cbi	0x05, 3	; 5
- 2c6:	08 95       	ret
+ 2d8:	2b 98       	cbi	0x05, 3	; 5
+ 2da:	08 95       	ret
 
-000002c8 <__vector_16>:
+000002dc <__vector_16>:
 }
 ISR(TIMER0_COMPA_vect) {
- 2c8:	1f 92       	push	r1
- 2ca:	0f 92       	push	r0
- 2cc:	0f b6       	in	r0, 0x3f	; 63
- 2ce:	0f 92       	push	r0
- 2d0:	11 24       	eor	r1, r1
- 2d2:	8f 93       	push	r24
- 2d4:	9f 93       	push	r25
+ 2dc:	1f 92       	push	r1
+ 2de:	0f 92       	push	r0
+ 2e0:	0f b6       	in	r0, 0x3f	; 63
+ 2e2:	0f 92       	push	r0
+ 2e4:	11 24       	eor	r1, r1
+ 2e6:	8f 93       	push	r24
+ 2e8:	9f 93       	push	r25
 	PORTB  ^= (1 << PORTB3);
- 2d6:	95 b1       	in	r25, 0x05	; 5
- 2d8:	88 e0       	ldi	r24, 0x08	; 8
- 2da:	89 27       	eor	r24, r25
- 2dc:	85 b9       	out	0x05, r24	; 5
+ 2ea:	95 b1       	in	r25, 0x05	; 5
+ 2ec:	88 e0       	ldi	r24, 0x08	; 8
+ 2ee:	89 27       	eor	r24, r25
+ 2f0:	85 b9       	out	0x05, r24	; 5
 }
- 2de:	9f 91       	pop	r25
- 2e0:	8f 91       	pop	r24
- 2e2:	0f 90       	pop	r0
- 2e4:	0f be       	out	0x3f, r0	; 63
- 2e6:	0f 90       	pop	r0
- 2e8:	1f 90       	pop	r1
- 2ea:	18 95       	reti
+ 2f2:	9f 91       	pop	r25
+ 2f4:	8f 91       	pop	r24
+ 2f6:	0f 90       	pop	r0
+ 2f8:	0f be       	out	0x3f, r0	; 63
+ 2fa:	0f 90       	pop	r0
+ 2fc:	1f 90       	pop	r1
+ 2fe:	18 95       	reti
 
-000002ec <frequency_init>:
+00000300 <frequency_init>:
 	TIMSK0 &= ~(1 << OCF0A);
 }
 
 /***************************************************************** 125kHz wave **********************************************************/
 void frequency_init(void) {
 	DDRD |= (1 << PORTD7);
- 2ec:	57 9a       	sbi	0x0a, 7	; 10
+ 300:	57 9a       	sbi	0x0a, 7	; 10
 	TCCR2A |= (1<<WGM20 | 1<<WGM21 | 1<<COM2A0);
- 2ee:	e0 eb       	ldi	r30, 0xB0	; 176
- 2f0:	f0 e0       	ldi	r31, 0x00	; 0
- 2f2:	80 81       	ld	r24, Z
- 2f4:	83 64       	ori	r24, 0x43	; 67
- 2f6:	80 83       	st	Z, r24
+ 302:	e0 eb       	ldi	r30, 0xB0	; 176
+ 304:	f0 e0       	ldi	r31, 0x00	; 0
+ 306:	80 81       	ld	r24, Z
+ 308:	83 64       	ori	r24, 0x43	; 67
+ 30a:	80 83       	st	Z, r24
 	TCCR2B |= (1<<WGM22 | 1<<CS20); //Fast PWM
- 2f8:	e1 eb       	ldi	r30, 0xB1	; 177
- 2fa:	f0 e0       	ldi	r31, 0x00	; 0
- 2fc:	80 81       	ld	r24, Z
- 2fe:	89 60       	ori	r24, 0x09	; 9
- 300:	80 83       	st	Z, r24
+ 30c:	e1 eb       	ldi	r30, 0xB1	; 177
+ 30e:	f0 e0       	ldi	r31, 0x00	; 0
+ 310:	80 81       	ld	r24, Z
+ 312:	89 60       	ori	r24, 0x09	; 9
+ 314:	80 83       	st	Z, r24
 	OCR2A = 31;		// 8000000/64 = 125k, but it's half with 50% duty cycle. 31 was value with least percent error at 126.6 kHz
- 302:	8f e1       	ldi	r24, 0x1F	; 31
- 304:	80 93 b3 00 	sts	0x00B3, r24	; 0x8000b3 <__TEXT_REGION_LENGTH__+0x7e00b3>
- 308:	08 95       	ret
+ 316:	8f e1       	ldi	r24, 0x1F	; 31
+ 318:	80 93 b3 00 	sts	0x00B3, r24	; 0x8000b3 <__TEXT_REGION_LENGTH__+0x7e00b3>
+ 31c:	08 95       	ret
 
-0000030a <input_capture_init>:
+0000031e <input_capture_init>:
 uint16_t ov_counter;
 uint16_t rising, falling;
 uint32_t count;
 
 void input_capture_init(void) {
 	TIMSK1= 0x21;					//enable overflow and input capture interrupts
- 30a:	81 e2       	ldi	r24, 0x21	; 33
- 30c:	80 93 6f 00 	sts	0x006F, r24	; 0x80006f <__TEXT_REGION_LENGTH__+0x7e006f>
+ 31e:	81 e2       	ldi	r24, 0x21	; 33
+ 320:	80 93 6f 00 	sts	0x006F, r24	; 0x80006f <__TEXT_REGION_LENGTH__+0x7e006f>
 	TCCR1B= (1<<ICNC1) | (1<<ICES1); /*Noise canceler, rising edge*/
- 310:	80 ec       	ldi	r24, 0xC0	; 192
- 312:	80 93 81 00 	sts	0x0081, r24	; 0x800081 <__TEXT_REGION_LENGTH__+0x7e0081>
- 316:	08 95       	ret
+ 324:	80 ec       	ldi	r24, 0xC0	; 192
+ 326:	80 93 81 00 	sts	0x0081, r24	; 0x800081 <__TEXT_REGION_LENGTH__+0x7e0081>
+ 32a:	08 95       	ret
 
-00000318 <__vector_15>:
+0000032c <__vector_15>:
 }
 
 ISR(TIMER1_OVF_vect){
- 318:	1f 92       	push	r1
- 31a:	0f 92       	push	r0
- 31c:	0f b6       	in	r0, 0x3f	; 63
- 31e:	0f 92       	push	r0
- 320:	11 24       	eor	r1, r1
- 322:	8f 93       	push	r24
- 324:	9f 93       	push	r25
+ 32c:	1f 92       	push	r1
+ 32e:	0f 92       	push	r0
+ 330:	0f b6       	in	r0, 0x3f	; 63
+ 332:	0f 92       	push	r0
+ 334:	11 24       	eor	r1, r1
+ 336:	8f 93       	push	r24
+ 338:	9f 93       	push	r25
 	ov_counter++;
- 326:	80 91 0c 01 	lds	r24, 0x010C	; 0x80010c <__data_end>
- 32a:	90 91 0d 01 	lds	r25, 0x010D	; 0x80010d <__data_end+0x1>
- 32e:	01 96       	adiw	r24, 0x01	; 1
- 330:	90 93 0d 01 	sts	0x010D, r25	; 0x80010d <__data_end+0x1>
- 334:	80 93 0c 01 	sts	0x010C, r24	; 0x80010c <__data_end>
+ 33a:	80 91 0e 01 	lds	r24, 0x010E	; 0x80010e <__data_end>
+ 33e:	90 91 0f 01 	lds	r25, 0x010F	; 0x80010f <__data_end+0x1>
+ 342:	01 96       	adiw	r24, 0x01	; 1
+ 344:	90 93 0f 01 	sts	0x010F, r25	; 0x80010f <__data_end+0x1>
+ 348:	80 93 0e 01 	sts	0x010E, r24	; 0x80010e <__data_end>
 }
- 338:	9f 91       	pop	r25
- 33a:	8f 91       	pop	r24
- 33c:	0f 90       	pop	r0
- 33e:	0f be       	out	0x3f, r0	; 63
- 340:	0f 90       	pop	r0
- 342:	1f 90       	pop	r1
- 344:	18 95       	reti
+ 34c:	9f 91       	pop	r25
+ 34e:	8f 91       	pop	r24
+ 350:	0f 90       	pop	r0
+ 352:	0f be       	out	0x3f, r0	; 63
+ 354:	0f 90       	pop	r0
+ 356:	1f 90       	pop	r1
+ 358:	18 95       	reti
 
-00000346 <__vector_12>:
+0000035a <__vector_12>:
 
 ISR(TIMER1_CAPT_vect){
- 346:	1f 92       	push	r1
- 348:	0f 92       	push	r0
- 34a:	0f b6       	in	r0, 0x3f	; 63
- 34c:	0f 92       	push	r0
- 34e:	11 24       	eor	r1, r1
- 350:	8f 93       	push	r24
- 352:	9f 93       	push	r25
+ 35a:	1f 92       	push	r1
+ 35c:	0f 92       	push	r0
+ 35e:	0f b6       	in	r0, 0x3f	; 63
+ 360:	0f 92       	push	r0
+ 362:	11 24       	eor	r1, r1
+ 364:	8f 93       	push	r24
+ 366:	9f 93       	push	r25
 	
 	if(ICP){						//if rising edge
 		rising = ICR1;				//save start time
- 354:	80 91 86 00 	lds	r24, 0x0086	; 0x800086 <__TEXT_REGION_LENGTH__+0x7e0086>
- 358:	90 91 87 00 	lds	r25, 0x0087	; 0x800087 <__TEXT_REGION_LENGTH__+0x7e0087>
- 35c:	90 93 28 01 	sts	0x0128, r25	; 0x800128 <rising+0x1>
- 360:	80 93 27 01 	sts	0x0127, r24	; 0x800127 <rising>
+ 368:	80 91 86 00 	lds	r24, 0x0086	; 0x800086 <__TEXT_REGION_LENGTH__+0x7e0086>
+ 36c:	90 91 87 00 	lds	r25, 0x0087	; 0x800087 <__TEXT_REGION_LENGTH__+0x7e0087>
+ 370:	90 93 2a 01 	sts	0x012A, r25	; 0x80012a <rising+0x1>
+ 374:	80 93 29 01 	sts	0x0129, r24	; 0x800129 <rising>
 		TCCR1B = (0<<ICES1);		//trigger on falling edge
- 364:	10 92 81 00 	sts	0x0081, r1	; 0x800081 <__TEXT_REGION_LENGTH__+0x7e0081>
+ 378:	10 92 81 00 	sts	0x0081, r1	; 0x800081 <__TEXT_REGION_LENGTH__+0x7e0081>
 		ov_counter = 0;
- 368:	10 92 0d 01 	sts	0x010D, r1	; 0x80010d <__data_end+0x1>
- 36c:	10 92 0c 01 	sts	0x010C, r1	; 0x80010c <__data_end>
+ 37c:	10 92 0f 01 	sts	0x010F, r1	; 0x80010f <__data_end+0x1>
+ 380:	10 92 0e 01 	sts	0x010E, r1	; 0x80010e <__data_end>
 		TCCR1B = (1<<ICES1);		//trigger on rising edge
 		
 		count = (uint32_t)falling - (uint32_t)rising - (uint32_t)ov_counter;
 	}
 	
 }
- 370:	9f 91       	pop	r25
- 372:	8f 91       	pop	r24
- 374:	0f 90       	pop	r0
- 376:	0f be       	out	0x3f, r0	; 63
- 378:	0f 90       	pop	r0
- 37a:	1f 90       	pop	r1
- 37c:	18 95       	reti
+ 384:	9f 91       	pop	r25
+ 386:	8f 91       	pop	r24
+ 388:	0f 90       	pop	r0
+ 38a:	0f be       	out	0x3f, r0	; 63
+ 38c:	0f 90       	pop	r0
+ 38e:	1f 90       	pop	r1
+ 390:	18 95       	reti
 
-0000037e <main>:
+00000392 <main>:
 
 
 int main( void )
 {
 
 	lcd_init();
- 37e:	0e 94 a2 00 	call	0x144	; 0x144 <lcd_init>
+ 392:	0e 94 ac 00 	call	0x158	; 0x158 <lcd_init>
 	USART_init();
- 382:	0e 94 f8 00 	call	0x1f0	; 0x1f0 <USART_init>
+ 396:	0e 94 02 01 	call	0x204	; 0x204 <USART_init>
 	beeper_init();
- 386:	0e 94 59 01 	call	0x2b2	; 0x2b2 <beeper_init>
+ 39a:	0e 94 63 01 	call	0x2c6	; 0x2c6 <beeper_init>
 	frequency_init();
- 38a:	0e 94 76 01 	call	0x2ec	; 0x2ec <frequency_init>
+ 39e:	0e 94 80 01 	call	0x300	; 0x300 <frequency_init>
 	input_capture_init();
- 38e:	0e 94 85 01 	call	0x30a	; 0x30a <input_capture_init>
+ 3a2:	0e 94 8f 01 	call	0x31e	; 0x31e <input_capture_init>
 	sei();
- 392:	78 94       	sei
-	
-	lcd_string((uint8_t *)"MY Shelter");
- 394:	80 e0       	ldi	r24, 0x00	; 0
- 396:	91 e0       	ldi	r25, 0x01	; 1
- 398:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
+ 3a6:	78 94       	sei
 	volatile uint8_t index;
 	volatile bool done;
 }RF;
 
 inline void RFID_done(void) {
 	while(!RF.done);
- 39c:	0e e0       	ldi	r16, 0x0E	; 14
- 39e:	11 e0       	ldi	r17, 0x01	; 1
-
-	
-	while (1) {
-		
-		RFID_done();
-		lcd_instruction(setCursor | lineTwo);
- 3a0:	cc 24       	eor	r12, r12
- 3a2:	c3 94       	inc	r12
- 3a4:	d1 2c       	mov	r13, r1
+ 3a8:	00 e1       	ldi	r16, 0x10	; 16
+ 3aa:	11 e0       	ldi	r17, 0x01	; 1
+ 3ac:	cc 24       	eor	r12, r12
+ 3ae:	c3 94       	inc	r12
+ 3b0:	d1 2c       	mov	r13, r1
 }
 ISR(TIMER0_COMPA_vect) {
 	PORTB  ^= (1 << PORTB3);
 }
 inline void beep_enable(void) {
 	TIMSK0 |= 1 << OCF0A;
- 3a6:	0f 2e       	mov	r0, r31
- 3a8:	fe e6       	ldi	r31, 0x6E	; 110
- 3aa:	ef 2e       	mov	r14, r31
- 3ac:	f1 2c       	mov	r15, r1
- 3ae:	f0 2d       	mov	r31, r0
+ 3b2:	0f 2e       	mov	r0, r31
+ 3b4:	fe e6       	ldi	r31, 0x6E	; 110
+ 3b6:	ef 2e       	mov	r14, r31
+ 3b8:	f1 2c       	mov	r15, r1
+ 3ba:	f0 2d       	mov	r31, r0
+	sei();
+
+	
+	while (1) {
+		
+		lcd_instruction(clear);
+ 3bc:	81 e0       	ldi	r24, 0x01	; 1
+ 3be:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
+		lcd_string((uint8_t *)"Ready to Scan");
+ 3c2:	80 e0       	ldi	r24, 0x00	; 0
+ 3c4:	91 e0       	ldi	r25, 0x01	; 1
+ 3c6:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
+		lcd_instruction(setCursor | lineTwo);
+ 3ca:	80 ec       	ldi	r24, 0xC0	; 192
+ 3cc:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
 	volatile uint8_t index;
 	volatile bool done;
 }RF;
 
 inline void RFID_done(void) {
 	while(!RF.done);
- 3b0:	f8 01       	movw	r30, r16
- 3b2:	82 89       	ldd	r24, Z+18	; 0x12
- 3b4:	88 23       	and	r24, r24
- 3b6:	e1 f3       	breq	.-8      	; 0x3b0 <main+0x32>
-
-	
-	while (1) {
+ 3d0:	f8 01       	movw	r30, r16
+ 3d2:	82 89       	ldd	r24, Z+18	; 0x12
+ 3d4:	88 23       	and	r24, r24
+ 3d6:	e1 f3       	breq	.-8      	; 0x3d0 <main+0x3e>
+ 3d8:	cc 2d       	mov	r28, r12
+ 3da:	dd 2d       	mov	r29, r13
+		lcd_instruction(setCursor | lineTwo);
 		
 		RFID_done();
-		lcd_instruction(setCursor | lineTwo);
- 3b8:	80 ec       	ldi	r24, 0xC0	; 192
- 3ba:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
- 3be:	cc 2d       	mov	r28, r12
- 3c0:	dd 2d       	mov	r29, r13
 		
 		for(uint8_t i = 1; i < 11; i++) {
 			lcd_char(RF.ID[i]);
- 3c2:	fe 01       	movw	r30, r28
- 3c4:	e2 5f       	subi	r30, 0xF2	; 242
- 3c6:	fe 4f       	sbci	r31, 0xFE	; 254
- 3c8:	80 81       	ld	r24, Z
- 3ca:	0e 94 75 00 	call	0xea	; 0xea <lcd_char>
- 3ce:	85 e8       	ldi	r24, 0x85	; 133
- 3d0:	8a 95       	dec	r24
- 3d2:	f1 f7       	brne	.-4      	; 0x3d0 <main+0x52>
- 3d4:	00 00       	nop
- 3d6:	21 96       	adiw	r28, 0x01	; 1
-	while (1) {
-		
-		RFID_done();
+ 3dc:	fe 01       	movw	r30, r28
+ 3de:	e0 5f       	subi	r30, 0xF0	; 240
+ 3e0:	fe 4f       	sbci	r31, 0xFE	; 254
+ 3e2:	80 81       	ld	r24, Z
+ 3e4:	0e 94 75 00 	call	0xea	; 0xea <lcd_char>
+ 3e8:	85 e8       	ldi	r24, 0x85	; 133
+ 3ea:	8a 95       	dec	r24
+ 3ec:	f1 f7       	brne	.-4      	; 0x3ea <main+0x58>
+ 3ee:	00 00       	nop
+ 3f0:	21 96       	adiw	r28, 0x01	; 1
+		lcd_string((uint8_t *)"Ready to Scan");
 		lcd_instruction(setCursor | lineTwo);
 		
+		RFID_done();
+		
 		for(uint8_t i = 1; i < 11; i++) {
- 3d8:	cb 30       	cpi	r28, 0x0B	; 11
- 3da:	d1 05       	cpc	r29, r1
- 3dc:	91 f7       	brne	.-28     	; 0x3c2 <main+0x44>
+ 3f2:	cb 30       	cpi	r28, 0x0B	; 11
+ 3f4:	d1 05       	cpc	r29, r1
+ 3f6:	91 f7       	brne	.-28     	; 0x3dc <main+0x4a>
 			lcd_char(RF.ID[i]);
 			_delay_us(50);
 		}
 		
 		USART_send('\n');
- 3de:	8a e0       	ldi	r24, 0x0A	; 10
- 3e0:	0e 94 10 01 	call	0x220	; 0x220 <USART_send>
+ 3f8:	8a e0       	ldi	r24, 0x0A	; 10
+ 3fa:	0e 94 1a 01 	call	0x234	; 0x234 <USART_send>
 }
 ISR(TIMER0_COMPA_vect) {
 	PORTB  ^= (1 << PORTB3);
 }
 inline void beep_enable(void) {
 	TIMSK0 |= 1 << OCF0A;
- 3e4:	f7 01       	movw	r30, r14
- 3e6:	80 81       	ld	r24, Z
- 3e8:	82 60       	ori	r24, 0x02	; 2
- 3ea:	80 83       	st	Z, r24
+ 3fe:	f7 01       	movw	r30, r14
+ 400:	80 81       	ld	r24, Z
+ 402:	82 60       	ori	r24, 0x02	; 2
+ 404:	80 83       	st	Z, r24
 	#else
 		//round up by default
 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
 	#endif
 
 	__builtin_avr_delay_cycles(__ticks_dc);
- 3ec:	ff ef       	ldi	r31, 0xFF	; 255
- 3ee:	21 ee       	ldi	r18, 0xE1	; 225
- 3f0:	84 e0       	ldi	r24, 0x04	; 4
- 3f2:	f1 50       	subi	r31, 0x01	; 1
- 3f4:	20 40       	sbci	r18, 0x00	; 0
- 3f6:	80 40       	sbci	r24, 0x00	; 0
- 3f8:	e1 f7       	brne	.-8      	; 0x3f2 <main+0x74>
- 3fa:	00 c0       	rjmp	.+0      	; 0x3fc <main+0x7e>
- 3fc:	00 00       	nop
+ 406:	ff ef       	ldi	r31, 0xFF	; 255
+ 408:	21 ee       	ldi	r18, 0xE1	; 225
+ 40a:	84 e0       	ldi	r24, 0x04	; 4
+ 40c:	f1 50       	subi	r31, 0x01	; 1
+ 40e:	20 40       	sbci	r18, 0x00	; 0
+ 410:	80 40       	sbci	r24, 0x00	; 0
+ 412:	e1 f7       	brne	.-8      	; 0x40c <__FUSE_REGION_LENGTH__+0xc>
+ 414:	00 c0       	rjmp	.+0      	; 0x416 <__FUSE_REGION_LENGTH__+0x16>
+ 416:	00 00       	nop
 }
 inline void beep_disable(void) {
 	TIMSK0 &= ~(1 << OCF0A);
- 3fe:	f7 01       	movw	r30, r14
- 400:	80 81       	ld	r24, Z
- 402:	8d 7f       	andi	r24, 0xFD	; 253
- 404:	80 83       	st	Z, r24
+ 418:	f7 01       	movw	r30, r14
+ 41a:	80 81       	ld	r24, Z
+ 41c:	8d 7f       	andi	r24, 0xFD	; 253
+ 41e:	80 83       	st	Z, r24
 	while(!RF.done);
 }
 
 inline void RFID_ready(void) {
 	/* RFID buffer is ready to be refilled*/
 	RF.done = false;
- 406:	f8 01       	movw	r30, r16
- 408:	12 8a       	std	Z+18, r1	; 0x12
- 40a:	d2 cf       	rjmp	.-92     	; 0x3b0 <main+0x32>
+ 420:	f8 01       	movw	r30, r16
+ 422:	12 8a       	std	Z+18, r1	; 0x12
+ 424:	ff ef       	ldi	r31, 0xFF	; 255
+ 426:	23 ed       	ldi	r18, 0xD3	; 211
+ 428:	80 e3       	ldi	r24, 0x30	; 48
+ 42a:	f1 50       	subi	r31, 0x01	; 1
+ 42c:	20 40       	sbci	r18, 0x00	; 0
+ 42e:	80 40       	sbci	r24, 0x00	; 0
+ 430:	e1 f7       	brne	.-8      	; 0x42a <__FUSE_REGION_LENGTH__+0x2a>
+ 432:	00 c0       	rjmp	.+0      	; 0x434 <__FUSE_REGION_LENGTH__+0x34>
+ 434:	00 00       	nop
+ 436:	c2 cf       	rjmp	.-124    	; 0x3bc <main+0x2a>
 
-0000040c <_exit>:
- 40c:	f8 94       	cli
+00000438 <_exit>:
+ 438:	f8 94       	cli
 
-0000040e <__stop_program>:
- 40e:	ff cf       	rjmp	.-2      	; 0x40e <__stop_program>
+0000043a <__stop_program>:
+ 43a:	ff cf       	rjmp	.-2      	; 0x43a <__stop_program>
