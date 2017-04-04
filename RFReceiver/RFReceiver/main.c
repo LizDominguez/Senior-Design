@@ -13,6 +13,8 @@
 #define SIZE 16
 #define ICP PIND6
 
+int16_t sine[50] = {576,639,700,758,812,862,906,943,974,998,1014,1022,1022,1014,998,974,943,906,862,812,758,700,639,576,512,447,384,323,265,211,161,117,80,49,25,9,1,1,9,25,49,80,117,161,211,265,323,384,447,511};
+
 
 /************************************************************************* LCD Configuration *************************************************************/
 
@@ -206,22 +208,57 @@ ISR(USART0_RX_vect){
 
 }
 
-/*************************************************************** Beeper Initialization **********************************************************/
-void beeper_init(void) {
-	DDRB |= (1 << PORTB3);
-	TCCR0A |= (1 << WGM01);
-	TCCR0B |= (1 << CS02);		//N=256
-	OCR0A = 5;					// 3kHz = F_CPU/(2*N*TOP), TOP=5
-	PORTB &= ~(1 << PORTB3);
+/*************************************************************** SPI Initialization **********************************************************/
+volatile uint32_t adcVal = 0;
+volatile uint32_t freq = 1;
+
+void inline SPI_init()
+{
+	DDRB |= (1<<PORTB5 | 1<<PORTB7 | 1<<PORTB4); 	// initializing ss, sck, and mosi pins
+	SPSR |= 1<<SPI2X;
+	SPCR |= (1<<SPE | 1<<MSTR); 			//enabling master mode, frequency 2 mhz
+	PORTB |= 1<<PORTB4; 					//ss high
 }
-ISR(TIMER0_COMPA_vect) {
-	PORTB  ^= (1 << PORTB3);
+
+void dac_write(uint16_t val)
+{
+	PORTB &= ~(1<<PORTB4); 		//turn off ss
+
+	val = val << 2;
+	val |= (0b1001 << 12);
+
+	SPDR = val >> 8; 		//upper bytes
+
+	while(!(SPSR & 1<<SPIF)); //wait til upper bytes done
+
+	SPDR = (0xFF & val); 		//lower bytes
+
+	while(!(SPSR & 1<<SPIF)); //wait til lower bytes done
+
+	PORTB |= 1<<PORTB4; 	//turn on ss
 }
-inline void beep_enable(void) {
-	TIMSK0 |= 1 << OCF0A;
+
+void frequency(uint32_t frequency)
+{
+	
+	if (frequency == 0) {
+		for(volatile uint16_t i = 0; i < 1; i++);	//800 Hz
+	}
+	
+	else if (frequency == 1) {
+		for(volatile uint16_t i = 0; i < 2; i++);	//1 kHz
+	}
+		
+
 }
-inline void beep_disable(void) {
-	TIMSK0 &= ~(1 << OCF0A);
+
+void output_waveform(uint32_t value, uint16_t arr[])
+{
+	for (int i = 0; i < 50; i++)		//iterating through wave lookup table
+	{
+		dac_write(arr[i]);
+		frequency(value);
+	}
 }
 
 /***************************************************************** 125kHz wave **********************************************************/
@@ -270,9 +307,10 @@ int main( void )
 
 	lcd_init();
 	USART_init();
-	beeper_init();
 	frequency_init();
 	input_capture_init();
+	SPI_init();
+	
 	sei();
 
 	
@@ -290,11 +328,13 @@ int main( void )
 		}
 		
 		USART_send('\n');
-		beep_enable();
-		_delay_ms(200);
-		beep_disable();	
+		for(uint8_t i = 0; i < 150; i++) {
+			output_waveform(freq, (uint16_t *)sine);
+		}
+		_delay_ms(3000);
 		RFID_ready();
-		_delay_ms(2000);
+
+		
 	}
 	
 	return 0;
