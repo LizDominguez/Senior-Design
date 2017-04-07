@@ -175,28 +175,22 @@ unsigned char USART_receive(void)
 {
 	// Wait for data to be received
 	while(~(UCSR0A) & (1<<RXC0));
-
 	//Get and return received data from buffer 
 	return UDR0;
 }
-
 struct {
 	//RFID buffer 
 	volatile char ID[SIZE + 1];
 	volatile uint8_t index;
 	volatile bool done;
 }RF;
-
 inline void RFID_done(void) {
 	while(!RF.done);
 }
-
 inline void RFID_ready(void) {
 	//RFID buffer is ready to be refilled
 	RF.done = false;
 }
-
-
 ISR(USART0_RX_vect){
 	//load RFID into buffer 
 	char num = USART_receive();
@@ -208,9 +202,8 @@ ISR(USART0_RX_vect){
 		}
 	}
 	USART_send(num);
-
 }
-
+*/
 
 /*************************************************************** SPI to DAC **********************************************************/
 volatile uint32_t adcVal = 0;
@@ -275,12 +268,12 @@ void frequency_init(void) {
 
 /****************************************************** Manchester Decoding **********************************************************/
 
-//volatile int i = 0;
+volatile int i = 0;
+unsigned int count = 0;
 
 struct {
-	volatile int8_t data_in;
-	volatile bool new_data;
-	int8_t buff[10];
+	int buff[500];
+	int tag;
 }RFID;
 
 
@@ -295,43 +288,23 @@ void interr_init(void) {
 
 ISR(INT0_vect) {
 	
-	RFID.new_data = false;
-	
-	_delay_us(350);
-	
-	RFID.data_in = ((PIND & 0x04)>>2);
-	RFID.new_data = true;
-	
-	EIFR = 1 << INTF0; //clear flag
-	
-	/*
 	_delay_us(350);
 	RFID.buff[i] = ((PIND & 0x04)>>2);
-	i++;
-	EIFR = 1 << INTF0; //clear flag
-	*/
-}
-
-bool done_decoding(void) {
 	
-	while(!RFID.new_data); //wait until there is a new bit
-	
-	uint8_t bit = RFID.data_in;	
-	
-	while(bit < 9);	//wait until end of start communication bits
-	
-	
-}
-
-
-
-char formatHex(int8_t i) {
-	if ( 0 <= i && i <= 9){
-		return i + '0';
-		} else {
-		return (i - 10) + 'A';
+	if (RFID.buff[i] == 1) {	
+		count += RFID.buff[i];
 	}
+	
+	else count = 0;
+		
+	if(i < 499) i++;
+	else i = 0;
+	
+	EIFR = 1 << INTF0; //clear flag
+	
 }
+
+
 
 int main( void )
 {
@@ -348,24 +321,15 @@ int main( void )
 	
 	while (1) {
 		
-		/*
-			 lcd_instruction(clear);
-			 lcd_string((uint8_t *)"Ready to Receive");
-			 lcd_instruction(setCursor | lineTwo);
-			 
-			 if(!done_decoding()) continue;
-			
-			for (int i = 0; i < 10; i++) {
-					lcd_char(formatHex(RFID.buff[i]));
-					_delay_us(50);
-				}
-		*/		
+		if(i == 499){
+			cli();
+		}		
+		
 		
 	/*	for(uint8_t i = 0; i < 150; i++) {
 			output_waveform(freq, (uint16_t *)sine);
 		}
 		_delay_ms(3000);
-
 		*/
 	
 
@@ -376,7 +340,4 @@ int main( void )
 
 
 }
-
-
-
 
