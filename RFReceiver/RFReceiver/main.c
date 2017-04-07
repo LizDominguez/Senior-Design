@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <util/delay.h>
-#include <avr/sfr_defs.h>
+#include <string.h>
 
 #define BAUD 9600
 #define BAUDRATE (((F_CPU / (BAUD * 16UL))) - 1)
@@ -272,8 +272,10 @@ volatile int i = 0;
 unsigned int count = 0;
 
 struct {
-	int buff[500];
-	int tag;
+	char buff[500];
+	unsigned int tag;
+	unsigned int index;
+	bool flag;
 }RFID;
 
 
@@ -291,20 +293,43 @@ ISR(INT0_vect) {
 	_delay_us(350);
 	RFID.buff[i] = ((PIND & 0x04)>>2);
 	
-	if (RFID.buff[i] == 1) {	
-		count += RFID.buff[i];
+	if (RFID.buff[i] == 1) {		
+		count += RFID.buff[i];	
 	}
+		
+	else count = 0;	
 	
-	else count = 0;
+	if(count == 8 && RFID.flag == false) {
+		RFID.index = i-1;
+		RFID.flag = true;
+		}
 		
 	if(i < 499) i++;
-	else i = 0;
+	
+	else {
+		i = 0;
+		RFID.flag = false;
+	}
 	
 	EIFR = 1 << INTF0; //clear flag
 	
 }
 
-
+void find_tag(void){
+	
+	if(i == 498){
+		
+		for(int j = 0; j <56; j++){
+			RFID.tag += RFID.buff[RFID.index + j];
+			
+			if (j == 55){
+				cli();
+			}
+		}
+	
+	}
+	
+}
 
 int main( void )
 {
@@ -320,11 +345,8 @@ int main( void )
 	sei();
 	
 	while (1) {
-		
-		if(i == 499){
-			cli();
-		}		
-		
+			
+		find_tag();
 		
 	/*	for(uint8_t i = 0; i < 150; i++) {
 			output_waveform(freq, (uint16_t *)sine);
@@ -340,4 +362,3 @@ int main( void )
 
 
 }
-
