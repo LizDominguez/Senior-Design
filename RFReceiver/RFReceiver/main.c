@@ -258,6 +258,13 @@ void output_waveform(uint32_t value, uint16_t arr[])
 	}
 }
 
+void beep(void) {
+	
+	for(uint8_t i = 0; i < 150; i++) {
+		output_waveform(freq, (uint16_t *)sine);
+	}
+}
+
 /***************************************************************** 125kHz wave **********************************************************/
 void frequency_init(void) {
 	DDRD |= (1 << PORTD7);
@@ -278,6 +285,10 @@ struct {
 	bool flag;
 }RFID;
 
+char card1[] = {0x32, 0x43, 0x30, 0x30, 0x41, 0x43, 0x36, 0x39, 0x33, 0x45};
+char card2[] = {0x33, 0x31, 0x30, 0x30, 0x33, 0x37, 0x44, 0x39, 0x33, 0x44};
+char card3[] = {0x36, 0x46, 0x30, 0x30, 0x35, 0x43, 0x41, 0x44, 0x36, 0x30};
+
 
 void interr_init(void) {
 	DDRD &= ~(1 << PIND2);		//Receiver input
@@ -291,6 +302,7 @@ void interr_init(void) {
 ISR(INT0_vect) {
 	
 	_delay_us(350);
+	
 	RFID.buff[i] = ((PIND & 0x04)>>2);
 	
 	if (RFID.buff[i] == 1) {		
@@ -309,26 +321,49 @@ ISR(INT0_vect) {
 	else {
 		i = 0;
 		RFID.flag = false;
+		cli();
 	}
 	
 	EIFR = 1 << INTF0; //clear flag
 	
 }
 
-void find_tag(void){
-	
+bool found_tag(void){
+
 	if(i == 499){
-	RFID.tag = 0;	
+		RFID.tag = 0;	
+		
 		for(int j = 11; j <51; j++){
 			RFID.tag += RFID.buff[RFID.index + j];
 			
 			if (j == 50){
-				cli();
+				
+				lcd_instruction(clear);
+				
+				switch(RFID.tag){
+					case 31:
+					lcd_string((uint8_t *) card1);
+					break;
+					
+					case 32:
+					lcd_string((uint8_t *) card2);
+					break;
+					
+					case 33:
+					lcd_string((uint8_t *) card3);
+					break;
+					
+				}
+				
+				
+				return true;
 
 			}
 		}
 	
 	}
+	
+	return false;
 	
 }
 
@@ -346,15 +381,10 @@ int main( void )
 	sei();
 	
 	while (1) {
-			
-		find_tag();
 		
-	/*	for(uint8_t i = 0; i < 150; i++) {
-			output_waveform(freq, (uint16_t *)sine);
-		}
-		_delay_ms(3000);
-		*/
-	
+		if(!found_tag()) continue;
+		sei();
+		beep();
 
 		
 	}
