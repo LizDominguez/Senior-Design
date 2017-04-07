@@ -321,7 +321,6 @@ ISR(INT0_vect) {
 	else {
 		i = 0;
 		RFID.flag = false;
-		cli();
 	}
 	
 	EIFR = 1 << INTF0; //clear flag
@@ -332,29 +331,34 @@ bool found_tag(void){
 
 	if(i == 499){
 		RFID.tag = 0;	
-		
 		for(int j = 11; j <51; j++){
 			RFID.tag += RFID.buff[RFID.index + j];
 			
 			if (j == 50){
 				
-				lcd_instruction(clear);
-				
 				switch(RFID.tag){
 					case 31:
-					lcd_string((uint8_t *) card1);
+					cli();
+					lcd_instruction(clear);
+					lcd_string((uint8_t *) "2C00AC693E");
+					_delay_ms(2000);
 					break;
 					
 					case 32:
-					lcd_string((uint8_t *) card2);
+					cli();
+					lcd_instruction(clear);
+					lcd_string((uint8_t *) "310037D93D");
+					_delay_ms(2000);
 					break;
 					
 					case 33:
-					lcd_string((uint8_t *) card3);
+					cli();
+					lcd_instruction(clear);
+					lcd_string((uint8_t *) "6F005CAD60");
+					_delay_ms(2000);
 					break;
 					
 				}
-				
 				
 				return true;
 
@@ -381,11 +385,9 @@ int main( void )
 	sei();
 	
 	while (1) {
-		
+
 		if(!found_tag()) continue;
 		sei();
-		beep();
-
 		
 	}
 	
