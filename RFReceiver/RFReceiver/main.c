@@ -334,7 +334,7 @@ bool found_tag(void){
 		for(int j = 11; j <51; j++){
 			RFID.tag += RFID.buff[RFID.index + j];
 			
-			if (j == 50){
+			if (j == 50 && RFID.flag == false){
 				
 				switch(RFID.tag){
 					case 31:
@@ -342,7 +342,7 @@ bool found_tag(void){
 					lcd_instruction(clear);
 					lcd_string((uint8_t *) "2C00AC693E");
 					beep();
-					_delay_ms(4000);
+					_delay_ms(3000);
 					break;
 					
 					case 32:
@@ -350,7 +350,7 @@ bool found_tag(void){
 					lcd_instruction(clear);
 					lcd_string((uint8_t *) "310037D93D");
 					beep();
-					_delay_ms(4000);
+					_delay_ms(3000);
 					break;
 					
 					case 33:
@@ -358,7 +358,7 @@ bool found_tag(void){
 					lcd_instruction(clear);
 					lcd_string((uint8_t *) "6F005CAD60");
 					beep();
-					_delay_ms(4000);
+					_delay_ms(3000);
 					break;
 					
 				}
@@ -368,7 +368,7 @@ bool found_tag(void){
 		}
 	
 	}
-	
+
 	return false;
 	
 }
@@ -383,12 +383,11 @@ int main( void )
 	interr_init();
 	SPI_init();
 
-	
 	sei();
 	
 	while (1) {
-
-		_delay_us(300);
+		
+		
 		if(!found_tag()) continue;
 		sei();
 		
