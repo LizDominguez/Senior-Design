@@ -299,8 +299,8 @@ ISR(INT0_vect) {
 		
 	else count = 0;	
 	
-	if(count == 8 && RFID.flag == false) {
-		RFID.index = i-1;
+	if(count == 9 && RFID.flag == false) {
+		RFID.index = i+1;
 		RFID.flag = true;
 		}
 		
@@ -317,13 +317,14 @@ ISR(INT0_vect) {
 
 void find_tag(void){
 	
-	if(i == 498){
-		
-		for(int j = 0; j <56; j++){
+	if(i == 499){
+	RFID.tag = 0;	
+		for(int j = 11; j <51; j++){
 			RFID.tag += RFID.buff[RFID.index + j];
 			
-			if (j == 55){
+			if (j == 50){
 				cli();
+
 			}
 		}
 	

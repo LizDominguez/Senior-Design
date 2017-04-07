@@ -3,31 +3,31 @@ RFReceiver.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000000  00800100  00800100  000003ec  2**0
+  0 .data         00000000  00800100  00800100  000003e4  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         00000378  00000000  00000000  00000074  2**1
+  1 .text         00000370  00000000  00000000  00000074  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          000001fd  00800100  00800100  000003ec  2**0
+  2 .bss          000001fd  00800100  00800100  000003e4  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  000003ec  2**0
+  3 .comment      00000030  00000000  00000000  000003e4  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  0000041c  2**2
+  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000414  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 00000090  00000000  00000000  0000045c  2**0
+  5 .debug_aranges 00000090  00000000  00000000  00000454  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   000009b4  00000000  00000000  000004ec  2**0
+  6 .debug_info   000009b4  00000000  00000000  000004e4  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 000002f9  00000000  00000000  00000ea0  2**0
+  7 .debug_abbrev 000002f9  00000000  00000000  00000e98  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   0000057d  00000000  00000000  00001199  2**0
+  8 .debug_line   0000057d  00000000  00000000  00001191  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  0000017c  00000000  00000000  00001718  2**2
+  9 .debug_frame  0000017c  00000000  00000000  00001710  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000279  00000000  00000000  00001894  2**0
+ 10 .debug_str    00000279  00000000  00000000  0000188c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    000003ff  00000000  00000000  00001b0d  2**0
+ 11 .debug_loc    000003ff  00000000  00000000  00001b05  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000080  00000000  00000000  00001f0c  2**0
+ 12 .debug_ranges 00000080  00000000  00000000  00001f04  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -77,7 +77,7 @@ Disassembly of section .text:
   88:	11 e0       	ldi	r17, 0x01	; 1
   8a:	a0 e0       	ldi	r26, 0x00	; 0
   8c:	b1 e0       	ldi	r27, 0x01	; 1
-  8e:	e8 e7       	ldi	r30, 0x78	; 120
+  8e:	e0 e7       	ldi	r30, 0x70	; 112
   90:	f3 e0       	ldi	r31, 0x03	; 3
   92:	02 c0       	rjmp	.+4      	; 0x98 <__do_copy_data+0x10>
   94:	05 90       	lpm	r0, Z+
@@ -99,8 +99,8 @@ Disassembly of section .text:
   a8:	ad 3f       	cpi	r26, 0xFD	; 253
   aa:	b2 07       	cpc	r27, r18
   ac:	e1 f7       	brne	.-8      	; 0xa6 <.do_clear_bss_loop>
-  ae:	0e 94 a4 01 	call	0x348	; 0x348 <main>
-  b2:	0c 94 ba 01 	jmp	0x374	; 0x374 <_exit>
+  ae:	0e 94 a0 01 	call	0x340	; 0x340 <main>
+  b2:	0c 94 b6 01 	jmp	0x36c	; 0x36c <_exit>
 
 000000b6 <__bad_interrupt>:
   b6:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -360,8 +360,8 @@ ISR(INT0_vect) {
 		
 	else count = 0;	
 	
-	if(count == 8 && RFID.flag == false) {
- 27a:	08 97       	sbiw	r24, 0x08	; 8
+	if(count == 9 && RFID.flag == false) {
+ 27a:	09 97       	sbiw	r24, 0x09	; 9
  27c:	31 f0       	breq	.+12     	; 0x28a <__vector_1+0x7a>
  27e:	15 c0       	rjmp	.+42     	; 0x2aa <__vector_1+0x9a>
 	
@@ -374,14 +374,14 @@ ISR(INT0_vect) {
  284:	10 92 00 01 	sts	0x0100, r1	; 0x800100 <__data_end>
  288:	10 c0       	rjmp	.+32     	; 0x2aa <__vector_1+0x9a>
 	
-	if(count == 8 && RFID.flag == false) {
+	if(count == 9 && RFID.flag == false) {
  28a:	80 91 fc 02 	lds	r24, 0x02FC	; 0x8002fc <RFID+0x1f8>
  28e:	81 11       	cpse	r24, r1
  290:	0c c0       	rjmp	.+24     	; 0x2aa <__vector_1+0x9a>
-		RFID.index = i-1;
+		RFID.index = i+1;
  292:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <i>
  296:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <i+0x1>
- 29a:	01 97       	sbiw	r24, 0x01	; 1
+ 29a:	01 96       	adiw	r24, 0x01	; 1
  29c:	90 93 fb 02 	sts	0x02FB, r25	; 0x8002fb <RFID+0x1f7>
  2a0:	80 93 fa 02 	sts	0x02FA, r24	; 0x8002fa <RFID+0x1f6>
 		RFID.flag = true;
@@ -430,121 +430,109 @@ ISR(INT0_vect) {
 
 void find_tag(void){
 	
-	if(i == 498){
+	if(i == 499){
  2f0:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <i>
  2f4:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <i+0x1>
- 2f8:	82 3f       	cpi	r24, 0xF2	; 242
+ 2f8:	83 3f       	cpi	r24, 0xF3	; 243
  2fa:	91 40       	sbci	r25, 0x01	; 1
- 2fc:	21 f5       	brne	.+72     	; 0x346 <find_tag+0x56>
- 2fe:	0d c0       	rjmp	.+26     	; 0x31a <find_tag+0x2a>
- 300:	90 93 f9 02 	sts	0x02F9, r25	; 0x8002f9 <RFID+0x1f5>
- 304:	80 93 f8 02 	sts	0x02F8, r24	; 0x8002f8 <RFID+0x1f4>
-		
-		for(int j = 0; j <56; j++){
+ 2fc:	01 f5       	brne	.+64     	; 0x33e <find_tag+0x4e>
+	RFID.tag = 0;	
+		for(int j = 11; j <51; j++){
 			RFID.tag += RFID.buff[RFID.index + j];
+ 2fe:	40 91 fa 02 	lds	r20, 0x02FA	; 0x8002fa <RFID+0x1f6>
+ 302:	50 91 fb 02 	lds	r21, 0x02FB	; 0x8002fb <RFID+0x1f7>
+ 306:	fa 01       	movw	r30, r20
+ 308:	ec 5f       	subi	r30, 0xFC	; 252
+ 30a:	fe 4f       	sbci	r31, 0xFE	; 254
+ 30c:	83 85       	ldd	r24, Z+11	; 0x0b
+ 30e:	90 e0       	ldi	r25, 0x00	; 0
+ 310:	90 93 f9 02 	sts	0x02F9, r25	; 0x8002f9 <RFID+0x1f5>
+ 314:	80 93 f8 02 	sts	0x02F8, r24	; 0x8002f8 <RFID+0x1f4>
+ 318:	fa 01       	movw	r30, r20
+ 31a:	e0 5f       	subi	r30, 0xF0	; 240
+ 31c:	fe 4f       	sbci	r31, 0xFE	; 254
+ 31e:	49 5c       	subi	r20, 0xC9	; 201
+ 320:	5e 4f       	sbci	r21, 0xFE	; 254
+ 322:	06 c0       	rjmp	.+12     	; 0x330 <find_tag+0x40>
+ 324:	90 93 f9 02 	sts	0x02F9, r25	; 0x8002f9 <RFID+0x1f5>
+ 328:	80 93 f8 02 	sts	0x02F8, r24	; 0x8002f8 <RFID+0x1f4>
 			
-			if (j == 55){
+			if (j == 50){
 				cli();
- 308:	f8 94       	cli
- 30a:	08 95       	ret
+ 32c:	f8 94       	cli
+ 32e:	08 95       	ret
 void find_tag(void){
 	
-	if(i == 498){
-		
-		for(int j = 0; j <56; j++){
+	if(i == 499){
+	RFID.tag = 0;	
+		for(int j = 11; j <51; j++){
 			RFID.tag += RFID.buff[RFID.index + j];
- 30c:	21 91       	ld	r18, Z+
- 30e:	82 0f       	add	r24, r18
- 310:	91 1d       	adc	r25, r1
-			
-			if (j == 55){
- 312:	e4 17       	cp	r30, r20
- 314:	f5 07       	cpc	r31, r21
- 316:	d1 f7       	brne	.-12     	; 0x30c <find_tag+0x1c>
- 318:	f3 cf       	rjmp	.-26     	; 0x300 <find_tag+0x10>
-void find_tag(void){
-	
-	if(i == 498){
-		
-		for(int j = 0; j <56; j++){
-			RFID.tag += RFID.buff[RFID.index + j];
- 31a:	40 91 fa 02 	lds	r20, 0x02FA	; 0x8002fa <RFID+0x1f6>
- 31e:	50 91 fb 02 	lds	r21, 0x02FB	; 0x8002fb <RFID+0x1f7>
- 322:	fa 01       	movw	r30, r20
- 324:	ec 5f       	subi	r30, 0xFC	; 252
- 326:	fe 4f       	sbci	r31, 0xFE	; 254
- 328:	20 81       	ld	r18, Z
- 32a:	e8 ef       	ldi	r30, 0xF8	; 248
- 32c:	f2 e0       	ldi	r31, 0x02	; 2
- 32e:	80 81       	ld	r24, Z
- 330:	91 81       	ldd	r25, Z+1	; 0x01
+ 330:	21 91       	ld	r18, Z+
  332:	82 0f       	add	r24, r18
  334:	91 1d       	adc	r25, r1
- 336:	91 83       	std	Z+1, r25	; 0x01
- 338:	80 83       	st	Z, r24
- 33a:	fa 01       	movw	r30, r20
- 33c:	eb 5f       	subi	r30, 0xFB	; 251
- 33e:	fe 4f       	sbci	r31, 0xFE	; 254
- 340:	44 5c       	subi	r20, 0xC4	; 196
- 342:	5e 4f       	sbci	r21, 0xFE	; 254
- 344:	e3 cf       	rjmp	.-58     	; 0x30c <find_tag+0x1c>
- 346:	08 95       	ret
+			
+			if (j == 50){
+ 336:	e4 17       	cp	r30, r20
+ 338:	f5 07       	cpc	r31, r21
+ 33a:	d1 f7       	brne	.-12     	; 0x330 <find_tag+0x40>
+ 33c:	f3 cf       	rjmp	.-26     	; 0x324 <find_tag+0x34>
+ 33e:	08 95       	ret
 
-00000348 <main>:
+00000340 <main>:
 
 int main( void )
 {
 
 	 
 	lcd_init();
- 348:	0e 94 8c 00 	call	0x118	; 0x118 <lcd_init>
+ 340:	0e 94 8c 00 	call	0x118	; 0x118 <lcd_init>
 	USART_init();
- 34c:	0e 94 e2 00 	call	0x1c4	; 0x1c4 <USART_init>
+ 344:	0e 94 e2 00 	call	0x1c4	; 0x1c4 <USART_init>
 	frequency_init();
- 350:	0e 94 f2 00 	call	0x1e4	; 0x1e4 <frequency_init>
+ 348:	0e 94 f2 00 	call	0x1e4	; 0x1e4 <frequency_init>
 	interr_init();
- 354:	0e 94 01 01 	call	0x202	; 0x202 <interr_init>
+ 34c:	0e 94 01 01 	call	0x202	; 0x202 <interr_init>
 volatile uint32_t adcVal = 0;
 volatile uint32_t freq = 1;
 
 void inline SPI_init()
 {
 	DDRB |= (1<<PORTB5 | 1<<PORTB7 | 1<<PORTB4); 	// initializing ss, sck, and mosi pins
- 358:	84 b1       	in	r24, 0x04	; 4
- 35a:	80 6b       	ori	r24, 0xB0	; 176
- 35c:	84 b9       	out	0x04, r24	; 4
+ 350:	84 b1       	in	r24, 0x04	; 4
+ 352:	80 6b       	ori	r24, 0xB0	; 176
+ 354:	84 b9       	out	0x04, r24	; 4
 	SPSR |= 1<<SPI2X;
- 35e:	8d b5       	in	r24, 0x2d	; 45
- 360:	81 60       	ori	r24, 0x01	; 1
- 362:	8d bd       	out	0x2d, r24	; 45
+ 356:	8d b5       	in	r24, 0x2d	; 45
+ 358:	81 60       	ori	r24, 0x01	; 1
+ 35a:	8d bd       	out	0x2d, r24	; 45
 	SPCR |= (1<<SPE | 1<<MSTR); 			//enabling master mode, frequency 2 mhz
- 364:	8c b5       	in	r24, 0x2c	; 44
- 366:	80 65       	ori	r24, 0x50	; 80
- 368:	8c bd       	out	0x2c, r24	; 44
+ 35c:	8c b5       	in	r24, 0x2c	; 44
+ 35e:	80 65       	ori	r24, 0x50	; 80
+ 360:	8c bd       	out	0x2c, r24	; 44
 	PORTB |= 1<<PORTB4; 					//ss high
- 36a:	2c 9a       	sbi	0x05, 4	; 5
+ 362:	2c 9a       	sbi	0x05, 4	; 5
 	frequency_init();
 	interr_init();
 	SPI_init();
 
 	
 	sei();
- 36c:	78 94       	sei
+ 364:	78 94       	sei
 	
 	while (1) {
 			
 		find_tag();
- 36e:	0e 94 78 01 	call	0x2f0	; 0x2f0 <find_tag>
+ 366:	0e 94 78 01 	call	0x2f0	; 0x2f0 <find_tag>
 		_delay_ms(3000);
 		*/
 	
 
 		
 	}
- 372:	fd cf       	rjmp	.-6      	; 0x36e <main+0x26>
+ 36a:	fd cf       	rjmp	.-6      	; 0x366 <main+0x26>
 
-00000374 <_exit>:
- 374:	f8 94       	cli
+0000036c <_exit>:
+ 36c:	f8 94       	cli
 
-00000376 <__stop_program>:
- 376:	ff cf       	rjmp	.-2      	; 0x376 <__stop_program>
+0000036e <__stop_program>:
+ 36e:	ff cf       	rjmp	.-2      	; 0x36e <__stop_program>
