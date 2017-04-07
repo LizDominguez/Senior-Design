@@ -341,25 +341,27 @@ bool found_tag(void){
 					cli();
 					lcd_instruction(clear);
 					lcd_string((uint8_t *) "2C00AC693E");
-					_delay_ms(2000);
+					beep();
+					_delay_ms(4000);
 					break;
 					
 					case 32:
 					cli();
 					lcd_instruction(clear);
 					lcd_string((uint8_t *) "310037D93D");
-					_delay_ms(2000);
+					beep();
+					_delay_ms(4000);
 					break;
 					
 					case 33:
 					cli();
 					lcd_instruction(clear);
 					lcd_string((uint8_t *) "6F005CAD60");
-					_delay_ms(2000);
+					beep();
+					_delay_ms(4000);
 					break;
 					
 				}
-				
 				return true;
 
 			}
@@ -386,6 +388,7 @@ int main( void )
 	
 	while (1) {
 
+		_delay_us(300);
 		if(!found_tag()) continue;
 		sei();
 		
