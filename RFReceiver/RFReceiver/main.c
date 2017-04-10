@@ -402,6 +402,12 @@ int main( void )
 			_delay_us(50);
 		}
 		
+		USART_send(0x0A);
+		for (int i = 0; i < 10; i++) {
+			USART_send(formatHex(RFID.buff[i]));
+		}
+		USART_send(0x0D);
+		
 		beep();
 		_delay_ms(3000);
 		sei();
