@@ -10,8 +10,6 @@
 
 #define BAUD 9600
 #define BAUDRATE (((F_CPU / (BAUD * 16UL))) - 1)
-#define RXD0 PIND0
-#define SIZE 16
 #define ICP PIND6
 
 int16_t sine[50] = {576,639,700,758,812,862,906,943,974,998,1014,1022,1022,1014,998,974,943,906,862,812,758,700,639,576,512,447,384,323,265,211,161,117,80,49,25,9,1,1,9,25,49,80,117,161,211,265,323,384,447,511};
@@ -275,15 +273,17 @@ void frequency_init(void) {
 
 /****************************************************** Manchester Decoding **********************************************************/
 
-volatile int i = 0;
-unsigned int count = 0;
+volatile uint8_t z;
+volatile uint8_t count;
 
 struct {
-	char buff[500];
-	unsigned int tag;
-	unsigned int index;
-	bool flag;
+	int8_t data[200];
+	volatile uint8_t index;
+	volatile bool ready;
+	int8_t buff[10];
+	
 }RFID;
+
 
 char card1[] = {0x32, 0x43, 0x30, 0x30, 0x41, 0x43, 0x36, 0x39, 0x33, 0x45};
 char card2[] = {0x33, 0x31, 0x30, 0x30, 0x33, 0x37, 0x44, 0x39, 0x33, 0x44};
@@ -300,77 +300,75 @@ void interr_init(void) {
 }
 
 ISR(INT0_vect) {
-	
+
 	_delay_us(350);
 	
-	RFID.buff[i] = ((PIND & 0x04)>>2);
+	RFID.data[z] = ((PIND & 0x04)>>2);
 	
-	if (RFID.buff[i] == 1) {		
-		count += RFID.buff[i];	
-	}
+	if (RFID.data[z] == 1) {
 		
-	else count = 0;	
-	
-	if(count == 9 && RFID.flag == false) {
-		RFID.index = i+1;
-		RFID.flag = true;
+		count += RFID.data[z];
+
+		if(count == 9 && RFID.ready == false) {		//once the counter is 9, we save the index
+				RFID.index = z;
+				RFID.ready = true;
 		}
 		
-	if(i < 499) i++;
-	
-	else {
-		i = 0;
-		RFID.flag = false;
 	}
+	else count = 0;	
 	
-	EIFR = 1 << INTF0; //clear flag
+	
+	if(z < 199) z++; 
+	else z = 0;
+	
+						
+	EIFR = 1 << INTF0;		//clear flag
 	
 }
 
-bool found_tag(void){
 
-	if(i == 499){
-		RFID.tag = 0;	
-		for(int j = 11; j <51; j++){
-			RFID.tag += RFID.buff[RFID.index + j];
-			
-			if (j == 50 && RFID.flag == false){
-				
-				switch(RFID.tag){
-					case 31:
-					cli();
-					lcd_instruction(clear);
-					lcd_string((uint8_t *) "2C00AC693E");
-					beep();
-					_delay_ms(3000);
-					break;
-					
-					case 32:
-					cli();
-					lcd_instruction(clear);
-					lcd_string((uint8_t *) "310037D93D");
-					beep();
-					_delay_ms(3000);
-					break;
-					
-					case 33:
-					cli();
-					lcd_instruction(clear);
-					lcd_string((uint8_t *) "6F005CAD60");
-					beep();
-					_delay_ms(3000);
-					break;
-					
-				}
-				return true;
 
-			}
-		}
+bool manchester_decode(void) {
 	
+	if (z == 199){
+		cli();
+		 int8_t col_parity[4] = {0};
+		 
+		 for (int8_t i = 0; i < 10; i++) {  //10 parity bits = 50 total iterations 
+			 
+			 volatile int8_t rfid_char = 0, row_parity = 0;
+			 
+			 for (int8_t j = 3; j >= 0; j--) {		
+				 int8_t decoded_bit = RFID.data[RFID.index]; //save each bit
+				 rfid_char += decoded_bit << j;				//shift 4 times to create 8 bit int
+				 RFID.index++;								//increment the index 4 times
+			 }
+			 
+			 RFID.buff[i] = rfid_char;			//save each character
+			 RFID.index++;							//increment the index to the parity bit (5x)
+			 row_parity += RFID.data[RFID.index];	//save the row parity bit
+		 }
+		 
+		 for (int8_t i = 3; i >= 0; i--) {	//final 4 parity bits
+			 col_parity[i] += RFID.data[RFID.index];
+			 RFID.index++;
+		 }
+		 
+		 int8_t stop_bit = RFID.data[RFID.index];
+		 if (stop_bit != 0) return false;
+		 RFID.index = 0;
+		 RFID.ready = false;
+		 return true;		
+	 }
+	 return false;
+}
+
+char formatHex(int8_t i) {
+	if ( 0 <= i && i <= 9){
+		return i + '0';
+		} else {
+		return (i - 10) + 'A';
 	}
-
-	return false;
-	
 }
 
 int main( void )
@@ -382,13 +380,25 @@ int main( void )
 	frequency_init();
 	interr_init();
 	SPI_init();
+	
+	lcd_instruction(clear);
+	lcd_string((uint8_t *)"Ready to Scan");
 
 	sei();
 	
 	while (1) {
 		
 		
-		if(!found_tag()) continue;
+		if(!manchester_decode()) continue;	
+		lcd_instruction(clear);
+		
+		for (int i = 0; i < 10; i++) {
+			lcd_char(formatHex(RFID.buff[i]));
+			_delay_us(50);
+		}
+		
+		beep();
+		_delay_ms(3000);
 		sei();
 		
 	}

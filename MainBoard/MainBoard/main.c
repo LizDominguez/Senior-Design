@@ -10,29 +10,7 @@
 
 #define BAUD 9600
 #define BAUDRATE (((F_CPU / (BAUD * 16UL))) - 1)
-#define RXD0 PIND0
-#define SIZE 12
 #define ICP PIND6
-#define REGISTERED_TAGS  3 
-#define IP_ADDRESS       "52.24.121.235" 
-
-#define CREADER_INDEX -1
-
-typedef enum {adopted, surrendered} dog_status;
-
-struct {
-	char tag[SIZE + 1]; //RFID Tag
-	dog_status status;
-}
-
-cards[REGISTERED_TAGS] = {
-	[0].tag = {0x00, 0x32, 0x43, 0x30, 0x30, 0x41, 0x43, 0x36, 0x39, 0x33, 0x45, 0x00, 0x00},
-	[0].status = surrendered,
-	[1].tag = {0x00, 0x33, 0x31, 0x30, 0x30, 0x33, 0x37, 0x44, 0x39, 0x33, 0x44, 0x00, 0x00},
-	[1].status = surrendered,
-	[2].tag = {0x00, 0x36, 0x46, 0x30, 0x30, 0x35, 0x43, 0x41, 0x44, 0x36, 0x30, 0x00, 0x00},
-	[2].status = surrendered
-};
 
 
 /********************************************************************** LCD Configuration ********************************************************************/
@@ -162,6 +140,21 @@ void lcd_write(uint8_t byte)
 
 /******************************************************************* RFID Configuration ********************************************************************/
 
+typedef enum {adopted, surrendered} dog_status;
+
+struct {
+	char tag[12 + 1];
+	dog_status status;
+}
+
+cards[3] = {
+	[0].tag = {0x00, 0x32, 0x43, 0x30, 0x30, 0x41, 0x43, 0x36, 0x39, 0x33, 0x45, 0x00, 0x00},
+	[0].status = surrendered,
+	[1].tag = {0x00, 0x33, 0x31, 0x30, 0x30, 0x33, 0x37, 0x44, 0x39, 0x33, 0x44, 0x00, 0x00},
+	[1].status = surrendered,
+	[2].tag = {0x00, 0x36, 0x46, 0x30, 0x30, 0x35, 0x43, 0x41, 0x44, 0x36, 0x30, 0x00, 0x00},
+	[2].status = surrendered
+};
 
 void USART_RF_init(void)
 {
@@ -198,7 +191,7 @@ void USART_RF_send(unsigned char data)
 
 struct {
 	/* RFID buffer */
-	volatile char ID[SIZE + 1];
+	volatile char ID[12 + 1];
 	volatile uint8_t index;
 	volatile bool done;
 }RF;
@@ -213,12 +206,12 @@ inline void RFID_ready(void) {
 }
 
 char * get_card_id(int8_t index) {
-	char * rfid = (index == CREADER_INDEX)? (char *) RF.ID : cards[index].tag;
+	char * rfid = (index == -1)? (char *) RF.ID : cards[index].tag;
 	return  (rfid + 1); 
 }
 
 int find_card(void) {
-	for (int i = 0; i < REGISTERED_TAGS; i++) {
+	for (int i = 0; i < 3; i++) {
 		if (strcmp(cards[i].tag + 1, (char *)(RF.ID + 1)) == 0) {
 			return i;
 		}
@@ -232,9 +225,9 @@ ISR(USART0_RX_vect) {
 	if (!RF.done) {
 
 	RF.ID[RF.index++] = c;
-	if (RF.index >= SIZE) { 
+	if (RF.index >= 12) { 
 		RF.index = 0;
-		RF.ID[SIZE - 1] = RF.ID[0] = 0; 
+		RF.ID[12 - 1] = RF.ID[0] = 0; 
 		RF.done = true; 
 	}
 	}
@@ -246,7 +239,7 @@ ISR(USART0_RX_vect) {
 #define ROW_SIZE 15
 #define COL_SIZE 52
 
-struct Wifi_buff {
+struct {
 	volatile char buffer[ROW_SIZE][COL_SIZE];
 	volatile uint8_t row_index;
 	volatile uint8_t col_index;
@@ -327,7 +320,7 @@ void upload_to_server(char * rfid, char action) {
 	}
 	
 	HTTP_request_buffer[20] = action; 
-	USART_Wifi_cmd("AT+CIPSTART=\"TCP\",\""IP_ADDRESS"\",80");
+	USART_Wifi_cmd("AT+CIPSTART=\"TCP\",\"""52.24.121.235""\",80");
 	_delay_ms(1000);
 	USART_Wifi_cmd("AT+CIPSEND=34");
 	_delay_ms(1000);
@@ -361,7 +354,7 @@ void USART_Wifi_init(void) {
 			continue;
 		}
 		
-		USART_Wifi_cmd("ATE0"); // disable Wifi echo
+		USART_Wifi_cmd("ATE0"); 
 		_delay_ms(500);
 		
 		if (!is_connected()) continue;       // restarting if wifi is not responding
@@ -402,18 +395,21 @@ void Scan_for_tag(void) {
 	int card_index = find_card();
 	
 	if (card_index < 0) { 
-		lcd_string((uint8_t *)"This card is"); //unregistered card scanned
-		lcd_instruction(setCursor | lineTwo);
-		lcd_string((uint8_t *)"not registered.");
+		lcd_string((uint8_t *)"This card is new"); 
 		_delay_ms(2000);
 		lcd_instruction(clear);
 		RFID_ready();
 		return;
 	}
 	
-	lcd_string((uint8_t *)"Dog");
-	lcd_char(card_index + '1');
+
+	lcd_string((uint8_t *)get_card_id(card_index));
+	lcd_instruction(setCursor | lineTwo);
+	
+	lcd_string((uint8_t *)"Dog is");
+	
 	RFID_ready();
+	
 	dog_status current_status = cards[card_index].status;
 	char status_to_upload = '?';
 	switch(current_status) {
@@ -429,9 +425,6 @@ void Scan_for_tag(void) {
 		break;
 	}
 	
-	lcd_instruction(setCursor | lineTwo);
-	lcd_string((uint8_t *)"ID: ");
-	lcd_string((uint8_t *)get_card_id(card_index));
 	upload_to_server(get_card_id(card_index), status_to_upload);
 	lcd_instruction(clear);
 	RFID_ready();
