@@ -280,6 +280,7 @@ volatile uint8_t second;
 struct {
 	int8_t data[400];
 	volatile unsigned int index;
+	volatile unsigned int index2;
 	volatile bool ready;
 	int8_t buff[10];
 	
@@ -314,12 +315,17 @@ ISR(INT0_vect) {
 				
 			if(second == 1)	{
 				RFID.index = z+1;
+			}
+			
+			else if (second == 2)
+			{
+				RFID.index2 = z+1;
 				RFID.ready = true;
 				count = 0;
 				second = 0;
 			}
 			
-			else second++;
+			second++;
 		}
 		
 	}
@@ -362,10 +368,14 @@ bool manchester_decode(void) {
 		 }
 		 
 		 int8_t stop_bit = RFID.data[RFID.index];
-		 if (stop_bit != 0) return false;
+		 if (stop_bit != 0){ 
+			 RFID.index = RFID.index2;
+			 return false;
+			 }
 			RFID.ready = false;
 			return true;		
 	 }
+	 
 	 return false;
 }
 
@@ -379,8 +389,7 @@ char formatHex(int8_t i) {
 
 int main( void )
 {
-
-	 
+ 
 	lcd_init();
 	USART_init();
 	frequency_init();

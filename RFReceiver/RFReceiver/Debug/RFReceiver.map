@@ -10,7 +10,7 @@ c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/..
 Allocating common symbols
 Common symbol       size              file
 
-RFID                0x19d             main.o
+RFID                0x19f             main.o
 second              0x1               main.o
 z                   0x2               main.o
 count               0x1               main.o
@@ -22,8 +22,6 @@ Discarded input sections
  .text          0x00000000        0x0 main.o
  .data          0x00000000        0x0 main.o
  .bss           0x00000000        0x0 main.o
- .text.USART_send
-                0x00000000       0x10 main.o
  .data.card3    0x00000000        0xa main.o
  .data.card2    0x00000000        0xa main.o
  .data.card1    0x00000000        0xa main.o
@@ -201,7 +199,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x5ae
+.text           0x00000000      0x612
  *(.vectors)
  .vectors       0x00000000       0x7c C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.0.106/gcc/dev/atmega644pa/avr5/crtatmega644pa.o
                 0x00000000                __vector_default
@@ -310,39 +308,42 @@ END GROUP
  .text.USART_init
                 0x00000204       0x20 main.o
                 0x00000204                USART_init
+ .text.USART_send
+                0x00000224       0x10 main.o
+                0x00000224                USART_send
  .text.dac_write
-                0x00000224       0x20 main.o
-                0x00000224                dac_write
+                0x00000234       0x20 main.o
+                0x00000234                dac_write
  .text.frequency
-                0x00000244       0x6c main.o
-                0x00000244                frequency
+                0x00000254       0x6c main.o
+                0x00000254                frequency
  .text.output_waveform
-                0x000002b0       0x44 main.o
-                0x000002b0                output_waveform
- .text.beep     0x000002f4       0x24 main.o
-                0x000002f4                beep
+                0x000002c0       0x44 main.o
+                0x000002c0                output_waveform
+ .text.beep     0x00000304       0x24 main.o
+                0x00000304                beep
  .text.frequency_init
-                0x00000318       0x1e main.o
-                0x00000318                frequency_init
+                0x00000328       0x1e main.o
+                0x00000328                frequency_init
  .text.interr_init
-                0x00000336        0xe main.o
-                0x00000336                interr_init
+                0x00000346        0xe main.o
+                0x00000346                interr_init
  .text.__vector_1
-                0x00000344       0xde main.o
-                0x00000344                __vector_1
+                0x00000354       0xf8 main.o
+                0x00000354                __vector_1
  .text.manchester_decode
-                0x00000422       0xf6 main.o
-                0x00000422                manchester_decode
+                0x0000044c      0x106 main.o
+                0x0000044c                manchester_decode
  .text.formatHex
-                0x00000518        0xc main.o
-                0x00000518                formatHex
- .text.main     0x00000524       0x86 main.o
-                0x00000524                main
-                0x000005aa                . = ALIGN (0x2)
+                0x00000552        0xc main.o
+                0x00000552                formatHex
+ .text.main     0x0000055e       0xb0 main.o
+                0x0000055e                main
+                0x0000060e                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x000005aa        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
-                0x000005aa                _exit
-                0x000005aa                exit
+ .fini9         0x0000060e        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
+                0x0000060e                _exit
+                0x0000060e                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -361,11 +362,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x000005aa        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
+ .fini0         0x0000060e        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x000005ae                _etext = .
+                0x00000612                _etext = .
 
-.data           0x00800100       0x76 load address 0x000005ae
+.data           0x00800100       0x76 load address 0x00000612
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -382,25 +383,25 @@ END GROUP
                 0x00800176                _edata = .
                 0x00800176                PROVIDE (__data_end, .)
 
-.bss            0x00800176      0x1a1
+.bss            0x00800176      0x1a3
                 0x00800176                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
  *(COMMON)
- COMMON         0x00800176      0x1a1 main.o
+ COMMON         0x00800176      0x1a3 main.o
                 0x00800176                RFID
-                0x00800313                second
-                0x00800314                z
-                0x00800316                count
-                0x00800317                PROVIDE (__bss_end, .)
-                0x000005ae                __data_load_start = LOADADDR (.data)
-                0x00000624                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x00800315                second
+                0x00800316                z
+                0x00800318                count
+                0x00800319                PROVIDE (__bss_end, .)
+                0x00000612                __data_load_start = LOADADDR (.data)
+                0x00000688                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x00800317        0x0
+.noinit         0x00800319        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
  *(.noinit*)
                 [!provide]                PROVIDE (__noinit_end, .)
-                0x00800317                _end = .
+                0x00800319                _end = .
                 [!provide]                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
@@ -473,30 +474,30 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000      0xc47
+.debug_info     0x00000000      0xcaf
  *(.debug_info .gnu.linkonce.wi.*)
- .debug_info    0x00000000      0xc47 main.o
+ .debug_info    0x00000000      0xcaf main.o
 
 .debug_abbrev   0x00000000      0x331
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x331 main.o
 
-.debug_line     0x00000000      0x6d1
+.debug_line     0x00000000      0x703
  *(.debug_line .debug_line.* .debug_line_end)
- .debug_line    0x00000000      0x6d1 main.o
+ .debug_line    0x00000000      0x703 main.o
 
 .debug_frame    0x00000000      0x1d0
  *(.debug_frame)
  .debug_frame   0x00000000      0x1d0 main.o
 
-.debug_str      0x00000000      0x2e0
+.debug_str      0x00000000      0x2e7
  *(.debug_str)
- .debug_str     0x00000000      0x2e0 main.o
-                                0x33b (size before relaxing)
+ .debug_str     0x00000000      0x2e7 main.o
+                                0x342 (size before relaxing)
 
-.debug_loc      0x00000000      0x637
+.debug_loc      0x00000000      0x664
  *(.debug_loc)
- .debug_loc     0x00000000      0x637 main.o
+ .debug_loc     0x00000000      0x664 main.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -516,9 +517,9 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000       0xd8
+.debug_ranges   0x00000000       0xc0
  *(.debug_ranges)
- .debug_ranges  0x00000000       0xd8 main.o
+ .debug_ranges  0x00000000       0xc0 main.o
 
 .debug_macro
  *(.debug_macro)
