@@ -10,7 +10,8 @@ c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/..
 Allocating common symbols
 Common symbol       size              file
 
-RFID                0x19f             main.o
+RFID                0x1a4             main.o
+ones                0x2               main.o
 second              0x1               main.o
 z                   0x2               main.o
 count               0x1               main.o
@@ -199,7 +200,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x612
+.text           0x00000000      0x650
  *(.vectors)
  .vectors       0x00000000       0x7c C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.0.106/gcc/dev/atmega644pa/avr5/crtatmega644pa.o
                 0x00000000                __vector_default
@@ -329,21 +330,21 @@ END GROUP
                 0x00000346        0xe main.o
                 0x00000346                interr_init
  .text.__vector_1
-                0x00000354       0xf8 main.o
+                0x00000354      0x100 main.o
                 0x00000354                __vector_1
  .text.manchester_decode
-                0x0000044c      0x106 main.o
-                0x0000044c                manchester_decode
+                0x00000454      0x12c main.o
+                0x00000454                manchester_decode
  .text.formatHex
-                0x00000552        0xc main.o
-                0x00000552                formatHex
- .text.main     0x0000055e       0xb0 main.o
-                0x0000055e                main
-                0x0000060e                . = ALIGN (0x2)
+                0x00000580        0xc main.o
+                0x00000580                formatHex
+ .text.main     0x0000058c       0xc0 main.o
+                0x0000058c                main
+                0x0000064c                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x0000060e        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
-                0x0000060e                _exit
-                0x0000060e                exit
+ .fini9         0x0000064c        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
+                0x0000064c                _exit
+                0x0000064c                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -362,11 +363,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x0000060e        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
+ .fini0         0x0000064c        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x00000612                _etext = .
+                0x00000650                _etext = .
 
-.data           0x00800100       0x76 load address 0x00000612
+.data           0x00800100       0x76 load address 0x00000650
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -383,25 +384,26 @@ END GROUP
                 0x00800176                _edata = .
                 0x00800176                PROVIDE (__data_end, .)
 
-.bss            0x00800176      0x1a3
+.bss            0x00800176      0x1aa
                 0x00800176                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
  *(COMMON)
- COMMON         0x00800176      0x1a3 main.o
+ COMMON         0x00800176      0x1aa main.o
                 0x00800176                RFID
-                0x00800315                second
-                0x00800316                z
-                0x00800318                count
-                0x00800319                PROVIDE (__bss_end, .)
-                0x00000612                __data_load_start = LOADADDR (.data)
-                0x00000688                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x0080031a                ones
+                0x0080031c                second
+                0x0080031d                z
+                0x0080031f                count
+                0x00800320                PROVIDE (__bss_end, .)
+                0x00000650                __data_load_start = LOADADDR (.data)
+                0x000006c6                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x00800319        0x0
+.noinit         0x00800320        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
  *(.noinit*)
                 [!provide]                PROVIDE (__noinit_end, .)
-                0x00800319                _end = .
+                0x00800320                _end = .
                 [!provide]                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
@@ -474,30 +476,30 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000      0xcaf
+.debug_info     0x00000000      0xced
  *(.debug_info .gnu.linkonce.wi.*)
- .debug_info    0x00000000      0xcaf main.o
+ .debug_info    0x00000000      0xced main.o
 
-.debug_abbrev   0x00000000      0x331
+.debug_abbrev   0x00000000      0x32a
  *(.debug_abbrev)
- .debug_abbrev  0x00000000      0x331 main.o
+ .debug_abbrev  0x00000000      0x32a main.o
 
-.debug_line     0x00000000      0x703
+.debug_line     0x00000000      0x6d7
  *(.debug_line .debug_line.* .debug_line_end)
- .debug_line    0x00000000      0x703 main.o
+ .debug_line    0x00000000      0x6d7 main.o
 
-.debug_frame    0x00000000      0x1d0
+.debug_frame    0x00000000      0x1d8
  *(.debug_frame)
- .debug_frame   0x00000000      0x1d0 main.o
+ .debug_frame   0x00000000      0x1d8 main.o
 
-.debug_str      0x00000000      0x2e7
+.debug_str      0x00000000      0x2ea
  *(.debug_str)
- .debug_str     0x00000000      0x2e7 main.o
-                                0x342 (size before relaxing)
+ .debug_str     0x00000000      0x2ea main.o
+                                0x345 (size before relaxing)
 
-.debug_loc      0x00000000      0x664
+.debug_loc      0x00000000      0x738
  *(.debug_loc)
- .debug_loc     0x00000000      0x664 main.o
+ .debug_loc     0x00000000      0x738 main.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -517,9 +519,9 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000       0xc0
+.debug_ranges   0x00000000       0x90
  *(.debug_ranges)
- .debug_ranges  0x00000000       0xc0 main.o
+ .debug_ranges  0x00000000       0x90 main.o
 
 .debug_macro
  *(.debug_macro)

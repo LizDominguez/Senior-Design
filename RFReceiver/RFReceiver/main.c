@@ -274,22 +274,23 @@ void frequency_init(void) {
 /****************************************************** Manchester Decoding **********************************************************/
 
 volatile uint16_t z;
+volatile uint16_t ones;
 volatile uint8_t count;
 volatile uint8_t second;
 
 struct {
 	int8_t data[400];
-	volatile unsigned int index;
-	volatile unsigned int index2;
+	volatile unsigned int index[4];
 	volatile bool ready;
+	volatile bool done;
 	int8_t buff[10];
 	
 }RFID;
 
 
-char card1[] = {0x32, 0x43, 0x30, 0x30, 0x41, 0x43, 0x36, 0x39, 0x33, 0x45};
-char card2[] = {0x33, 0x31, 0x30, 0x30, 0x33, 0x37, 0x44, 0x39, 0x33, 0x44};
-char card3[] = {0x36, 0x46, 0x30, 0x30, 0x35, 0x43, 0x41, 0x44, 0x36, 0x30};
+char card1[] = {0x41, 0x46, 0x46, 0x46, 0x42, 0x46, 0x37, 0x44, 0x42, 0x45}; //AFFFBF7DBE
+char card2[] = {0x42, 0x44, 0x46, 0x46, 0x42, 0x37, 0x44, 0x44, 0x42, 0x44}; //BDFFB7DDBD
+char card3[] = {0x37, 0x46, 0x46, 0x46, 0x35, 0x46, 0x42, 0x44, 0x37, 0x46}; //7FFF5FBD7F
 
 
 void interr_init(void) {
@@ -312,28 +313,24 @@ ISR(INT0_vect) {
 		count++;
 
 		if(count == 9 && RFID.ready == false) {		//wait until 9 consecutive 1s
-				
-			if(second == 1)	{
-				RFID.index = z+1;
-			}
 			
-			else if (second == 2)
-			{
-				RFID.index2 = z+1;
+			RFID.index[ones] = z+1;
+
+			if (ones > 3){
 				RFID.ready = true;
+				ones = 0;
 				count = 0;
-				second = 0;
 			}
 			
-			second++;
+			else ones++;
 		}
 		
 	}
 	
 	else count = 0;	
 	
-	if (z < 399) z++;
-	else z = 0; 
+	if (z < 398) z++;
+	else { z = 0; RFID.done = true;}
 	
 	
 						
@@ -344,35 +341,41 @@ ISR(INT0_vect) {
 
 bool manchester_decode(void) {
 	
-	if (z == 398){
+	if (RFID.done == true){	
 		cli();
+		
+		unsigned int index;
+		index = RFID.index[ones];
+		
 		 int8_t col_parity[4] = {0}; 
 		 for (int8_t i = 0; i < 10; i++) {  //10 parity bits = 50 total iterations 
-			 
-			 volatile int8_t rfid_char = 0, row_parity = 0;
-			 
+			volatile int8_t rfid_char = 0, row_parity = 0; 
 			 for (int8_t j = 3; j >= 0; j--) {		
-				 int8_t decoded_bit = RFID.data[RFID.index]; //save each bit
+				 int8_t decoded_bit = RFID.data[index]; //save each bit
 				 rfid_char += decoded_bit << j;				//shift 4 times to create 8 bit int
-				 RFID.index++;								//increment the index 4 times
+				 index++;								//increment the index 4 times
 			 }
 			 
 			 RFID.buff[i] = rfid_char;			//save each character
-			 RFID.index++;							//increment the index to the parity bit (5x)
-			 row_parity += RFID.data[RFID.index];	//save the row parity bit
+			 index++;							//increment the index to the parity bit (5x)
+			 row_parity += RFID.data[index];	//save the row parity bit
+
 		 }
 		 
 		 for (int8_t i = 3; i >= 0; i--) {	//final 4 parity bits
-			 col_parity[i] += RFID.data[RFID.index];
-			 RFID.index++;
+			 col_parity[i] += RFID.data[index];
+			 index++;
 		 }
 		 
-		 int8_t stop_bit = RFID.data[RFID.index];
-		 if (stop_bit != 0){ 
-			 RFID.index = RFID.index2;
+		  
+		 int8_t stop_bit = RFID.data[index];
+		 if (stop_bit != 0 && (col_parity[2] & 1) != 0 && (col_parity[1] & 1) != 0 && (col_parity[0] & 1) != 0){ 
+			index = RFID.index[ones++];
 			 return false;
 			 }
+			 RFID.done = false;
 			RFID.ready = false;
+			index = 0;
 			return true;		
 	 }
 	 
@@ -416,9 +419,10 @@ int main( void )
 			USART_send(formatHex(RFID.buff[i]));
 		}
 		USART_send(0x0D);
-		
 		beep();
 		_delay_ms(3000);
+		ones = 0;
+		z = 0;
 		sei();
 		
 	}
