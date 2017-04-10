@@ -10,8 +10,9 @@ c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/..
 Allocating common symbols
 Common symbol       size              file
 
-RFID                0xd4              main.o
-z                   0x1               main.o
+RFID                0x19d             main.o
+second              0x1               main.o
+z                   0x2               main.o
 count               0x1               main.o
 
 Discarded input sections
@@ -200,7 +201,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x554
+.text           0x00000000      0x5ae
  *(.vectors)
  .vectors       0x00000000       0x7c C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.0.106/gcc/dev/atmega644pa/avr5/crtatmega644pa.o
                 0x00000000                __vector_default
@@ -327,21 +328,21 @@ END GROUP
                 0x00000336        0xe main.o
                 0x00000336                interr_init
  .text.__vector_1
-                0x00000344       0xaa main.o
+                0x00000344       0xde main.o
                 0x00000344                __vector_1
  .text.manchester_decode
-                0x000003ee       0xd0 main.o
-                0x000003ee                manchester_decode
+                0x00000422       0xf6 main.o
+                0x00000422                manchester_decode
  .text.formatHex
-                0x000004be        0xc main.o
-                0x000004be                formatHex
- .text.main     0x000004ca       0x86 main.o
-                0x000004ca                main
-                0x00000550                . = ALIGN (0x2)
+                0x00000518        0xc main.o
+                0x00000518                formatHex
+ .text.main     0x00000524       0x86 main.o
+                0x00000524                main
+                0x000005aa                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00000550        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
-                0x00000550                _exit
-                0x00000550                exit
+ .fini9         0x000005aa        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
+                0x000005aa                _exit
+                0x000005aa                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -360,11 +361,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00000550        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
+ .fini0         0x000005aa        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x00000554                _etext = .
+                0x000005ae                _etext = .
 
-.data           0x00800100       0x76 load address 0x00000554
+.data           0x00800100       0x76 load address 0x000005ae
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -381,24 +382,25 @@ END GROUP
                 0x00800176                _edata = .
                 0x00800176                PROVIDE (__data_end, .)
 
-.bss            0x00800176       0xd6
+.bss            0x00800176      0x1a1
                 0x00800176                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
  *(COMMON)
- COMMON         0x00800176       0xd6 main.o
+ COMMON         0x00800176      0x1a1 main.o
                 0x00800176                RFID
-                0x0080024a                z
-                0x0080024b                count
-                0x0080024c                PROVIDE (__bss_end, .)
-                0x00000554                __data_load_start = LOADADDR (.data)
-                0x000005ca                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x00800313                second
+                0x00800314                z
+                0x00800316                count
+                0x00800317                PROVIDE (__bss_end, .)
+                0x000005ae                __data_load_start = LOADADDR (.data)
+                0x00000624                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x0080024c        0x0
+.noinit         0x00800317        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
  *(.noinit*)
                 [!provide]                PROVIDE (__noinit_end, .)
-                0x0080024c                _end = .
+                0x00800317                _end = .
                 [!provide]                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
@@ -471,30 +473,30 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000      0xc2d
+.debug_info     0x00000000      0xc47
  *(.debug_info .gnu.linkonce.wi.*)
- .debug_info    0x00000000      0xc2d main.o
+ .debug_info    0x00000000      0xc47 main.o
 
-.debug_abbrev   0x00000000      0x328
+.debug_abbrev   0x00000000      0x331
  *(.debug_abbrev)
- .debug_abbrev  0x00000000      0x328 main.o
+ .debug_abbrev  0x00000000      0x331 main.o
 
-.debug_line     0x00000000      0x6bf
+.debug_line     0x00000000      0x6d1
  *(.debug_line .debug_line.* .debug_line_end)
- .debug_line    0x00000000      0x6bf main.o
+ .debug_line    0x00000000      0x6d1 main.o
 
-.debug_frame    0x00000000      0x1c0
+.debug_frame    0x00000000      0x1d0
  *(.debug_frame)
- .debug_frame   0x00000000      0x1c0 main.o
+ .debug_frame   0x00000000      0x1d0 main.o
 
-.debug_str      0x00000000      0x2d9
+.debug_str      0x00000000      0x2e0
  *(.debug_str)
- .debug_str     0x00000000      0x2d9 main.o
-                                0x334 (size before relaxing)
+ .debug_str     0x00000000      0x2e0 main.o
+                                0x33b (size before relaxing)
 
-.debug_loc      0x00000000      0x649
+.debug_loc      0x00000000      0x637
  *(.debug_loc)
- .debug_loc     0x00000000      0x649 main.o
+ .debug_loc     0x00000000      0x637 main.o
 
 .debug_macinfo
  *(.debug_macinfo)

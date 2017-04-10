@@ -273,12 +273,13 @@ void frequency_init(void) {
 
 /****************************************************** Manchester Decoding **********************************************************/
 
-volatile uint8_t z;
+volatile uint16_t z;
 volatile uint8_t count;
+volatile uint8_t second;
 
 struct {
-	int8_t data[200];
-	volatile uint8_t index;
+	int8_t data[400];
+	volatile unsigned int index;
 	volatile bool ready;
 	int8_t buff[10];
 	
@@ -307,19 +308,27 @@ ISR(INT0_vect) {
 	
 	if (RFID.data[z] == 1) {
 		
-		count += RFID.data[z];
+		count++;
 
-		if(count == 9 && RFID.ready == false) {		//once the counter is 9, we save the index
-				RFID.index = z;
+		if(count == 9 && RFID.ready == false) {		//wait until 9 consecutive 1s
+				
+			if(second == 1)	{
+				RFID.index = z+1;
 				RFID.ready = true;
+				count = 0;
+				second = 0;
+			}
+			
+			else second++;
 		}
 		
 	}
+	
 	else count = 0;	
 	
+	if (z < 399) z++;
+	else z = 0; 
 	
-	if(z < 199) z++; 
-	else z = 0;
 	
 						
 	EIFR = 1 << INTF0;		//clear flag
@@ -327,13 +336,11 @@ ISR(INT0_vect) {
 }
 
 
-
 bool manchester_decode(void) {
 	
-	if (z == 199){
+	if (z == 398){
 		cli();
-		 int8_t col_parity[4] = {0};
-		 
+		 int8_t col_parity[4] = {0}; 
 		 for (int8_t i = 0; i < 10; i++) {  //10 parity bits = 50 total iterations 
 			 
 			 volatile int8_t rfid_char = 0, row_parity = 0;
@@ -356,9 +363,8 @@ bool manchester_decode(void) {
 		 
 		 int8_t stop_bit = RFID.data[RFID.index];
 		 if (stop_bit != 0) return false;
-		 RFID.index = 0;
-		 RFID.ready = false;
-		 return true;		
+			RFID.ready = false;
+			return true;		
 	 }
 	 return false;
 }
@@ -386,10 +392,9 @@ int main( void )
 
 	sei();
 	
-	while (1) {
+	while (1) {	
 		
-		
-		if(!manchester_decode()) continue;	
+		if(!manchester_decode()) continue;
 		lcd_instruction(clear);
 		
 		for (int i = 0; i < 10; i++) {
