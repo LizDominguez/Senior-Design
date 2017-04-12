@@ -332,12 +332,11 @@ END GROUP
  .text.__vector_1
                 0x00000354      0x100 main.o
                 0x00000354                __vector_1
- .text.manchester_decode
+ .text.manchester_done
                 0x00000454      0x12c main.o
-                0x00000454                manchester_decode
- .text.formatHex
-                0x00000580        0xc main.o
-                0x00000580                formatHex
+                0x00000454                manchester_done
+ .text.toChar   0x00000580        0xc main.o
+                0x00000580                toChar
  .text.main     0x0000058c       0xc0 main.o
                 0x0000058c                main
                 0x0000064c                . = ALIGN (0x2)
@@ -492,10 +491,10 @@ END GROUP
  *(.debug_frame)
  .debug_frame   0x00000000      0x1d8 main.o
 
-.debug_str      0x00000000      0x2ea
+.debug_str      0x00000000      0x2e0
  *(.debug_str)
- .debug_str     0x00000000      0x2ea main.o
-                                0x345 (size before relaxing)
+ .debug_str     0x00000000      0x2e0 main.o
+                                0x340 (size before relaxing)
 
 .debug_loc      0x00000000      0x738
  *(.debug_loc)

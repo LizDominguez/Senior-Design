@@ -314,7 +314,7 @@ ISR(INT0_vect) {
 
 		if(count == 9 && RFID.ready == false) {		//wait until 9 consecutive 1s
 			
-			RFID.index[ones] = z+1;
+			RFID.index[ones] = z+1;		//store the index of each 9 1s
 
 			if (ones > 3){
 				RFID.ready = true;
@@ -329,7 +329,7 @@ ISR(INT0_vect) {
 	
 	else count = 0;	
 	
-	if (z < 398) z++;
+	if (z < 398) z++;		
 	else { z = 0; RFID.done = true;}
 	
 	
@@ -339,30 +339,32 @@ ISR(INT0_vect) {
 }
 
 
-bool manchester_decode(void) {
+bool manchester_done(void) {
 	
 	if (RFID.done == true){	
 		cli();
 		
 		unsigned int index;
 		index = RFID.index[ones];
-		
-		 int8_t col_parity[4] = {0}; 
-		 for (int8_t i = 0; i < 10; i++) {  //10 parity bits = 50 total iterations 
+		int8_t col_parity[4] = {0}; 
+			 
+		 for (int8_t i = 0; i < 10; i++) {					//10 parity bits = 50 total iterations 
+			 
 			volatile int8_t rfid_char = 0, row_parity = 0; 
+			
 			 for (int8_t j = 3; j >= 0; j--) {		
-				 int8_t decoded_bit = RFID.data[index]; //save each bit
+				 int8_t decoded_bit = RFID.data[index];		//save each bit
 				 rfid_char += decoded_bit << j;				//shift 4 times to create 8 bit int
-				 index++;								//increment the index 4 times
+				 index++;									//increment the index 4 times
 			 }
 			 
-			 RFID.buff[i] = rfid_char;			//save each character
-			 index++;							//increment the index to the parity bit (5x)
-			 row_parity += RFID.data[index];	//save the row parity bit
+			 RFID.buff[i] = rfid_char;				//save each character
+			 index++;								//increment the index to the parity bit (5x)
+			 row_parity += RFID.data[index];		//save the row parity bit
 
 		 }
 		 
-		 for (int8_t i = 3; i >= 0; i--) {	//final 4 parity bits
+		 for (int8_t i = 3; i >= 0; i--) {			//final 4 parity bits
 			 col_parity[i] += RFID.data[index];
 			 index++;
 		 }
@@ -373,7 +375,8 @@ bool manchester_decode(void) {
 			index = RFID.index[ones++];
 			 return false;
 			 }
-			 RFID.done = false;
+			 
+			RFID.done = false;
 			RFID.ready = false;
 			index = 0;
 			return true;		
@@ -382,7 +385,7 @@ bool manchester_decode(void) {
 	 return false;
 }
 
-char formatHex(int8_t i) {
+char toChar(int8_t i) {
 	if ( 0 <= i && i <= 9){
 		return i + '0';
 		} else {
@@ -406,17 +409,18 @@ int main( void )
 	
 	while (1) {	
 		
-		if(!manchester_decode()) continue;
+		if(!manchester_done()) continue;
+		
 		lcd_instruction(clear);
 		
 		for (int i = 0; i < 10; i++) {
-			lcd_char(formatHex(RFID.buff[i]));
+			lcd_char(toChar(RFID.buff[i]));
 			_delay_us(50);
 		}
 		
 		USART_send(0x0A);
 		for (int i = 0; i < 10; i++) {
-			USART_send(formatHex(RFID.buff[i]));
+			USART_send(toChar(RFID.buff[i]));
 		}
 		USART_send(0x0D);
 		beep();

@@ -23,11 +23,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
   9 .debug_frame  000001d8  00000000  00000000  00001f5c  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000002ea  00000000  00000000  00002134  2**0
+ 10 .debug_str    000002e0  00000000  00000000  00002134  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000738  00000000  00000000  0000241e  2**0
+ 11 .debug_loc    00000738  00000000  00000000  00002414  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000090  00000000  00000000  00002b56  2**0
+ 12 .debug_ranges 00000090  00000000  00000000  00002b4c  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -740,7 +740,7 @@ ISR(INT0_vect) {
  3b2:	81 11       	cpse	r24, r1
  3b4:	2b c0       	rjmp	.+86     	; 0x40c <__FUSE_REGION_LENGTH__+0xc>
 			
-			RFID.index[ones] = z+1;
+			RFID.index[ones] = z+1;		//store the index of each 9 1s
  3b6:	e0 91 1a 03 	lds	r30, 0x031A	; 0x80031a <ones>
  3ba:	f0 91 1b 03 	lds	r31, 0x031B	; 0x80031b <ones+0x1>
  3be:	80 91 1d 03 	lds	r24, 0x031D	; 0x80031d <z>
@@ -783,7 +783,7 @@ ISR(INT0_vect) {
 	else count = 0;	
  408:	10 92 1f 03 	sts	0x031F, r1	; 0x80031f <count>
 	
-	if (z < 398) z++;
+	if (z < 398) z++;		
  40c:	80 91 1d 03 	lds	r24, 0x031D	; 0x80031d <z>
  410:	90 91 1e 03 	lds	r25, 0x031E	; 0x80031e <z+0x1>
  414:	8e 38       	cpi	r24, 0x8E	; 142
@@ -819,10 +819,10 @@ ISR(INT0_vect) {
  450:	1f 90       	pop	r1
  452:	18 95       	reti
 
-00000454 <manchester_decode>:
+00000454 <manchester_done>:
 
 
-bool manchester_decode(void) {
+bool manchester_done(void) {
  454:	bf 92       	push	r11
  456:	cf 92       	push	r12
  458:	df 92       	push	r13
@@ -832,17 +832,17 @@ bool manchester_decode(void) {
  460:	1f 93       	push	r17
  462:	cf 93       	push	r28
  464:	df 93       	push	r29
- 466:	00 d0       	rcall	.+0      	; 0x468 <manchester_decode+0x14>
- 468:	00 d0       	rcall	.+0      	; 0x46a <manchester_decode+0x16>
- 46a:	00 d0       	rcall	.+0      	; 0x46c <manchester_decode+0x18>
+ 466:	00 d0       	rcall	.+0      	; 0x468 <manchester_done+0x14>
+ 468:	00 d0       	rcall	.+0      	; 0x46a <manchester_done+0x16>
+ 46a:	00 d0       	rcall	.+0      	; 0x46c <manchester_done+0x18>
  46c:	cd b7       	in	r28, 0x3d	; 61
  46e:	de b7       	in	r29, 0x3e	; 62
 	
 	if (RFID.done == true){	
  470:	80 91 0f 03 	lds	r24, 0x030F	; 0x80030f <__data_end+0x199>
  474:	88 23       	and	r24, r24
- 476:	09 f4       	brne	.+2      	; 0x47a <manchester_decode+0x26>
- 478:	73 c0       	rjmp	.+230    	; 0x560 <manchester_decode+0x10c>
+ 476:	09 f4       	brne	.+2      	; 0x47a <manchester_done+0x26>
+ 478:	73 c0       	rjmp	.+230    	; 0x560 <manchester_done+0x10c>
 		cli();
  47a:	f8 94       	cli
 		
@@ -856,8 +856,7 @@ bool manchester_decode(void) {
  48a:	fc 4f       	sbci	r31, 0xFC	; 252
  48c:	e0 80       	ld	r14, Z
  48e:	f1 80       	ldd	r15, Z+1	; 0x01
-		
-		 int8_t col_parity[4] = {0}; 
+		int8_t col_parity[4] = {0}; 
  490:	19 82       	std	Y+1, r1	; 0x01
  492:	1a 82       	std	Y+2, r1	; 0x02
  494:	1b 82       	std	Y+3, r1	; 0x03
@@ -869,7 +868,9 @@ bool manchester_decode(void) {
  4a0:	be 4f       	sbci	r27, 0xFE	; 254
  4a2:	0a e1       	ldi	r16, 0x1A	; 26
  4a4:	13 e0       	ldi	r17, 0x03	; 3
-		 for (int8_t i = 0; i < 10; i++) {  //10 parity bits = 50 total iterations 
+			 
+		 for (int8_t i = 0; i < 10; i++) {					//10 parity bits = 50 total iterations 
+			 
 			volatile int8_t rfid_char = 0, row_parity = 0; 
  4a6:	0f 2e       	mov	r0, r31
  4a8:	f3 e0       	ldi	r31, 0x03	; 3
@@ -882,8 +883,9 @@ bool manchester_decode(void) {
  4b6:	35 97       	sbiw	r30, 0x05	; 5
  4b8:	4b 2d       	mov	r20, r11
  4ba:	5c 2d       	mov	r21, r12
+			
 			 for (int8_t j = 3; j >= 0; j--) {		
-				 int8_t decoded_bit = RFID.data[index]; //save each bit
+				 int8_t decoded_bit = RFID.data[index];		//save each bit
  4bc:	91 91       	ld	r25, Z+
 				 rfid_char += decoded_bit << j;				//shift 4 times to create 8 bit int
  4be:	de 80       	ldd	r13, Y+6	; 0x06
@@ -891,26 +893,26 @@ bool manchester_decode(void) {
  4c2:	99 0f       	add	r25, r25
  4c4:	33 0b       	sbc	r19, r19
  4c6:	04 2e       	mov	r0, r20
- 4c8:	02 c0       	rjmp	.+4      	; 0x4ce <manchester_decode+0x7a>
+ 4c8:	02 c0       	rjmp	.+4      	; 0x4ce <manchester_done+0x7a>
  4ca:	22 0f       	add	r18, r18
  4cc:	33 1f       	adc	r19, r19
  4ce:	0a 94       	dec	r0
- 4d0:	e2 f7       	brpl	.-8      	; 0x4ca <manchester_decode+0x76>
+ 4d0:	e2 f7       	brpl	.-8      	; 0x4ca <manchester_done+0x76>
  4d2:	2d 0d       	add	r18, r13
  4d4:	2e 83       	std	Y+6, r18	; 0x06
  4d6:	41 50       	subi	r20, 0x01	; 1
  4d8:	51 09       	sbc	r21, r1
- 4da:	80 f7       	brcc	.-32     	; 0x4bc <manchester_decode+0x68>
-				 index++;								//increment the index 4 times
+ 4da:	80 f7       	brcc	.-32     	; 0x4bc <manchester_done+0x68>
+				 index++;									//increment the index 4 times
 			 }
 			 
-			 RFID.buff[i] = rfid_char;			//save each character
+			 RFID.buff[i] = rfid_char;				//save each character
  4dc:	9e 81       	ldd	r25, Y+6	; 0x06
  4de:	fb 01       	movw	r30, r22
  4e0:	91 93       	st	Z+, r25
  4e2:	bf 01       	movw	r22, r30
-			 index++;							//increment the index to the parity bit (5x)
-			 row_parity += RFID.data[index];	//save the row parity bit
+			 index++;								//increment the index to the parity bit (5x)
+			 row_parity += RFID.data[index];		//save the row parity bit
  4e4:	2d 81       	ldd	r18, Y+5	; 0x05
  4e6:	9c 91       	ld	r25, X
  4e8:	92 0f       	add	r25, r18
@@ -919,12 +921,12 @@ bool manchester_decode(void) {
 		
 		unsigned int index;
 		index = RFID.index[ones];
-		
-		 int8_t col_parity[4] = {0}; 
-		 for (int8_t i = 0; i < 10; i++) {  //10 parity bits = 50 total iterations 
+		int8_t col_parity[4] = {0}; 
+			 
+		 for (int8_t i = 0; i < 10; i++) {					//10 parity bits = 50 total iterations 
  4ee:	e0 17       	cp	r30, r16
  4f0:	f1 07       	cpc	r31, r17
- 4f2:	f1 f6       	brne	.-68     	; 0x4b0 <manchester_decode+0x5c>
+ 4f2:	f1 f6       	brne	.-68     	; 0x4b0 <manchester_done+0x5c>
  4f4:	fe 01       	movw	r30, r28
  4f6:	35 96       	adiw	r30, 0x05	; 5
  4f8:	d7 01       	movw	r26, r14
@@ -933,25 +935,25 @@ bool manchester_decode(void) {
  4fe:	ae 01       	movw	r20, r28
  500:	4f 5f       	subi	r20, 0xFF	; 255
  502:	5f 4f       	sbci	r21, 0xFF	; 255
-			 row_parity += RFID.data[index];	//save the row parity bit
+			 row_parity += RFID.data[index];		//save the row parity bit
 
 		 }
 		 
-		 for (int8_t i = 3; i >= 0; i--) {	//final 4 parity bits
+		 for (int8_t i = 3; i >= 0; i--) {			//final 4 parity bits
 			 col_parity[i] += RFID.data[index];
  504:	9d 91       	ld	r25, X+
  506:	22 91       	ld	r18, -Z
  508:	92 0f       	add	r25, r18
  50a:	90 83       	st	Z, r25
-			 index++;							//increment the index to the parity bit (5x)
-			 row_parity += RFID.data[index];	//save the row parity bit
+			 index++;								//increment the index to the parity bit (5x)
+			 row_parity += RFID.data[index];		//save the row parity bit
 
 		 }
 		 
-		 for (int8_t i = 3; i >= 0; i--) {	//final 4 parity bits
+		 for (int8_t i = 3; i >= 0; i--) {			//final 4 parity bits
  50c:	e4 17       	cp	r30, r20
  50e:	f5 07       	cpc	r31, r21
- 510:	c9 f7       	brne	.-14     	; 0x504 <manchester_decode+0xb0>
+ 510:	c9 f7       	brne	.-14     	; 0x504 <manchester_done+0xb0>
 			 col_parity[i] += RFID.data[index];
 			 index++;
 		 }
@@ -964,16 +966,16 @@ bool manchester_decode(void) {
 		 if (stop_bit != 0 && (col_parity[2] & 1) != 0 && (col_parity[1] & 1) != 0 && (col_parity[0] & 1) != 0){ 
  518:	96 a9       	ldd	r25, Z+54	; 0x36
  51a:	99 23       	and	r25, r25
- 51c:	e9 f0       	breq	.+58     	; 0x558 <manchester_decode+0x104>
+ 51c:	e9 f0       	breq	.+58     	; 0x558 <manchester_done+0x104>
  51e:	9b 81       	ldd	r25, Y+3	; 0x03
  520:	90 ff       	sbrs	r25, 0
- 522:	1a c0       	rjmp	.+52     	; 0x558 <manchester_decode+0x104>
+ 522:	1a c0       	rjmp	.+52     	; 0x558 <manchester_done+0x104>
  524:	9a 81       	ldd	r25, Y+2	; 0x02
  526:	90 ff       	sbrs	r25, 0
- 528:	17 c0       	rjmp	.+46     	; 0x558 <manchester_decode+0x104>
+ 528:	17 c0       	rjmp	.+46     	; 0x558 <manchester_done+0x104>
  52a:	99 81       	ldd	r25, Y+1	; 0x01
  52c:	90 ff       	sbrs	r25, 0
- 52e:	14 c0       	rjmp	.+40     	; 0x558 <manchester_decode+0x104>
+ 52e:	14 c0       	rjmp	.+40     	; 0x558 <manchester_done+0x104>
 			index = RFID.index[ones++];
  530:	80 91 1a 03 	lds	r24, 0x031A	; 0x80031a <ones>
  534:	90 91 1b 03 	lds	r25, 0x031B	; 0x80031b <ones+0x1>
@@ -991,9 +993,10 @@ bool manchester_decode(void) {
  552:	91 81       	ldd	r25, Z+1	; 0x01
 			 return false;
  554:	80 e0       	ldi	r24, 0x00	; 0
- 556:	04 c0       	rjmp	.+8      	; 0x560 <manchester_decode+0x10c>
+ 556:	04 c0       	rjmp	.+8      	; 0x560 <manchester_done+0x10c>
 			 }
-			 RFID.done = false;
+			 
+			RFID.done = false;
  558:	10 92 0f 03 	sts	0x030F, r1	; 0x80030f <__data_end+0x199>
 			RFID.ready = false;
  55c:	10 92 0e 03 	sts	0x030E, r1	; 0x80030e <__data_end+0x198>
@@ -1020,12 +1023,12 @@ bool manchester_decode(void) {
  57c:	bf 90       	pop	r11
  57e:	08 95       	ret
 
-00000580 <formatHex>:
+00000580 <toChar>:
 
-char formatHex(int8_t i) {
+char toChar(int8_t i) {
 	if ( 0 <= i && i <= 9){
  580:	8a 30       	cpi	r24, 0x0A	; 10
- 582:	10 f4       	brcc	.+4      	; 0x588 <formatHex+0x8>
+ 582:	10 f4       	brcc	.+4      	; 0x588 <toChar+0x8>
 		return i + '0';
  584:	80 5d       	subi	r24, 0xD0	; 208
  586:	08 95       	ret
@@ -1098,10 +1101,11 @@ void inline SPI_init()
 	
 	while (1) {	
 		
-		if(!manchester_decode()) continue;
- 5d8:	0e 94 2a 02 	call	0x454	; 0x454 <manchester_decode>
+		if(!manchester_done()) continue;
+ 5d8:	0e 94 2a 02 	call	0x454	; 0x454 <manchester_done>
  5dc:	88 23       	and	r24, r24
  5de:	e1 f3       	breq	.-8      	; 0x5d8 <main+0x4c>
+		
 		lcd_instruction(clear);
  5e0:	81 e0       	ldi	r24, 0x01	; 1
  5e2:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
@@ -1109,26 +1113,26 @@ void inline SPI_init()
  5e8:	86 01       	movw	r16, r12
 		
 		for (int i = 0; i < 10; i++) {
-			lcd_char(formatHex(RFID.buff[i]));
+			lcd_char(toChar(RFID.buff[i]));
  5ea:	f8 01       	movw	r30, r16
  5ec:	81 91       	ld	r24, Z+
  5ee:	8f 01       	movw	r16, r30
- 5f0:	0e 94 c0 02 	call	0x580	; 0x580 <formatHex>
+ 5f0:	0e 94 c0 02 	call	0x580	; 0x580 <toChar>
  5f4:	0e 94 75 00 	call	0xea	; 0xea <lcd_char>
  5f8:	f5 e8       	ldi	r31, 0x85	; 133
  5fa:	fa 95       	dec	r31
  5fc:	f1 f7       	brne	.-4      	; 0x5fa <main+0x6e>
  5fe:	00 00       	nop
-	while (1) {	
 		
-		if(!manchester_decode()) continue;
+		if(!manchester_done()) continue;
+		
 		lcd_instruction(clear);
 		
 		for (int i = 0; i < 10; i++) {
  600:	0e 15       	cp	r16, r14
  602:	1f 05       	cpc	r17, r15
  604:	91 f7       	brne	.-28     	; 0x5ea <main+0x5e>
-			lcd_char(formatHex(RFID.buff[i]));
+			lcd_char(toChar(RFID.buff[i]));
 			_delay_us(50);
 		}
 		
@@ -1136,11 +1140,11 @@ void inline SPI_init()
  606:	8a e0       	ldi	r24, 0x0A	; 10
  608:	0e 94 12 01 	call	0x224	; 0x224 <USART_send>
 		for (int i = 0; i < 10; i++) {
-			USART_send(formatHex(RFID.buff[i]));
+			USART_send(toChar(RFID.buff[i]));
  60c:	89 91       	ld	r24, Y+
- 60e:	0e 94 c0 02 	call	0x580	; 0x580 <formatHex>
+ 60e:	0e 94 c0 02 	call	0x580	; 0x580 <toChar>
  612:	0e 94 12 01 	call	0x224	; 0x224 <USART_send>
-			lcd_char(formatHex(RFID.buff[i]));
+			lcd_char(toChar(RFID.buff[i]));
 			_delay_us(50);
 		}
 		
@@ -1149,7 +1153,7 @@ void inline SPI_init()
  616:	ce 15       	cp	r28, r14
  618:	df 05       	cpc	r29, r15
  61a:	c1 f7       	brne	.-16     	; 0x60c <main+0x80>
-			USART_send(formatHex(RFID.buff[i]));
+			USART_send(toChar(RFID.buff[i]));
 		}
 		USART_send(0x0D);
  61c:	8d e0       	ldi	r24, 0x0D	; 13
