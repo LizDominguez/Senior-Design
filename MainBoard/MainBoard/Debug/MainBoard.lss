@@ -843,7 +843,7 @@ void USART_Wifi_init(void) {
 			lcd_instruction(clear);
  52c:	81 e0       	ldi	r24, 0x01	; 1
  52e:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
-			lcd_string((uint8_t *)"Hardware error"); //usually a hardware issue
+			lcd_string((uint8_t *)"Hardware error"); //USART not connected 
  532:	85 e0       	ldi	r24, 0x05	; 5
  534:	92 e0       	ldi	r25, 0x02	; 2
  536:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
@@ -1164,6 +1164,7 @@ inline void RFID_ready(void) {
  71e:	e0 50       	subi	r30, 0x00	; 0
  720:	ff 4f       	sbci	r31, 0xFF	; 255
 	char status_to_upload = '?';
+	
 	switch(current_status) {
  722:	85 85       	ldd	r24, Z+13	; 0x0d
  724:	88 23       	and	r24, r24

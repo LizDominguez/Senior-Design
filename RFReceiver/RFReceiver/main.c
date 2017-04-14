@@ -278,6 +278,7 @@ volatile uint16_t ones;
 volatile uint8_t count;
 volatile uint8_t second;
 volatile bool parity_error;
+volatile bool found_nine_ones;
 
 struct {
 	int8_t data[400];
@@ -316,6 +317,7 @@ ISR(INT0_vect) {
 
 			if (ones > 3){
 				RFID.ready = true;
+				found_nine_ones = true;
 				ones = 0;
 				count = 0;
 			}
@@ -339,7 +341,7 @@ ISR(INT0_vect) {
 
 bool manchester_done(void) {
 	
-	if (RFID.done == true){	
+	if (RFID.done == true && found_nine_ones == true){	
 		cli();
 		
 		unsigned int index;
@@ -382,6 +384,7 @@ bool manchester_done(void) {
 			 
 			RFID.done = false;
 			RFID.ready = false;
+			found_nine_ones = false;
 			index = 0;
 			return true;		
 	 }
@@ -432,6 +435,21 @@ int main( void )
 		ones = 0;
 		z = 0;
 		sei();
+		
+		/* lcd_instruction(clear);
+		lcd_string((uint8_t *)"Ready to Scan");
+		lcd_instruction(setCursor | lineTwo);
+		
+		RFID_done();
+		
+		for(uint8_t i = 1; i < 11; i++) {
+		lcd_char(RF.ID[i]);
+		_delay_us(50);
+		USART_send('\n');
+		beep();
+		RFID_ready();
+		_delay_ms(2000);
+		*/
 		
 	}
 	

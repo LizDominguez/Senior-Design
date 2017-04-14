@@ -3,31 +3,31 @@ RFReceiver.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000076  00800100  0000068c  00000720  2**0
+  0 .data         00000076  00800100  0000069e  00000732  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         0000068c  00000000  00000000  00000094  2**1
+  1 .text         0000069e  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          000001ab  00800176  00800176  00000796  2**0
+  2 .bss          000001ac  00800176  00800176  000007a8  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  00000796  2**0
+  3 .comment      00000030  00000000  00000000  000007a8  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000007c8  2**2
+  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000007d8  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 000000a0  00000000  00000000  00000808  2**0
+  5 .debug_aranges 000000a0  00000000  00000000  00000818  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00000d05  00000000  00000000  000008a8  2**0
+  6 .debug_info   00000ccf  00000000  00000000  000008b8  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 0000032a  00000000  00000000  000015ad  2**0
+  7 .debug_abbrev 0000032a  00000000  00000000  00001587  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   000006eb  00000000  00000000  000018d7  2**0
+  8 .debug_line   00000703  00000000  00000000  000018b1  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  000001e4  00000000  00000000  00001fc4  2**2
+  9 .debug_frame  000001e4  00000000  00000000  00001fb4  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000002ed  00000000  00000000  000021a8  2**0
+ 10 .debug_str    000002e6  00000000  00000000  00002198  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000754  00000000  00000000  00002495  2**0
+ 11 .debug_loc    00000754  00000000  00000000  0000247e  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000090  00000000  00000000  00002be9  2**0
+ 12 .debug_ranges 00000090  00000000  00000000  00002bd2  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -77,7 +77,7 @@ Disassembly of section .text:
   88:	11 e0       	ldi	r17, 0x01	; 1
   8a:	a0 e0       	ldi	r26, 0x00	; 0
   8c:	b1 e0       	ldi	r27, 0x01	; 1
-  8e:	ec e8       	ldi	r30, 0x8C	; 140
+  8e:	ee e9       	ldi	r30, 0x9E	; 158
   90:	f6 e0       	ldi	r31, 0x06	; 6
   92:	02 c0       	rjmp	.+4      	; 0x98 <__do_copy_data+0x10>
   94:	05 90       	lpm	r0, Z+
@@ -96,11 +96,11 @@ Disassembly of section .text:
   a6:	1d 92       	st	X+, r1
 
 000000a8 <.do_clear_bss_start>:
-  a8:	a1 32       	cpi	r26, 0x21	; 33
+  a8:	a2 32       	cpi	r26, 0x22	; 34
   aa:	b2 07       	cpc	r27, r18
   ac:	e1 f7       	brne	.-8      	; 0xa6 <.do_clear_bss_loop>
-  ae:	0e 94 e4 02 	call	0x5c8	; 0x5c8 <main>
-  b2:	0c 94 44 03 	jmp	0x688	; 0x688 <_exit>
+  ae:	0e 94 ed 02 	call	0x5da	; 0x5da <main>
+  b2:	0c 94 4d 03 	jmp	0x69a	; 0x69a <_exit>
 
 000000b6 <__bad_interrupt>:
   b6:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -665,8 +665,8 @@ void frequency_init(void) {
  344:	08 95       	ret
 
 00000346 <interr_init>:
-char card2[] = {0x42, 0x44, 0x46, 0x46, 0x42, 0x37, 0x44, 0x44, 0x42, 0x44}; //BDFFB7DDBD
-char card3[] = {0x37, 0x46, 0x46, 0x46, 0x35, 0x46, 0x42, 0x44, 0x37, 0x46}; //7FFF5FBD7F
+	
+}RFID;
 
 
 void interr_init(void) {
@@ -710,8 +710,8 @@ ISR(INT0_vect) {
 	//483
 	
 	RFID.data[z] = ((PIND & 0x04)>>2);
- 374:	e0 91 1d 03 	lds	r30, 0x031D	; 0x80031d <z>
- 378:	f0 91 1e 03 	lds	r31, 0x031E	; 0x80031e <z+0x1>
+ 374:	e0 91 1e 03 	lds	r30, 0x031E	; 0x80031e <z>
+ 378:	f0 91 1f 03 	lds	r31, 0x031F	; 0x80031f <z+0x1>
  37c:	89 b1       	in	r24, 0x09	; 9
  37e:	ea 58       	subi	r30, 0x8A	; 138
  380:	fe 4f       	sbci	r31, 0xFE	; 254
@@ -721,32 +721,32 @@ ISR(INT0_vect) {
  388:	80 83       	st	Z, r24
 	
 	if (RFID.data[z] == 1) {
- 38a:	e0 91 1d 03 	lds	r30, 0x031D	; 0x80031d <z>
- 38e:	f0 91 1e 03 	lds	r31, 0x031E	; 0x80031e <z+0x1>
+ 38a:	e0 91 1e 03 	lds	r30, 0x031E	; 0x80031e <z>
+ 38e:	f0 91 1f 03 	lds	r31, 0x031F	; 0x80031f <z+0x1>
  392:	ea 58       	subi	r30, 0x8A	; 138
  394:	fe 4f       	sbci	r31, 0xFE	; 254
  396:	80 81       	ld	r24, Z
  398:	81 30       	cpi	r24, 0x01	; 1
- 39a:	b1 f5       	brne	.+108    	; 0x408 <__FUSE_REGION_LENGTH__+0x8>
+ 39a:	c1 f5       	brne	.+112    	; 0x40c <__FUSE_REGION_LENGTH__+0xc>
 		
 		count++;
- 39c:	80 91 20 03 	lds	r24, 0x0320	; 0x800320 <count>
+ 39c:	80 91 21 03 	lds	r24, 0x0321	; 0x800321 <count>
  3a0:	8f 5f       	subi	r24, 0xFF	; 255
- 3a2:	80 93 20 03 	sts	0x0320, r24	; 0x800320 <count>
+ 3a2:	80 93 21 03 	sts	0x0321, r24	; 0x800321 <count>
 
 		if(count == 9 && RFID.ready == false) {		//wait until 9 consecutive 1s
- 3a6:	80 91 20 03 	lds	r24, 0x0320	; 0x800320 <count>
+ 3a6:	80 91 21 03 	lds	r24, 0x0321	; 0x800321 <count>
  3aa:	89 30       	cpi	r24, 0x09	; 9
- 3ac:	79 f5       	brne	.+94     	; 0x40c <__FUSE_REGION_LENGTH__+0xc>
+ 3ac:	89 f5       	brne	.+98     	; 0x410 <__FUSE_REGION_LENGTH__+0x10>
  3ae:	80 91 0e 03 	lds	r24, 0x030E	; 0x80030e <__data_end+0x198>
  3b2:	81 11       	cpse	r24, r1
- 3b4:	2b c0       	rjmp	.+86     	; 0x40c <__FUSE_REGION_LENGTH__+0xc>
+ 3b4:	2d c0       	rjmp	.+90     	; 0x410 <__FUSE_REGION_LENGTH__+0x10>
 			
 			RFID.index[ones] = z+1;		//store the index of each 9 1s
  3b6:	e0 91 1a 03 	lds	r30, 0x031A	; 0x80031a <ones>
  3ba:	f0 91 1b 03 	lds	r31, 0x031B	; 0x80031b <ones+0x1>
- 3be:	80 91 1d 03 	lds	r24, 0x031D	; 0x80031d <z>
- 3c2:	90 91 1e 03 	lds	r25, 0x031E	; 0x80031e <z+0x1>
+ 3be:	80 91 1e 03 	lds	r24, 0x031E	; 0x80031e <z>
+ 3c2:	90 91 1f 03 	lds	r25, 0x031F	; 0x80031f <z+0x1>
  3c6:	01 96       	adiw	r24, 0x01	; 1
  3c8:	ee 0f       	add	r30, r30
  3ca:	ff 1f       	adc	r31, r31
@@ -759,484 +759,492 @@ ISR(INT0_vect) {
  3d4:	80 91 1a 03 	lds	r24, 0x031A	; 0x80031a <ones>
  3d8:	90 91 1b 03 	lds	r25, 0x031B	; 0x80031b <ones+0x1>
  3dc:	04 97       	sbiw	r24, 0x04	; 4
- 3de:	50 f0       	brcs	.+20     	; 0x3f4 <__vector_1+0xa0>
+ 3de:	60 f0       	brcs	.+24     	; 0x3f8 <__vector_1+0xa4>
 				RFID.ready = true;
  3e0:	81 e0       	ldi	r24, 0x01	; 1
  3e2:	80 93 0e 03 	sts	0x030E, r24	; 0x80030e <__data_end+0x198>
+				found_nine_ones = true;
+ 3e6:	80 93 1c 03 	sts	0x031C, r24	; 0x80031c <found_nine_ones>
 				ones = 0;
- 3e6:	10 92 1b 03 	sts	0x031B, r1	; 0x80031b <ones+0x1>
- 3ea:	10 92 1a 03 	sts	0x031A, r1	; 0x80031a <ones>
+ 3ea:	10 92 1b 03 	sts	0x031B, r1	; 0x80031b <ones+0x1>
+ 3ee:	10 92 1a 03 	sts	0x031A, r1	; 0x80031a <ones>
 				count = 0;
- 3ee:	10 92 20 03 	sts	0x0320, r1	; 0x800320 <count>
- 3f2:	0c c0       	rjmp	.+24     	; 0x40c <__FUSE_REGION_LENGTH__+0xc>
+ 3f2:	10 92 21 03 	sts	0x0321, r1	; 0x800321 <count>
+ 3f6:	0c c0       	rjmp	.+24     	; 0x410 <__FUSE_REGION_LENGTH__+0x10>
 			}
 			
 			else ones++;
- 3f4:	80 91 1a 03 	lds	r24, 0x031A	; 0x80031a <ones>
- 3f8:	90 91 1b 03 	lds	r25, 0x031B	; 0x80031b <ones+0x1>
- 3fc:	01 96       	adiw	r24, 0x01	; 1
- 3fe:	90 93 1b 03 	sts	0x031B, r25	; 0x80031b <ones+0x1>
- 402:	80 93 1a 03 	sts	0x031A, r24	; 0x80031a <ones>
- 406:	02 c0       	rjmp	.+4      	; 0x40c <__FUSE_REGION_LENGTH__+0xc>
+ 3f8:	80 91 1a 03 	lds	r24, 0x031A	; 0x80031a <ones>
+ 3fc:	90 91 1b 03 	lds	r25, 0x031B	; 0x80031b <ones+0x1>
+ 400:	01 96       	adiw	r24, 0x01	; 1
+ 402:	90 93 1b 03 	sts	0x031B, r25	; 0x80031b <ones+0x1>
+ 406:	80 93 1a 03 	sts	0x031A, r24	; 0x80031a <ones>
+ 40a:	02 c0       	rjmp	.+4      	; 0x410 <__FUSE_REGION_LENGTH__+0x10>
 		}
 		
 	}
 	
 	else count = 0;	
- 408:	10 92 20 03 	sts	0x0320, r1	; 0x800320 <count>
+ 40c:	10 92 21 03 	sts	0x0321, r1	; 0x800321 <count>
 	
 	if (z < 398) z++;		
- 40c:	80 91 1d 03 	lds	r24, 0x031D	; 0x80031d <z>
- 410:	90 91 1e 03 	lds	r25, 0x031E	; 0x80031e <z+0x1>
- 414:	8e 38       	cpi	r24, 0x8E	; 142
- 416:	91 40       	sbci	r25, 0x01	; 1
- 418:	50 f4       	brcc	.+20     	; 0x42e <__FUSE_REGION_LENGTH__+0x2e>
- 41a:	80 91 1d 03 	lds	r24, 0x031D	; 0x80031d <z>
- 41e:	90 91 1e 03 	lds	r25, 0x031E	; 0x80031e <z+0x1>
- 422:	01 96       	adiw	r24, 0x01	; 1
- 424:	90 93 1e 03 	sts	0x031E, r25	; 0x80031e <z+0x1>
- 428:	80 93 1d 03 	sts	0x031D, r24	; 0x80031d <z>
- 42c:	07 c0       	rjmp	.+14     	; 0x43c <__FUSE_REGION_LENGTH__+0x3c>
+ 410:	80 91 1e 03 	lds	r24, 0x031E	; 0x80031e <z>
+ 414:	90 91 1f 03 	lds	r25, 0x031F	; 0x80031f <z+0x1>
+ 418:	8e 38       	cpi	r24, 0x8E	; 142
+ 41a:	91 40       	sbci	r25, 0x01	; 1
+ 41c:	50 f4       	brcc	.+20     	; 0x432 <__FUSE_REGION_LENGTH__+0x32>
+ 41e:	80 91 1e 03 	lds	r24, 0x031E	; 0x80031e <z>
+ 422:	90 91 1f 03 	lds	r25, 0x031F	; 0x80031f <z+0x1>
+ 426:	01 96       	adiw	r24, 0x01	; 1
+ 428:	90 93 1f 03 	sts	0x031F, r25	; 0x80031f <z+0x1>
+ 42c:	80 93 1e 03 	sts	0x031E, r24	; 0x80031e <z>
+ 430:	07 c0       	rjmp	.+14     	; 0x440 <__FUSE_REGION_LENGTH__+0x40>
 	else { z = 0; RFID.done = true;}
- 42e:	10 92 1e 03 	sts	0x031E, r1	; 0x80031e <z+0x1>
- 432:	10 92 1d 03 	sts	0x031D, r1	; 0x80031d <z>
- 436:	81 e0       	ldi	r24, 0x01	; 1
- 438:	80 93 0f 03 	sts	0x030F, r24	; 0x80030f <__data_end+0x199>
+ 432:	10 92 1f 03 	sts	0x031F, r1	; 0x80031f <z+0x1>
+ 436:	10 92 1e 03 	sts	0x031E, r1	; 0x80031e <z>
+ 43a:	81 e0       	ldi	r24, 0x01	; 1
+ 43c:	80 93 0f 03 	sts	0x030F, r24	; 0x80030f <__data_end+0x199>
 	
 	
 						
 	EIFR = 1 << INTF0;		//clear flag
- 43c:	81 e0       	ldi	r24, 0x01	; 1
- 43e:	8c bb       	out	0x1c, r24	; 28
+ 440:	81 e0       	ldi	r24, 0x01	; 1
+ 442:	8c bb       	out	0x1c, r24	; 28
 	
 }
- 440:	ff 91       	pop	r31
- 442:	ef 91       	pop	r30
- 444:	9f 91       	pop	r25
- 446:	8f 91       	pop	r24
- 448:	2f 91       	pop	r18
- 44a:	0f 90       	pop	r0
- 44c:	0f be       	out	0x3f, r0	; 63
+ 444:	ff 91       	pop	r31
+ 446:	ef 91       	pop	r30
+ 448:	9f 91       	pop	r25
+ 44a:	8f 91       	pop	r24
+ 44c:	2f 91       	pop	r18
  44e:	0f 90       	pop	r0
- 450:	1f 90       	pop	r1
- 452:	18 95       	reti
+ 450:	0f be       	out	0x3f, r0	; 63
+ 452:	0f 90       	pop	r0
+ 454:	1f 90       	pop	r1
+ 456:	18 95       	reti
 
-00000454 <manchester_done>:
+00000458 <manchester_done>:
 
 
 bool manchester_done(void) {
- 454:	9f 92       	push	r9
- 456:	af 92       	push	r10
- 458:	bf 92       	push	r11
- 45a:	cf 92       	push	r12
- 45c:	df 92       	push	r13
- 45e:	ef 92       	push	r14
- 460:	ff 92       	push	r15
- 462:	0f 93       	push	r16
- 464:	1f 93       	push	r17
- 466:	cf 93       	push	r28
- 468:	df 93       	push	r29
- 46a:	cd b7       	in	r28, 0x3d	; 61
- 46c:	de b7       	in	r29, 0x3e	; 62
- 46e:	2f 97       	sbiw	r28, 0x0f	; 15
- 470:	0f b6       	in	r0, 0x3f	; 63
- 472:	f8 94       	cli
- 474:	de bf       	out	0x3e, r29	; 62
- 476:	0f be       	out	0x3f, r0	; 63
- 478:	cd bf       	out	0x3d, r28	; 61
+ 458:	9f 92       	push	r9
+ 45a:	af 92       	push	r10
+ 45c:	bf 92       	push	r11
+ 45e:	cf 92       	push	r12
+ 460:	df 92       	push	r13
+ 462:	ef 92       	push	r14
+ 464:	ff 92       	push	r15
+ 466:	0f 93       	push	r16
+ 468:	1f 93       	push	r17
+ 46a:	cf 93       	push	r28
+ 46c:	df 93       	push	r29
+ 46e:	cd b7       	in	r28, 0x3d	; 61
+ 470:	de b7       	in	r29, 0x3e	; 62
+ 472:	2f 97       	sbiw	r28, 0x0f	; 15
+ 474:	0f b6       	in	r0, 0x3f	; 63
+ 476:	f8 94       	cli
+ 478:	de bf       	out	0x3e, r29	; 62
+ 47a:	0f be       	out	0x3f, r0	; 63
+ 47c:	cd bf       	out	0x3d, r28	; 61
 	
-	if (RFID.done == true){	
- 47a:	80 91 0f 03 	lds	r24, 0x030F	; 0x80030f <__data_end+0x199>
- 47e:	88 23       	and	r24, r24
- 480:	09 f4       	brne	.+2      	; 0x484 <manchester_done+0x30>
- 482:	8a c0       	rjmp	.+276    	; 0x598 <manchester_done+0x144>
+	if (RFID.done == true && found_nine_ones == true){	
+ 47e:	80 91 0f 03 	lds	r24, 0x030F	; 0x80030f <__data_end+0x199>
+ 482:	88 23       	and	r24, r24
+ 484:	09 f4       	brne	.+2      	; 0x488 <manchester_done+0x30>
+ 486:	91 c0       	rjmp	.+290    	; 0x5aa <manchester_done+0x152>
+ 488:	80 91 1c 03 	lds	r24, 0x031C	; 0x80031c <found_nine_ones>
+ 48c:	88 23       	and	r24, r24
+ 48e:	09 f4       	brne	.+2      	; 0x492 <manchester_done+0x3a>
+ 490:	8c c0       	rjmp	.+280    	; 0x5aa <manchester_done+0x152>
 		cli();
- 484:	f8 94       	cli
+ 492:	f8 94       	cli
 		
 		unsigned int index;
 		index = RFID.index[ones];
- 486:	e0 91 1a 03 	lds	r30, 0x031A	; 0x80031a <ones>
- 48a:	f0 91 1b 03 	lds	r31, 0x031B	; 0x80031b <ones+0x1>
- 48e:	ee 0f       	add	r30, r30
- 490:	ff 1f       	adc	r31, r31
- 492:	ea 5f       	subi	r30, 0xFA	; 250
- 494:	fc 4f       	sbci	r31, 0xFC	; 252
- 496:	c0 80       	ld	r12, Z
- 498:	d1 80       	ldd	r13, Z+1	; 0x01
+ 494:	e0 91 1a 03 	lds	r30, 0x031A	; 0x80031a <ones>
+ 498:	f0 91 1b 03 	lds	r31, 0x031B	; 0x80031b <ones+0x1>
+ 49c:	ee 0f       	add	r30, r30
+ 49e:	ff 1f       	adc	r31, r31
+ 4a0:	ea 5f       	subi	r30, 0xFA	; 250
+ 4a2:	fc 4f       	sbci	r31, 0xFC	; 252
+ 4a4:	c0 80       	ld	r12, Z
+ 4a6:	d1 80       	ldd	r13, Z+1	; 0x01
 		int8_t col_parity[4] = {0}; 
- 49a:	1b 86       	std	Y+11, r1	; 0x0b
- 49c:	1c 86       	std	Y+12, r1	; 0x0c
- 49e:	1d 86       	std	Y+13, r1	; 0x0d
- 4a0:	1e 86       	std	Y+14, r1	; 0x0e
+ 4a8:	1b 86       	std	Y+11, r1	; 0x0b
+ 4aa:	1c 86       	std	Y+12, r1	; 0x0c
+ 4ac:	1d 86       	std	Y+13, r1	; 0x0d
+ 4ae:	1e 86       	std	Y+14, r1	; 0x0e
 		volatile int8_t row_parity[10] = {0}; 
- 4a2:	fe 01       	movw	r30, r28
- 4a4:	31 96       	adiw	r30, 0x01	; 1
- 4a6:	9a e0       	ldi	r25, 0x0A	; 10
- 4a8:	df 01       	movw	r26, r30
- 4aa:	1d 92       	st	X+, r1
- 4ac:	9a 95       	dec	r25
- 4ae:	e9 f7       	brne	.-6      	; 0x4aa <manchester_done+0x56>
- 4b0:	60 e1       	ldi	r22, 0x10	; 16
- 4b2:	73 e0       	ldi	r23, 0x03	; 3
- 4b4:	d6 01       	movw	r26, r12
- 4b6:	a5 58       	subi	r26, 0x85	; 133
- 4b8:	be 4f       	sbci	r27, 0xFE	; 254
- 4ba:	0f 2e       	mov	r0, r31
- 4bc:	fa e1       	ldi	r31, 0x1A	; 26
- 4be:	ef 2e       	mov	r14, r31
- 4c0:	f3 e0       	ldi	r31, 0x03	; 3
- 4c2:	ff 2e       	mov	r15, r31
- 4c4:	f0 2d       	mov	r31, r0
+ 4b0:	fe 01       	movw	r30, r28
+ 4b2:	31 96       	adiw	r30, 0x01	; 1
+ 4b4:	9a e0       	ldi	r25, 0x0A	; 10
+ 4b6:	df 01       	movw	r26, r30
+ 4b8:	1d 92       	st	X+, r1
+ 4ba:	9a 95       	dec	r25
+ 4bc:	e9 f7       	brne	.-6      	; 0x4b8 <manchester_done+0x60>
+ 4be:	60 e1       	ldi	r22, 0x10	; 16
+ 4c0:	73 e0       	ldi	r23, 0x03	; 3
+ 4c2:	d6 01       	movw	r26, r12
+ 4c4:	a5 58       	subi	r26, 0x85	; 133
+ 4c6:	be 4f       	sbci	r27, 0xFE	; 254
+ 4c8:	0f 2e       	mov	r0, r31
+ 4ca:	fa e1       	ldi	r31, 0x1A	; 26
+ 4cc:	ef 2e       	mov	r14, r31
+ 4ce:	f3 e0       	ldi	r31, 0x03	; 3
+ 4d0:	ff 2e       	mov	r15, r31
+ 4d2:	f0 2d       	mov	r31, r0
 			 
 		 for (int8_t i = 0; i < 10; i++) {					//10 parity bits = 50 total iterations 
 			 
 			volatile int8_t rfid_char = 0;
- 4c6:	0f 2e       	mov	r0, r31
- 4c8:	f3 e0       	ldi	r31, 0x03	; 3
- 4ca:	af 2e       	mov	r10, r31
- 4cc:	f0 2d       	mov	r31, r0
- 4ce:	b1 2c       	mov	r11, r1
- 4d0:	06 e6       	ldi	r16, 0x66	; 102
- 4d2:	1e ef       	ldi	r17, 0xFE	; 254
- 4d4:	06 57       	subi	r16, 0x76	; 118
- 4d6:	11 40       	sbci	r17, 0x01	; 1
+ 4d4:	0f 2e       	mov	r0, r31
+ 4d6:	f3 e0       	ldi	r31, 0x03	; 3
+ 4d8:	af 2e       	mov	r10, r31
+ 4da:	f0 2d       	mov	r31, r0
+ 4dc:	b1 2c       	mov	r11, r1
+ 4de:	06 e6       	ldi	r16, 0x66	; 102
+ 4e0:	1e ef       	ldi	r17, 0xFE	; 254
+ 4e2:	06 57       	subi	r16, 0x76	; 118
+ 4e4:	11 40       	sbci	r17, 0x01	; 1
 			 index++;								//increment the index to the parity bit (5x)
-			 row_parity[i] = RFID.data[index] + 0;//save the row parity bit
+			 row_parity[i] = RFID.data[index];//save the row parity bit
 			 
 			 //row_P_check[i] = (((!(RFID.data[index-1]) != !(RFID.data[index-2]) != !(RFID.data[index-3])) != !(RFID.data[index-2])
 			 
 			if(row_parity[i] != (rfid_char & 1)) parity_error = true;
- 4d8:	99 24       	eor	r9, r9
- 4da:	93 94       	inc	r9
+ 4e6:	99 24       	eor	r9, r9
+ 4e8:	93 94       	inc	r9
 		int8_t col_parity[4] = {0}; 
 		volatile int8_t row_parity[10] = {0}; 
 			 
 		 for (int8_t i = 0; i < 10; i++) {					//10 parity bits = 50 total iterations 
 			 
 			volatile int8_t rfid_char = 0;
- 4dc:	1f 86       	std	Y+15, r1	; 0x0f
- 4de:	fd 01       	movw	r30, r26
- 4e0:	35 97       	sbiw	r30, 0x05	; 5
- 4e2:	4a 2d       	mov	r20, r10
- 4e4:	5b 2d       	mov	r21, r11
+ 4ea:	1f 86       	std	Y+15, r1	; 0x0f
+ 4ec:	fd 01       	movw	r30, r26
+ 4ee:	35 97       	sbiw	r30, 0x05	; 5
+ 4f0:	4a 2d       	mov	r20, r10
+ 4f2:	5b 2d       	mov	r21, r11
 			
 			 for (int8_t j = 3; j >= 0; j--) {		
 				 int8_t decoded_bit = RFID.data[index];		//save each bit
- 4e6:	21 91       	ld	r18, Z+
+ 4f4:	21 91       	ld	r18, Z+
 				 rfid_char += decoded_bit << j;				//shift 4 times to create 8 bit int
- 4e8:	9f 85       	ldd	r25, Y+15	; 0x0f
- 4ea:	02 2e       	mov	r0, r18
- 4ec:	00 0c       	add	r0, r0
- 4ee:	33 0b       	sbc	r19, r19
- 4f0:	04 2e       	mov	r0, r20
- 4f2:	02 c0       	rjmp	.+4      	; 0x4f8 <manchester_done+0xa4>
- 4f4:	22 0f       	add	r18, r18
- 4f6:	33 1f       	adc	r19, r19
- 4f8:	0a 94       	dec	r0
- 4fa:	e2 f7       	brpl	.-8      	; 0x4f4 <manchester_done+0xa0>
- 4fc:	29 0f       	add	r18, r25
- 4fe:	2f 87       	std	Y+15, r18	; 0x0f
- 500:	41 50       	subi	r20, 0x01	; 1
- 502:	51 09       	sbc	r21, r1
- 504:	80 f7       	brcc	.-32     	; 0x4e6 <manchester_done+0x92>
- 506:	a8 01       	movw	r20, r16
- 508:	46 0f       	add	r20, r22
- 50a:	57 1f       	adc	r21, r23
+ 4f6:	9f 85       	ldd	r25, Y+15	; 0x0f
+ 4f8:	02 2e       	mov	r0, r18
+ 4fa:	00 0c       	add	r0, r0
+ 4fc:	33 0b       	sbc	r19, r19
+ 4fe:	04 2e       	mov	r0, r20
+ 500:	02 c0       	rjmp	.+4      	; 0x506 <manchester_done+0xae>
+ 502:	22 0f       	add	r18, r18
+ 504:	33 1f       	adc	r19, r19
+ 506:	0a 94       	dec	r0
+ 508:	e2 f7       	brpl	.-8      	; 0x502 <manchester_done+0xaa>
+ 50a:	29 0f       	add	r18, r25
+ 50c:	2f 87       	std	Y+15, r18	; 0x0f
+ 50e:	41 50       	subi	r20, 0x01	; 1
+ 510:	51 09       	sbc	r21, r1
+ 512:	80 f7       	brcc	.-32     	; 0x4f4 <manchester_done+0x9c>
+ 514:	a8 01       	movw	r20, r16
+ 516:	46 0f       	add	r20, r22
+ 518:	57 1f       	adc	r21, r23
 				 index++;									//increment the index 4 times
 			 }
 			 
 			 RFID.buff[i] = rfid_char;				//save each character
- 50c:	9f 85       	ldd	r25, Y+15	; 0x0f
- 50e:	fb 01       	movw	r30, r22
- 510:	91 93       	st	Z+, r25
- 512:	bf 01       	movw	r22, r30
+ 51a:	9f 85       	ldd	r25, Y+15	; 0x0f
+ 51c:	fb 01       	movw	r30, r22
+ 51e:	91 93       	st	Z+, r25
+ 520:	bf 01       	movw	r22, r30
 			 index++;								//increment the index to the parity bit (5x)
-			 row_parity[i] = RFID.data[index] + 0;//save the row parity bit
- 514:	9c 91       	ld	r25, X
- 516:	e1 e0       	ldi	r30, 0x01	; 1
- 518:	f0 e0       	ldi	r31, 0x00	; 0
- 51a:	ec 0f       	add	r30, r28
- 51c:	fd 1f       	adc	r31, r29
- 51e:	e4 0f       	add	r30, r20
- 520:	f5 1f       	adc	r31, r21
- 522:	90 83       	st	Z, r25
+			 row_parity[i] = RFID.data[index];//save the row parity bit
+ 522:	9c 91       	ld	r25, X
+ 524:	e1 e0       	ldi	r30, 0x01	; 1
+ 526:	f0 e0       	ldi	r31, 0x00	; 0
+ 528:	ec 0f       	add	r30, r28
+ 52a:	fd 1f       	adc	r31, r29
+ 52c:	e4 0f       	add	r30, r20
+ 52e:	f5 1f       	adc	r31, r21
+ 530:	90 83       	st	Z, r25
 			 
 			 //row_P_check[i] = (((!(RFID.data[index-1]) != !(RFID.data[index-2]) != !(RFID.data[index-3])) != !(RFID.data[index-2])
 			 
 			if(row_parity[i] != (rfid_char & 1)) parity_error = true;
- 524:	20 81       	ld	r18, Z
- 526:	9f 85       	ldd	r25, Y+15	; 0x0f
- 528:	91 70       	andi	r25, 0x01	; 1
- 52a:	29 13       	cpse	r18, r25
- 52c:	90 92 1f 03 	sts	0x031F, r9	; 0x80031f <parity_error>
- 530:	15 96       	adiw	r26, 0x05	; 5
+ 532:	20 81       	ld	r18, Z
+ 534:	9f 85       	ldd	r25, Y+15	; 0x0f
+ 536:	91 70       	andi	r25, 0x01	; 1
+ 538:	29 13       	cpse	r18, r25
+ 53a:	90 92 20 03 	sts	0x0320, r9	; 0x800320 <parity_error>
+ 53e:	15 96       	adiw	r26, 0x05	; 5
 		unsigned int index;
 		index = RFID.index[ones];
 		int8_t col_parity[4] = {0}; 
 		volatile int8_t row_parity[10] = {0}; 
 			 
 		 for (int8_t i = 0; i < 10; i++) {					//10 parity bits = 50 total iterations 
- 532:	6e 15       	cp	r22, r14
- 534:	7f 05       	cpc	r23, r15
- 536:	91 f6       	brne	.-92     	; 0x4dc <manchester_done+0x88>
- 538:	fe 01       	movw	r30, r28
- 53a:	3f 96       	adiw	r30, 0x0f	; 15
- 53c:	d6 01       	movw	r26, r12
- 53e:	a8 55       	subi	r26, 0x58	; 88
- 540:	be 4f       	sbci	r27, 0xFE	; 254
- 542:	ae 01       	movw	r20, r28
- 544:	45 5f       	subi	r20, 0xF5	; 245
- 546:	5f 4f       	sbci	r21, 0xFF	; 255
+ 540:	6e 15       	cp	r22, r14
+ 542:	7f 05       	cpc	r23, r15
+ 544:	91 f6       	brne	.-92     	; 0x4ea <manchester_done+0x92>
+ 546:	fe 01       	movw	r30, r28
+ 548:	3f 96       	adiw	r30, 0x0f	; 15
+ 54a:	d6 01       	movw	r26, r12
+ 54c:	a8 55       	subi	r26, 0x58	; 88
+ 54e:	be 4f       	sbci	r27, 0xFE	; 254
+ 550:	ae 01       	movw	r20, r28
+ 552:	45 5f       	subi	r20, 0xF5	; 245
+ 554:	5f 4f       	sbci	r21, 0xFF	; 255
 			if(row_parity[i] != (rfid_char & 1)) parity_error = true;
 
 		 }
 		 
 		 for (int8_t i = 3; i >= 0; i--) {			//final 4 parity bits
 			 col_parity[i] += RFID.data[index];
- 548:	9d 91       	ld	r25, X+
- 54a:	22 91       	ld	r18, -Z
- 54c:	92 0f       	add	r25, r18
- 54e:	90 83       	st	Z, r25
+ 556:	9d 91       	ld	r25, X+
+ 558:	22 91       	ld	r18, -Z
+ 55a:	92 0f       	add	r25, r18
+ 55c:	90 83       	st	Z, r25
 			 
 			if(row_parity[i] != (rfid_char & 1)) parity_error = true;
 
 		 }
 		 
 		 for (int8_t i = 3; i >= 0; i--) {			//final 4 parity bits
- 550:	e4 17       	cp	r30, r20
- 552:	f5 07       	cpc	r31, r21
- 554:	c9 f7       	brne	.-14     	; 0x548 <manchester_done+0xf4>
+ 55e:	e4 17       	cp	r30, r20
+ 560:	f5 07       	cpc	r31, r21
+ 562:	c9 f7       	brne	.-14     	; 0x556 <manchester_done+0xfe>
 			 col_parity[i] += RFID.data[index];
 			 index++;
 		 }
 		 
 		  
 		 int8_t stop_bit = RFID.data[index];
- 556:	f6 01       	movw	r30, r12
- 558:	ea 58       	subi	r30, 0x8A	; 138
- 55a:	fe 4f       	sbci	r31, 0xFE	; 254
+ 564:	f6 01       	movw	r30, r12
+ 566:	ea 58       	subi	r30, 0x8A	; 138
+ 568:	fe 4f       	sbci	r31, 0xFE	; 254
 		 
 		 if (stop_bit != 0 && col_parity[1] !=0){ 
- 55c:	96 a9       	ldd	r25, Z+54	; 0x36
- 55e:	99 23       	and	r25, r25
- 560:	b9 f0       	breq	.+46     	; 0x590 <manchester_done+0x13c>
- 562:	9c 85       	ldd	r25, Y+12	; 0x0c
- 564:	99 23       	and	r25, r25
- 566:	a1 f0       	breq	.+40     	; 0x590 <manchester_done+0x13c>
+ 56a:	96 a9       	ldd	r25, Z+54	; 0x36
+ 56c:	99 23       	and	r25, r25
+ 56e:	b9 f0       	breq	.+46     	; 0x59e <manchester_done+0x146>
+ 570:	9c 85       	ldd	r25, Y+12	; 0x0c
+ 572:	99 23       	and	r25, r25
+ 574:	a1 f0       	breq	.+40     	; 0x59e <manchester_done+0x146>
 			index = RFID.index[ones++];
- 568:	80 91 1a 03 	lds	r24, 0x031A	; 0x80031a <ones>
- 56c:	90 91 1b 03 	lds	r25, 0x031B	; 0x80031b <ones+0x1>
- 570:	9c 01       	movw	r18, r24
- 572:	2f 5f       	subi	r18, 0xFF	; 255
- 574:	3f 4f       	sbci	r19, 0xFF	; 255
- 576:	30 93 1b 03 	sts	0x031B, r19	; 0x80031b <ones+0x1>
- 57a:	20 93 1a 03 	sts	0x031A, r18	; 0x80031a <ones>
- 57e:	88 0f       	add	r24, r24
- 580:	99 1f       	adc	r25, r25
- 582:	fc 01       	movw	r30, r24
- 584:	ea 5f       	subi	r30, 0xFA	; 250
- 586:	fc 4f       	sbci	r31, 0xFC	; 252
- 588:	80 81       	ld	r24, Z
- 58a:	91 81       	ldd	r25, Z+1	; 0x01
+ 576:	80 91 1a 03 	lds	r24, 0x031A	; 0x80031a <ones>
+ 57a:	90 91 1b 03 	lds	r25, 0x031B	; 0x80031b <ones+0x1>
+ 57e:	9c 01       	movw	r18, r24
+ 580:	2f 5f       	subi	r18, 0xFF	; 255
+ 582:	3f 4f       	sbci	r19, 0xFF	; 255
+ 584:	30 93 1b 03 	sts	0x031B, r19	; 0x80031b <ones+0x1>
+ 588:	20 93 1a 03 	sts	0x031A, r18	; 0x80031a <ones>
+ 58c:	88 0f       	add	r24, r24
+ 58e:	99 1f       	adc	r25, r25
+ 590:	fc 01       	movw	r30, r24
+ 592:	ea 5f       	subi	r30, 0xFA	; 250
+ 594:	fc 4f       	sbci	r31, 0xFC	; 252
+ 596:	80 81       	ld	r24, Z
+ 598:	91 81       	ldd	r25, Z+1	; 0x01
 			 return false;
- 58c:	80 e0       	ldi	r24, 0x00	; 0
- 58e:	04 c0       	rjmp	.+8      	; 0x598 <manchester_done+0x144>
+ 59a:	80 e0       	ldi	r24, 0x00	; 0
+ 59c:	06 c0       	rjmp	.+12     	; 0x5aa <manchester_done+0x152>
 			 }
 			 
 			RFID.done = false;
- 590:	10 92 0f 03 	sts	0x030F, r1	; 0x80030f <__data_end+0x199>
+ 59e:	10 92 0f 03 	sts	0x030F, r1	; 0x80030f <__data_end+0x199>
 			RFID.ready = false;
- 594:	10 92 0e 03 	sts	0x030E, r1	; 0x80030e <__data_end+0x198>
+ 5a2:	10 92 0e 03 	sts	0x030E, r1	; 0x80030e <__data_end+0x198>
+			found_nine_ones = false;
+ 5a6:	10 92 1c 03 	sts	0x031C, r1	; 0x80031c <found_nine_ones>
 			index = 0;
 			return true;		
 	 }
 	 
 	 return false;
 }
- 598:	2f 96       	adiw	r28, 0x0f	; 15
- 59a:	0f b6       	in	r0, 0x3f	; 63
- 59c:	f8 94       	cli
- 59e:	de bf       	out	0x3e, r29	; 62
- 5a0:	0f be       	out	0x3f, r0	; 63
- 5a2:	cd bf       	out	0x3d, r28	; 61
- 5a4:	df 91       	pop	r29
- 5a6:	cf 91       	pop	r28
- 5a8:	1f 91       	pop	r17
- 5aa:	0f 91       	pop	r16
- 5ac:	ff 90       	pop	r15
- 5ae:	ef 90       	pop	r14
- 5b0:	df 90       	pop	r13
- 5b2:	cf 90       	pop	r12
- 5b4:	bf 90       	pop	r11
- 5b6:	af 90       	pop	r10
- 5b8:	9f 90       	pop	r9
- 5ba:	08 95       	ret
+ 5aa:	2f 96       	adiw	r28, 0x0f	; 15
+ 5ac:	0f b6       	in	r0, 0x3f	; 63
+ 5ae:	f8 94       	cli
+ 5b0:	de bf       	out	0x3e, r29	; 62
+ 5b2:	0f be       	out	0x3f, r0	; 63
+ 5b4:	cd bf       	out	0x3d, r28	; 61
+ 5b6:	df 91       	pop	r29
+ 5b8:	cf 91       	pop	r28
+ 5ba:	1f 91       	pop	r17
+ 5bc:	0f 91       	pop	r16
+ 5be:	ff 90       	pop	r15
+ 5c0:	ef 90       	pop	r14
+ 5c2:	df 90       	pop	r13
+ 5c4:	cf 90       	pop	r12
+ 5c6:	bf 90       	pop	r11
+ 5c8:	af 90       	pop	r10
+ 5ca:	9f 90       	pop	r9
+ 5cc:	08 95       	ret
 
-000005bc <toChar>:
+000005ce <toChar>:
 
 char toChar(int8_t i) {
 	if ( 0 <= i && i <= 9){
- 5bc:	8a 30       	cpi	r24, 0x0A	; 10
- 5be:	10 f4       	brcc	.+4      	; 0x5c4 <toChar+0x8>
+ 5ce:	8a 30       	cpi	r24, 0x0A	; 10
+ 5d0:	10 f4       	brcc	.+4      	; 0x5d6 <toChar+0x8>
 		return i + '0';
- 5c0:	80 5d       	subi	r24, 0xD0	; 208
- 5c2:	08 95       	ret
+ 5d2:	80 5d       	subi	r24, 0xD0	; 208
+ 5d4:	08 95       	ret
 		} else {
 		return (i - 10) + 'A';
- 5c4:	89 5c       	subi	r24, 0xC9	; 201
+ 5d6:	89 5c       	subi	r24, 0xC9	; 201
 	}
 }
- 5c6:	08 95       	ret
+ 5d8:	08 95       	ret
 
-000005c8 <main>:
+000005da <main>:
 
 int main( void )
 {
  
 	lcd_init();
- 5c8:	0e 94 ac 00 	call	0x158	; 0x158 <lcd_init>
+ 5da:	0e 94 ac 00 	call	0x158	; 0x158 <lcd_init>
 	USART_init();
- 5cc:	0e 94 02 01 	call	0x204	; 0x204 <USART_init>
+ 5de:	0e 94 02 01 	call	0x204	; 0x204 <USART_init>
 	frequency_init();
- 5d0:	0e 94 94 01 	call	0x328	; 0x328 <frequency_init>
+ 5e2:	0e 94 94 01 	call	0x328	; 0x328 <frequency_init>
 	interr_init();
- 5d4:	0e 94 a3 01 	call	0x346	; 0x346 <interr_init>
+ 5e6:	0e 94 a3 01 	call	0x346	; 0x346 <interr_init>
 volatile uint32_t adcVal = 0;
 volatile uint32_t freq = 1;
 
 void inline SPI_init()
 {
 	DDRB |= (1<<PORTB5 | 1<<PORTB7 | 1<<PORTB4); 	// initializing ss, sck, and mosi pins
- 5d8:	84 b1       	in	r24, 0x04	; 4
- 5da:	80 6b       	ori	r24, 0xB0	; 176
- 5dc:	84 b9       	out	0x04, r24	; 4
+ 5ea:	84 b1       	in	r24, 0x04	; 4
+ 5ec:	80 6b       	ori	r24, 0xB0	; 176
+ 5ee:	84 b9       	out	0x04, r24	; 4
 	SPSR |= 1<<SPI2X;
- 5de:	8d b5       	in	r24, 0x2d	; 45
- 5e0:	81 60       	ori	r24, 0x01	; 1
- 5e2:	8d bd       	out	0x2d, r24	; 45
+ 5f0:	8d b5       	in	r24, 0x2d	; 45
+ 5f2:	81 60       	ori	r24, 0x01	; 1
+ 5f4:	8d bd       	out	0x2d, r24	; 45
 	SPCR |= (1<<SPE | 1<<MSTR); 			//enabling master mode, frequency 2 mhz
- 5e4:	8c b5       	in	r24, 0x2c	; 44
- 5e6:	80 65       	ori	r24, 0x50	; 80
- 5e8:	8c bd       	out	0x2c, r24	; 44
+ 5f6:	8c b5       	in	r24, 0x2c	; 44
+ 5f8:	80 65       	ori	r24, 0x50	; 80
+ 5fa:	8c bd       	out	0x2c, r24	; 44
 	PORTB |= 1<<PORTB4; 					//ss high
- 5ea:	2c 9a       	sbi	0x05, 4	; 5
+ 5fc:	2c 9a       	sbi	0x05, 4	; 5
 	USART_init();
 	frequency_init();
 	interr_init();
 	SPI_init();
 	
 	lcd_instruction(clear);
- 5ec:	81 e0       	ldi	r24, 0x01	; 1
- 5ee:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
+ 5fe:	81 e0       	ldi	r24, 0x01	; 1
+ 600:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
 	lcd_string((uint8_t *)"Ready to Scan");
- 5f2:	88 e6       	ldi	r24, 0x68	; 104
- 5f4:	91 e0       	ldi	r25, 0x01	; 1
- 5f6:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
+ 604:	88 e6       	ldi	r24, 0x68	; 104
+ 606:	91 e0       	ldi	r25, 0x01	; 1
+ 608:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
 
 	sei();
- 5fa:	78 94       	sei
- 5fc:	0f 2e       	mov	r0, r31
- 5fe:	f0 e1       	ldi	r31, 0x10	; 16
- 600:	cf 2e       	mov	r12, r31
- 602:	f3 e0       	ldi	r31, 0x03	; 3
- 604:	df 2e       	mov	r13, r31
- 606:	f0 2d       	mov	r31, r0
- 608:	0f 2e       	mov	r0, r31
- 60a:	fa e1       	ldi	r31, 0x1A	; 26
- 60c:	ef 2e       	mov	r14, r31
- 60e:	f3 e0       	ldi	r31, 0x03	; 3
- 610:	ff 2e       	mov	r15, r31
- 612:	f0 2d       	mov	r31, r0
+ 60c:	78 94       	sei
+ 60e:	0f 2e       	mov	r0, r31
+ 610:	f0 e1       	ldi	r31, 0x10	; 16
+ 612:	cf 2e       	mov	r12, r31
+ 614:	f3 e0       	ldi	r31, 0x03	; 3
+ 616:	df 2e       	mov	r13, r31
+ 618:	f0 2d       	mov	r31, r0
+ 61a:	0f 2e       	mov	r0, r31
+ 61c:	fa e1       	ldi	r31, 0x1A	; 26
+ 61e:	ef 2e       	mov	r14, r31
+ 620:	f3 e0       	ldi	r31, 0x03	; 3
+ 622:	ff 2e       	mov	r15, r31
+ 624:	f0 2d       	mov	r31, r0
 	
 	while (1) {	
 		
 		if(!manchester_done()) continue;
- 614:	0e 94 2a 02 	call	0x454	; 0x454 <manchester_done>
- 618:	88 23       	and	r24, r24
- 61a:	e1 f3       	breq	.-8      	; 0x614 <main+0x4c>
+ 626:	0e 94 2c 02 	call	0x458	; 0x458 <manchester_done>
+ 62a:	88 23       	and	r24, r24
+ 62c:	e1 f3       	breq	.-8      	; 0x626 <main+0x4c>
 
 		lcd_instruction(clear);
- 61c:	81 e0       	ldi	r24, 0x01	; 1
- 61e:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
- 622:	e6 01       	movw	r28, r12
- 624:	86 01       	movw	r16, r12
+ 62e:	81 e0       	ldi	r24, 0x01	; 1
+ 630:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
+ 634:	e6 01       	movw	r28, r12
+ 636:	86 01       	movw	r16, r12
 		
 		for (int i = 0; i < 10; i++) {
 			lcd_char(toChar(RFID.buff[i]));
- 626:	f8 01       	movw	r30, r16
- 628:	81 91       	ld	r24, Z+
- 62a:	8f 01       	movw	r16, r30
- 62c:	0e 94 de 02 	call	0x5bc	; 0x5bc <toChar>
- 630:	0e 94 75 00 	call	0xea	; 0xea <lcd_char>
- 634:	f5 e8       	ldi	r31, 0x85	; 133
- 636:	fa 95       	dec	r31
- 638:	f1 f7       	brne	.-4      	; 0x636 <main+0x6e>
- 63a:	00 00       	nop
+ 638:	f8 01       	movw	r30, r16
+ 63a:	81 91       	ld	r24, Z+
+ 63c:	8f 01       	movw	r16, r30
+ 63e:	0e 94 e7 02 	call	0x5ce	; 0x5ce <toChar>
+ 642:	0e 94 75 00 	call	0xea	; 0xea <lcd_char>
+ 646:	f5 e8       	ldi	r31, 0x85	; 133
+ 648:	fa 95       	dec	r31
+ 64a:	f1 f7       	brne	.-4      	; 0x648 <main+0x6e>
+ 64c:	00 00       	nop
 		
 		if(!manchester_done()) continue;
 
 		lcd_instruction(clear);
 		
 		for (int i = 0; i < 10; i++) {
- 63c:	0e 15       	cp	r16, r14
- 63e:	1f 05       	cpc	r17, r15
- 640:	91 f7       	brne	.-28     	; 0x626 <main+0x5e>
+ 64e:	0e 15       	cp	r16, r14
+ 650:	1f 05       	cpc	r17, r15
+ 652:	91 f7       	brne	.-28     	; 0x638 <main+0x5e>
 			lcd_char(toChar(RFID.buff[i]));
 			_delay_us(50);
 		}
 		
 		USART_send(0x0A);
- 642:	8a e0       	ldi	r24, 0x0A	; 10
- 644:	0e 94 12 01 	call	0x224	; 0x224 <USART_send>
+ 654:	8a e0       	ldi	r24, 0x0A	; 10
+ 656:	0e 94 12 01 	call	0x224	; 0x224 <USART_send>
 		for (int i = 0; i < 10; i++) {
 			USART_send(toChar(RFID.buff[i]));
- 648:	89 91       	ld	r24, Y+
- 64a:	0e 94 de 02 	call	0x5bc	; 0x5bc <toChar>
- 64e:	0e 94 12 01 	call	0x224	; 0x224 <USART_send>
+ 65a:	89 91       	ld	r24, Y+
+ 65c:	0e 94 e7 02 	call	0x5ce	; 0x5ce <toChar>
+ 660:	0e 94 12 01 	call	0x224	; 0x224 <USART_send>
 			lcd_char(toChar(RFID.buff[i]));
 			_delay_us(50);
 		}
 		
 		USART_send(0x0A);
 		for (int i = 0; i < 10; i++) {
- 652:	ce 15       	cp	r28, r14
- 654:	df 05       	cpc	r29, r15
- 656:	c1 f7       	brne	.-16     	; 0x648 <main+0x80>
+ 664:	ce 15       	cp	r28, r14
+ 666:	df 05       	cpc	r29, r15
+ 668:	c1 f7       	brne	.-16     	; 0x65a <main+0x80>
 			USART_send(toChar(RFID.buff[i]));
 		}
 		USART_send(0x0D);
- 658:	8d e0       	ldi	r24, 0x0D	; 13
- 65a:	0e 94 12 01 	call	0x224	; 0x224 <USART_send>
+ 66a:	8d e0       	ldi	r24, 0x0D	; 13
+ 66c:	0e 94 12 01 	call	0x224	; 0x224 <USART_send>
 		beep();
- 65e:	0e 94 82 01 	call	0x304	; 0x304 <beep>
+ 670:	0e 94 82 01 	call	0x304	; 0x304 <beep>
 	#else
 		//round up by default
 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
 	#endif
 
 	__builtin_avr_delay_cycles(__ticks_dc);
- 662:	2f ef       	ldi	r18, 0xFF	; 255
- 664:	89 e6       	ldi	r24, 0x69	; 105
- 666:	98 e1       	ldi	r25, 0x18	; 24
- 668:	21 50       	subi	r18, 0x01	; 1
- 66a:	80 40       	sbci	r24, 0x00	; 0
- 66c:	90 40       	sbci	r25, 0x00	; 0
- 66e:	e1 f7       	brne	.-8      	; 0x668 <main+0xa0>
- 670:	00 c0       	rjmp	.+0      	; 0x672 <main+0xaa>
- 672:	00 00       	nop
+ 674:	2f ef       	ldi	r18, 0xFF	; 255
+ 676:	89 e6       	ldi	r24, 0x69	; 105
+ 678:	98 e1       	ldi	r25, 0x18	; 24
+ 67a:	21 50       	subi	r18, 0x01	; 1
+ 67c:	80 40       	sbci	r24, 0x00	; 0
+ 67e:	90 40       	sbci	r25, 0x00	; 0
+ 680:	e1 f7       	brne	.-8      	; 0x67a <main+0xa0>
+ 682:	00 c0       	rjmp	.+0      	; 0x684 <main+0xaa>
+ 684:	00 00       	nop
 		_delay_ms(1000);	
 		ones = 0;
- 674:	10 92 1b 03 	sts	0x031B, r1	; 0x80031b <ones+0x1>
- 678:	10 92 1a 03 	sts	0x031A, r1	; 0x80031a <ones>
+ 686:	10 92 1b 03 	sts	0x031B, r1	; 0x80031b <ones+0x1>
+ 68a:	10 92 1a 03 	sts	0x031A, r1	; 0x80031a <ones>
 		z = 0;
- 67c:	10 92 1e 03 	sts	0x031E, r1	; 0x80031e <z+0x1>
- 680:	10 92 1d 03 	sts	0x031D, r1	; 0x80031d <z>
+ 68e:	10 92 1f 03 	sts	0x031F, r1	; 0x80031f <z+0x1>
+ 692:	10 92 1e 03 	sts	0x031E, r1	; 0x80031e <z>
 		sei();
- 684:	78 94       	sei
- 686:	c6 cf       	rjmp	.-116    	; 0x614 <main+0x4c>
+ 696:	78 94       	sei
+ 698:	c6 cf       	rjmp	.-116    	; 0x626 <main+0x4c>
 
-00000688 <_exit>:
- 688:	f8 94       	cli
+0000069a <_exit>:
+ 69a:	f8 94       	cli
 
-0000068a <__stop_program>:
- 68a:	ff cf       	rjmp	.-2      	; 0x68a <__stop_program>
+0000069c <__stop_program>:
+ 69c:	ff cf       	rjmp	.-2      	; 0x69c <__stop_program>
