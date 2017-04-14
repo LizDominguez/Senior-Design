@@ -220,11 +220,11 @@ int find_card(void) {
 }
 
 ISR(USART0_RX_vect) {
-	char c = USART_RF_receive();
+	char num = USART_RF_receive();
 	
 	if (!RF.done) {
 
-	RF.ID[RF.index++] = c;
+	RF.ID[RF.index++] = num;
 	if (RF.index >= 12) { 
 		RF.index = 0;
 		RF.ID[12 - 1] = RF.ID[0] = 0; 
@@ -320,7 +320,7 @@ void upload_to_server(char * rfid, char action) {
 	}
 	
 	HTTP_request_buffer[20] = action; 
-	USART_Wifi_cmd("AT+CIPSTART=\"TCP\",\"""52.24.121.235""\",80");
+	USART_Wifi_cmd("AT+CIPSTART=\"TCP\",\"""35.162.87.20""\",80");
 	_delay_ms(1000);
 	USART_Wifi_cmd("AT+CIPSEND=34");
 	_delay_ms(1000);
@@ -347,7 +347,7 @@ void USART_Wifi_init(void) {
 		
 		if (!Wifi_response("ready")) { 
 			lcd_instruction(clear);
-			lcd_string((uint8_t *)"UART error"); //usually a hardware issue
+			lcd_string((uint8_t *)"Hardware error"); //usually a hardware issue
 			lcd_instruction(setCursor | lineTwo);
 			lcd_string((uint8_t *)"Restarting...");
 			_delay_ms(1000);

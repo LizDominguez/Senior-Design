@@ -277,6 +277,7 @@ volatile uint16_t z;
 volatile uint16_t ones;
 volatile uint8_t count;
 volatile uint8_t second;
+volatile bool parity_error;
 
 struct {
 	int8_t data[400];
@@ -286,11 +287,6 @@ struct {
 	int8_t buff[10];
 	
 }RFID;
-
-
-char card1[] = {0x41, 0x46, 0x46, 0x46, 0x42, 0x46, 0x37, 0x44, 0x42, 0x45}; //AFFFBF7DBE
-char card2[] = {0x42, 0x44, 0x46, 0x46, 0x42, 0x37, 0x44, 0x44, 0x42, 0x44}; //BDFFB7DDBD
-char card3[] = {0x37, 0x46, 0x46, 0x46, 0x35, 0x46, 0x42, 0x44, 0x37, 0x46}; //7FFF5FBD7F
 
 
 void interr_init(void) {
@@ -303,8 +299,10 @@ void interr_init(void) {
 }
 
 ISR(INT0_vect) {
-
-	_delay_us(350);
+	
+	_delay_us(483);
+	
+	//483
 	
 	RFID.data[z] = ((PIND & 0x04)>>2);
 	
@@ -347,10 +345,11 @@ bool manchester_done(void) {
 		unsigned int index;
 		index = RFID.index[ones];
 		int8_t col_parity[4] = {0}; 
+		volatile int8_t row_parity[10] = {0}; 
 			 
 		 for (int8_t i = 0; i < 10; i++) {					//10 parity bits = 50 total iterations 
 			 
-			volatile int8_t rfid_char = 0, row_parity = 0; 
+			volatile int8_t rfid_char = 0;
 			
 			 for (int8_t j = 3; j >= 0; j--) {		
 				 int8_t decoded_bit = RFID.data[index];		//save each bit
@@ -360,7 +359,11 @@ bool manchester_done(void) {
 			 
 			 RFID.buff[i] = rfid_char;				//save each character
 			 index++;								//increment the index to the parity bit (5x)
-			 row_parity += RFID.data[index];		//save the row parity bit
+			 row_parity[i] = RFID.data[index];//save the row parity bit
+			 
+			 //row_P_check[i] = (((!(RFID.data[index-1]) != !(RFID.data[index-2]) != !(RFID.data[index-3])) != !(RFID.data[index-2])
+			 
+			if(row_parity[i] != (rfid_char & 1)) parity_error = true;
 
 		 }
 		 
@@ -371,7 +374,8 @@ bool manchester_done(void) {
 		 
 		  
 		 int8_t stop_bit = RFID.data[index];
-		 if (stop_bit != 0 && (col_parity[2] & 1) != 0 && (col_parity[1] & 1) != 0 && (col_parity[0] & 1) != 0){ 
+		 
+		 if (stop_bit != 0 && col_parity[1] !=0){ 
 			index = RFID.index[ones++];
 			 return false;
 			 }
@@ -410,7 +414,7 @@ int main( void )
 	while (1) {	
 		
 		if(!manchester_done()) continue;
-		
+
 		lcd_instruction(clear);
 		
 		for (int i = 0; i < 10; i++) {
@@ -424,7 +428,7 @@ int main( void )
 		}
 		USART_send(0x0D);
 		beep();
-		_delay_ms(3000);
+		_delay_ms(1000);	
 		ones = 0;
 		z = 0;
 		sei();
