@@ -1,4 +1,5 @@
 #define F_CPU 8000000UL
+
 #include <avr/io.h>
 #include <inttypes.h>
 #include <avr/interrupt.h>
@@ -10,7 +11,7 @@
 
 #define BAUD 9600
 #define BAUDRATE (((F_CPU / (BAUD * 16UL))) - 1)
-#define ICP PIND6
+#define SIZE 16
 
 int16_t sine[50] = {576,639,700,758,812,862,906,943,974,998,1014,1022,1022,1014,998,974,943,906,862,812,758,700,639,576,512,447,384,323,265,211,161,117,80,49,25,9,1,1,9,25,49,80,117,161,211,265,323,384,447,511};
 
@@ -168,8 +169,47 @@ void USART_send(unsigned char data)
 	UDR0 = data;
 }
 
+
+unsigned char USART_receive(void)
+{
+	// Wait for data to be received
+	while(~(UCSR0A) & (1<<RXC0));
+	//Get and return received data from buffer 
+	return UDR0;
+}
+
+struct {
+	//RFID buffer 
+	volatile char ID[SIZE + 1];
+	volatile uint8_t index;
+	volatile bool done;
+}RF;
+
+inline void RFID_done(void) {
+	while(!RF.done);
+}
+
+inline void RFID_ready(void) {
+	//RFID buffer is ready to be refilled
+	RF.done = false;
+}
+
+ISR(USART0_RX_vect){
+	//load RFID into buffer 
+	char num = USART_receive();
+	if(!RF.done) {
+		RF.ID[RF.index++] = num;
+		if(RF.index == SIZE) {
+			RF.index = 0;
+			RF.done = true;
+		}
+	}
+	USART_send(num);
+}
+
+
 /*************************************************************** SPI to DAC **********************************************************/
-volatile uint32_t adcVal = 0;
+/*volatile uint32_t adcVal = 0;
 volatile uint32_t freq = 1;
 
 void inline SPI_init()
@@ -227,17 +267,17 @@ void beep(void) {
 		output_waveform(freq, (uint16_t *)sine);
 	}
 }
-
+*/
 /***************************************************************** 125kHz wave **********************************************************/
-void frequency_init(void) {
+/*void frequency_init(void) {
 	DDRD |= (1 << PORTD7);
 	TCCR2A |= (1<<WGM20 | 1<<WGM21 | 1<<COM2A0);
 	TCCR2B |= (1<<WGM22 | 1<<CS20); //Fast PWM
 	OCR2A = 31;		// 8000000/64 = 125k, but it's half with 50% duty cycle. 31 was value with least percent error at 126.6 kHz
 }
-
+*/
 /****************************************************** Manchester Decoding **********************************************************/
-
+/*
 volatile uint16_t z;
 volatile uint16_t ones;
 volatile uint8_t count;
@@ -253,15 +293,6 @@ struct {
 	int8_t buff[10];
 	
 }RFID;
-
-struct {
-	char card[10];
-}
-cards[3] = {
-	[0].card = {0x32, 0x43, 0x30, 0x30, 0x41, 0x43, 0x36, 0x39, 0x33, 0x45}, //2C00AC693E
-	[1].card = {0x33, 0x31, 0x30, 0x30, 0x33, 0x37, 0x44, 0x39, 0x33, 0x44}, //310037D93D
-	[2].card = {0x44, 0x46, 0x46, 0x45, 0x46, 0x46, 0x46, 0x41, 0x45, 0x36}, //broken
-};
 
 
 void interr_init(void) {
@@ -374,14 +405,16 @@ char toChar(int8_t i) {
 	}
 }
 
+*/
+
 int main( void )
 {
  
 	lcd_init();
 	USART_init();
-	frequency_init();
-	interr_init();
-	SPI_init();
+	//frequency_init();
+	//interr_init();
+	//SPI_init();
 	
 	lcd_instruction(clear);
 	lcd_string((uint8_t *)"Ready to Scan");
@@ -389,7 +422,7 @@ int main( void )
 	sei();
 	
 	while (1) {	
-		
+		/*
 		if(!manchester_done()) continue;
 
 		lcd_instruction(clear);
@@ -409,6 +442,24 @@ int main( void )
 		ones = 0;
 		z = 0;
 		sei();
+		*/
+		
+		lcd_instruction(clear);
+		lcd_string((uint8_t *)"Ready to Scan");
+		lcd_instruction(setCursor | lineTwo);
+		
+		RFID_done();
+		
+		for(uint8_t i = 1; i < 11; i++) {
+		lcd_char(RF.ID[i]);
+		_delay_us(50);
+		}
+		
+		USART_send('\n');
+		//beep();
+		_delay_ms(2000);
+		RFID_ready();
+		
 		
 	}
 	

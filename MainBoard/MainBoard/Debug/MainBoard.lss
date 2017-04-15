@@ -15,19 +15,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   5 .debug_aranges 000000c8  00000000  00000000  00000a40  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   0000121c  00000000  00000000  00000b08  2**0
+  6 .debug_info   0000121a  00000000  00000000  00000b08  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 000003a9  00000000  00000000  00001d24  2**0
+  7 .debug_abbrev 000003a9  00000000  00000000  00001d22  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00000880  00000000  00000000  000020cd  2**0
+  8 .debug_line   00000880  00000000  00000000  000020cb  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  0000028c  00000000  00000000  00002950  2**2
+  9 .debug_frame  0000028c  00000000  00000000  0000294c  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000357  00000000  00000000  00002bdc  2**0
+ 10 .debug_str    00000357  00000000  00000000  00002bd8  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    000009cc  00000000  00000000  00002f33  2**0
+ 11 .debug_loc    000009cc  00000000  00000000  00002f2f  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 000000d0  00000000  00000000  000038ff  2**0
+ 12 .debug_ranges 000000d0  00000000  00000000  000038fb  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -364,7 +364,7 @@ ISR(USART0_RX_vect) {
  28e:	bf 93       	push	r27
  290:	ef 93       	push	r30
  292:	ff 93       	push	r31
-	char num = USART_RF_receive();
+	char c = USART_RF_receive();
  294:	0e 94 12 01 	call	0x224	; 0x224 <USART_RF_receive>
 	
 	if (!RF.done) {
@@ -372,7 +372,7 @@ ISR(USART0_RX_vect) {
  29c:	91 11       	cpse	r25, r1
  29e:	19 c0       	rjmp	.+50     	; 0x2d2 <__vector_20+0x60>
 
-	RF.ID[RF.index++] = num;
+	RF.ID[RF.index++] = c;
  2a0:	ae e6       	ldi	r26, 0x6E	; 110
  2a2:	b2 e0       	ldi	r27, 0x02	; 2
  2a4:	1d 96       	adiw	r26, 0x0d	; 13
@@ -729,7 +729,7 @@ void upload_to_server(char * rfid, char action) {
 	
 	HTTP_request_buffer[20] = action; 
  46c:	6d 8b       	std	Y+21, r22	; 0x15
-	USART_Wifi_cmd("AT+CIPSTART=\"TCP\",\"""35.162.87.20""\",80");
+	USART_Wifi_cmd("AT+CIPSTART=\"TCP\",\""IP"\",80");
  46e:	83 e9       	ldi	r24, 0x93	; 147
  470:	91 e0       	ldi	r25, 0x01	; 1
  472:	0e 94 82 01 	call	0x304	; 0x304 <USART_Wifi_cmd>
@@ -1164,7 +1164,6 @@ inline void RFID_ready(void) {
  71e:	e0 50       	subi	r30, 0x00	; 0
  720:	ff 4f       	sbci	r31, 0xFF	; 255
 	char status_to_upload = '?';
-	
 	switch(current_status) {
  722:	85 85       	ldd	r24, Z+13	; 0x0d
  724:	88 23       	and	r24, r24

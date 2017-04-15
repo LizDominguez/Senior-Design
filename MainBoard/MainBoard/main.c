@@ -11,6 +11,7 @@
 #define BAUD 9600
 #define BAUDRATE (((F_CPU / (BAUD * 16UL))) - 1)
 #define ICP PIND6
+#define IP     "35.162.87.20" 
 
 
 /********************************************************************** LCD Configuration ********************************************************************/
@@ -146,7 +147,6 @@ struct {
 	char tag[12 + 1];
 	dog_status status;
 }
-
 cards[3] = {
 	[0].tag = {0x00, 0x32, 0x43, 0x30, 0x30, 0x41, 0x43, 0x36, 0x39, 0x33, 0x45, 0x00, 0x00}, //2C00AC693E
 	[0].status = surrendered,
@@ -220,11 +220,11 @@ int find_card(void) {
 }
 
 ISR(USART0_RX_vect) {
-	char num = USART_RF_receive();
+	char c = USART_RF_receive();
 	
 	if (!RF.done) {
 
-	RF.ID[RF.index++] = num;
+	RF.ID[RF.index++] = c;
 	if (RF.index >= 12) { 
 		RF.index = 0;
 		RF.ID[12 - 1] = RF.ID[0] = 0; 
@@ -320,7 +320,7 @@ void upload_to_server(char * rfid, char action) {
 	}
 	
 	HTTP_request_buffer[20] = action; 
-	USART_Wifi_cmd("AT+CIPSTART=\"TCP\",\"""35.162.87.20""\",80");
+	USART_Wifi_cmd("AT+CIPSTART=\"TCP\",\""IP"\",80");
 	_delay_ms(1000);
 	USART_Wifi_cmd("AT+CIPSEND=34");
 	_delay_ms(1000);
@@ -412,7 +412,6 @@ void Scan_for_tag(void) {
 	
 	dog_status current_status = cards[card_index].status;
 	char status_to_upload = '?';
-	
 	switch(current_status) {
 		case adopted:
 		cards[card_index].status = surrendered;
