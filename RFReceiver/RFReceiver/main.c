@@ -43,6 +43,7 @@ void lcd_instruction(uint8_t);
 void lcd_char(uint8_t);
 void lcd_string(uint8_t string[]);
 void lcd_init(void);
+int find_card(void);
 
 
 void lcd_init(void)
@@ -320,7 +321,7 @@ bool manchester_done(void) {
 		
 		unsigned int index;
 		index = RFID.index[ones];
-		int8_t col_parity[4] = {0}; 
+		//int8_t col_parity[4] = {0}; 
 		volatile int8_t row_parity[10] = {0}; 
 			 
 		 for (int8_t i = 0; i < 10; i++) {					//10 parity bits = 50 total iterations 
@@ -337,24 +338,35 @@ bool manchester_done(void) {
 			 index++;								//increment the index to the parity bit (5x)
 			 row_parity[i] = RFID.data[index];//save the row parity bit
 			 
-			 //row_P_check[i] = (((!(RFID.data[index-1]) != !(RFID.data[index-2]) != !(RFID.data[index-3])) != !(RFID.data[index-2])
 			 
-			if(row_parity[i] != (rfid_char & 1)) parity_error = true;
+			if(row_parity[i] != (rfid_char & 1)) parity_error = true; //checking the row parity
 
 		 }
 		 
-		 for (int8_t i = 3; i >= 0; i--) {			//final 4 parity bits
+		 
+		 /*for (int8_t i = 3; i >= 0; i--) {			//final 4 parity bits
 			 col_parity[i] += RFID.data[index];
 			 index++;
 		 }
-		 
+		 */
 		  
-		 int8_t stop_bit = RFID.data[index];
+		// int8_t stop_bit = RFID.data[index];
 		 
-		 if (stop_bit != 0 && col_parity[1] !=0){ 
-			index = RFID.index[ones++];
-			 return false;
+		volatile int valid_id = find_card(); //return an int if the decoded ID matches a card
+		 
+		 if (valid_id < 0){ 
+			 if(ones <3)index = RFID.index[ones++];
+			 else {
+				 RFID.done = false;
+				 RFID.ready = false;
+				 found_nine_ones = false;
+				 index = 0;
+				 ones = 0;
+				 z = 0;
+				 sei();
 			 }
+			 return false;
+		}
 			 
 			RFID.done = false;
 			RFID.ready = false;
@@ -373,6 +385,28 @@ char toChar(int8_t i) {
 		return (i - 10) + 'A';
 	}
 }
+
+int find_card(void) {
+	char temp[10] = {0};
+	for(int i = 0; i < 10; i++) {
+		temp[i] = toChar(RFID.buff[i]);
+	}
+	
+	for(int i = 0; i < 3; i++) {
+		bool foundMismatch = false;
+		for (int j = 0; j < 10; j++) {
+			if (temp[j] != cards[i].card[j]) {
+				foundMismatch = true;
+				break;
+			}
+		}
+		if (!foundMismatch) {
+			return i;
+		}
+	}
+	return -1;
+}
+
 
 int main( void )
 {
@@ -404,8 +438,11 @@ int main( void )
 			USART_send(toChar(RFID.buff[i]));
 		}
 		USART_send(0x0D);
+		
 		beep();
-		_delay_ms(1000);	
+		
+		_delay_ms(1000);
+			
 		ones = 0;
 		z = 0;
 		sei();
