@@ -242,7 +242,6 @@ void frequency_init(void) {
 volatile uint16_t z;
 volatile uint16_t ones;
 volatile uint8_t count;
-volatile uint8_t second;
 volatile bool parity_error;
 volatile bool found_nine_ones;
 
@@ -251,7 +250,7 @@ struct {
 	volatile unsigned int index[4];
 	volatile bool ready;
 	volatile bool done;
-	int8_t buff[10];
+	int8_t cardID[10];
 	
 }RFID;
 
@@ -290,7 +289,7 @@ ISR(INT0_vect) {
 			
 			RFID.index[ones] = z+1;		//store the index of each 9 1s
 
-			if (ones > 3){
+			if (ones == 3){
 				RFID.ready = true;
 				found_nine_ones = true;
 				ones = 0;
@@ -334,7 +333,7 @@ bool manchester_done(void) {
 				 index++;									//increment the index 4 times
 			 }
 			 
-			 RFID.buff[i] = rfid_char;				//save each character
+			 RFID.cardID[i] = rfid_char;				//save each character
 			 index++;								//increment the index to the parity bit (5x)
 			 row_parity[i] = RFID.data[index];//save the row parity bit
 			 
@@ -355,7 +354,7 @@ bool manchester_done(void) {
 		volatile int valid_id = find_card(); //return an int if the decoded ID matches a card
 		 
 		 if (valid_id < 0){ 
-			 if(ones <3)index = RFID.index[ones++];
+			 if(ones <3) index = RFID.index[ones++];
 			 else {
 				 RFID.done = false;
 				 RFID.ready = false;
@@ -389,7 +388,7 @@ char toChar(int8_t i) {
 int find_card(void) {
 	char temp[10] = {0};
 	for(int i = 0; i < 10; i++) {
-		temp[i] = toChar(RFID.buff[i]);
+		temp[i] = toChar(RFID.cardID[i]);
 	}
 	
 	for(int i = 0; i < 3; i++) {
@@ -429,13 +428,13 @@ int main( void )
 		lcd_instruction(clear);
 		
 		for (int i = 0; i < 10; i++) {
-			lcd_char(toChar(RFID.buff[i]));
+			lcd_char(toChar(RFID.cardID[i]));
 			_delay_us(50);
 		}
 		
 		USART_send(0x0A);
 		for (int i = 0; i < 10; i++) {
-			USART_send(toChar(RFID.buff[i]));
+			USART_send(toChar(RFID.cardID[i]));
 		}
 		USART_send(0x0D);
 		
