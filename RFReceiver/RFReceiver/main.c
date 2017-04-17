@@ -257,10 +257,27 @@ struct {
 struct {
 	char card[10];
 }
-cards[3] = {
+cards[20] = {
 	[0].card = {0x32, 0x43, 0x30, 0x30, 0x41, 0x43, 0x36, 0x39, 0x33, 0x45}, //2C00AC693E
 	[1].card = {0x33, 0x31, 0x30, 0x30, 0x33, 0x37, 0x44, 0x39, 0x33, 0x44}, //310037D93D
-	[2].card = {0x44, 0x46, 0x46, 0x45, 0x46, 0x46, 0x46, 0x41, 0x45, 0x36}, //broken
+	[2].card = {0x36, 0x46, 0x30, 0x30, 0x35, 0x43, 0x41, 0x44, 0x36, 0x30}, //6F005CAD60
+	[3].card = {0x44, 0x46, 0x46, 0x45, 0x46, 0x46, 0x46, 0x41, 0x45, 0x36}, //free spot
+	[4].card = {0x44, 0x46, 0x46, 0x45, 0x46, 0x46, 0x46, 0x41, 0x45, 0x36}, //free spot
+	[5].card = {0x44, 0x46, 0x46, 0x45, 0x46, 0x46, 0x46, 0x41, 0x45, 0x36}, //free spot
+	[6].card = {0x44, 0x46, 0x46, 0x45, 0x46, 0x46, 0x46, 0x41, 0x45, 0x36}, //free spot
+	[7].card = {0x44, 0x46, 0x46, 0x45, 0x46, 0x46, 0x46, 0x41, 0x45, 0x36}, //free spot
+	[8].card = {0x44, 0x46, 0x46, 0x45, 0x46, 0x46, 0x46, 0x41, 0x45, 0x36}, //free spot
+	[9].card = {0x44, 0x46, 0x46, 0x45, 0x46, 0x46, 0x46, 0x41, 0x45, 0x36}, //free spot
+	[10].card = {0x44, 0x46, 0x46, 0x45, 0x46, 0x46, 0x46, 0x41, 0x45, 0x36}, //free spot
+	[11].card = {0x44, 0x46, 0x46, 0x45, 0x46, 0x46, 0x46, 0x41, 0x45, 0x36}, //free spot
+	[12].card = {0x44, 0x46, 0x46, 0x45, 0x46, 0x46, 0x46, 0x41, 0x45, 0x36}, //free spot
+	[13].card = {0x44, 0x46, 0x46, 0x45, 0x46, 0x46, 0x46, 0x41, 0x45, 0x36}, //free spot
+	[14].card = {0x44, 0x46, 0x46, 0x45, 0x46, 0x46, 0x46, 0x41, 0x45, 0x36}, //free spot
+	[15].card = {0x44, 0x46, 0x46, 0x45, 0x46, 0x46, 0x46, 0x41, 0x45, 0x36}, //free spot
+	[16].card = {0x44, 0x46, 0x46, 0x45, 0x46, 0x46, 0x46, 0x41, 0x45, 0x36}, //free spot
+	[17].card = {0x44, 0x46, 0x46, 0x45, 0x46, 0x46, 0x46, 0x41, 0x45, 0x36}, //free spot
+	[18].card = {0x44, 0x46, 0x46, 0x45, 0x46, 0x46, 0x46, 0x41, 0x45, 0x36}, //free spot
+	[19].card = {0x44, 0x46, 0x46, 0x45, 0x46, 0x46, 0x46, 0x41, 0x45, 0x36}, //free spot
 };
 
 
@@ -287,7 +304,7 @@ ISR(INT0_vect) {
 
 		if(count == 9 && RFID.ready == false) {		//wait until 9 consecutive 1s
 			
-			RFID.index[ones] = z+1;		//store the index of each 9 1s
+			RFID.index[ones] = z+1;		//store each index of each 9 1s
 
 			if (ones == 3){
 				RFID.ready = true;
@@ -320,7 +337,6 @@ bool manchester_done(void) {
 		
 		unsigned int index;
 		index = RFID.index[ones];
-		//int8_t col_parity[4] = {0}; 
 		volatile int8_t row_parity[10] = {0}; 
 			 
 		 for (int8_t i = 0; i < 10; i++) {					//10 parity bits = 50 total iterations 
@@ -328,8 +344,8 @@ bool manchester_done(void) {
 			volatile int8_t rfid_char = 0;
 			
 			 for (int8_t j = 3; j >= 0; j--) {		
-				 int8_t decoded_bit = RFID.data[index];		//save each bit
-				 rfid_char += decoded_bit << j;				//shift 4 times to create 8 bit int
+				 int8_t decoded_data = RFID.data[index];		//save each bit
+				 rfid_char += decoded_data << j;				//shift 4 times to create 8 bit int
 				 index++;									//increment the index 4 times
 			 }
 			 
@@ -343,19 +359,11 @@ bool manchester_done(void) {
 		 }
 		 
 		 
-		 /*for (int8_t i = 3; i >= 0; i--) {			//final 4 parity bits
-			 col_parity[i] += RFID.data[index];
-			 index++;
-		 }
-		 */
-		  
-		// int8_t stop_bit = RFID.data[index];
-		 
 		volatile int valid_id = find_card(); //return an int if the decoded ID matches a card
 		 
-		 if (valid_id < 0){ 
-			 if(ones <3) index = RFID.index[ones++];
-			 else {
+		 if (valid_id < 0){								//if the decoded rf id is noise
+			 if(ones <3) index = RFID.index[ones++];	//move on to the next index of 9 1s
+			 else {										//if we run out of indexes, leave the function and rescan
 				 RFID.done = false;
 				 RFID.ready = false;
 				 found_nine_ones = false;
@@ -388,13 +396,13 @@ char toChar(int8_t i) {
 int find_card(void) {
 	char temp[10] = {0};
 	for(int i = 0; i < 10; i++) {
-		temp[i] = toChar(RFID.cardID[i]);
+		temp[i] = toChar(RFID.cardID[i]);	//converts each decoded ID into characters
 	}
 	
 	for(int i = 0; i < 3; i++) {
 		bool foundMismatch = false;
 		for (int j = 0; j < 10; j++) {
-			if (temp[j] != cards[i].card[j]) {
+			if (temp[j] != cards[i].card[j]) {	//if the ID does not match a valid value, discard
 				foundMismatch = true;
 				break;
 			}

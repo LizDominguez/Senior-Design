@@ -23,11 +23,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
   9 .debug_frame  00000224  00000000  00000000  000021c0  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000002f9  00000000  00000000  000023e4  2**0
+ 10 .debug_str    000002f5  00000000  00000000  000023e4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    000007ed  00000000  00000000  000026dd  2**0
+ 11 .debug_loc    000007ed  00000000  00000000  000026d9  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000098  00000000  00000000  00002eca  2**0
+ 12 .debug_ranges 00000098  00000000  00000000  00002ec6  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -742,7 +742,7 @@ ISR(INT0_vect) {
  3b2:	81 11       	cpse	r24, r1
  3b4:	2d c0       	rjmp	.+90     	; 0x410 <__FUSE_REGION_LENGTH__+0x10>
 			
-			RFID.index[ones] = z+1;		//store the index of each 9 1s
+			RFID.index[ones] = z+1;		//store each index of each 9 1s
  3b6:	e0 91 38 03 	lds	r30, 0x0338	; 0x800338 <ones>
  3ba:	f0 91 39 03 	lds	r31, 0x0339	; 0x800339 <ones+0x1>
  3be:	80 91 3b 03 	lds	r24, 0x033B	; 0x80033b <z>
@@ -1024,7 +1024,6 @@ bool manchester_done(void) {
  56c:	fc 4f       	sbci	r31, 0xFC	; 252
  56e:	a0 81       	ld	r26, Z
  570:	b1 81       	ldd	r27, Z+1	; 0x01
-		//int8_t col_parity[4] = {0}; 
 		volatile int8_t row_parity[10] = {0}; 
  572:	9e 01       	movw	r18, r28
  574:	2f 5f       	subi	r18, 0xFF	; 255
@@ -1065,7 +1064,7 @@ bool manchester_done(void) {
 			if(row_parity[i] != (rfid_char & 1)) parity_error = true; //checking the row parity
  5a8:	bb 24       	eor	r11, r11
  5aa:	b3 94       	inc	r11
-		//int8_t col_parity[4] = {0}; 
+		index = RFID.index[ones];
 		volatile int8_t row_parity[10] = {0}; 
 			 
 		 for (int8_t i = 0; i < 10; i++) {					//10 parity bits = 50 total iterations 
@@ -1078,9 +1077,9 @@ bool manchester_done(void) {
  5b4:	5d 2d       	mov	r21, r13
 			
 			 for (int8_t j = 3; j >= 0; j--) {		
-				 int8_t decoded_bit = RFID.data[index];		//save each bit
+				 int8_t decoded_data = RFID.data[index];		//save each bit
  5b6:	21 91       	ld	r18, Z+
-				 rfid_char += decoded_bit << j;				//shift 4 times to create 8 bit int
+				 rfid_char += decoded_data << j;				//shift 4 times to create 8 bit int
  5b8:	0d 85       	ldd	r16, Y+13	; 0x0d
  5ba:	02 2e       	mov	r0, r18
  5bc:	00 0c       	add	r0, r0
@@ -1126,19 +1125,19 @@ bool manchester_done(void) {
  5fa:	32 13       	cpse	r19, r18
  5fc:	b0 92 3d 03 	sts	0x033D, r11	; 0x80033d <parity_error>
  600:	15 96       	adiw	r26, 0x05	; 5
+		
 		unsigned int index;
 		index = RFID.index[ones];
-		//int8_t col_parity[4] = {0}; 
 		volatile int8_t row_parity[10] = {0}; 
 			 
 		 for (int8_t i = 0; i < 10; i++) {					//10 parity bits = 50 total iterations 
  602:	6e 15       	cp	r22, r14
  604:	7f 05       	cpc	r23, r15
  606:	91 f6       	brne	.-92     	; 0x5ac <manchester_done+0x8a>
+			if(row_parity[i] != (rfid_char & 1)) parity_error = true; //checking the row parity
+
 		 }
-		 */
-		  
-		// int8_t stop_bit = RFID.data[index];
+		 
 		 
 		volatile int valid_id = find_card(); //return an int if the decoded ID matches a card
  608:	0e 94 32 02 	call	0x464	; 0x464 <find_card>
