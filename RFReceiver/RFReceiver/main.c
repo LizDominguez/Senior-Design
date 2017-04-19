@@ -112,12 +112,12 @@ void lcd_char(uint8_t data)
 
 void lcd_instruction(uint8_t instruction)
 {
-		lcdPort &= ~(1 << lcdRSBit);                // RS low
-		lcdPort &= ~(1 << lcdEBit);                // E low
-		lcd_write(instruction);                   // write the upper 4 bits of data
-		_delay_us(10);
-		lcd_write(instruction << 4);             // write the lower 4 bits of data
-		_delay_ms(5);
+	lcdPort &= ~(1 << lcdRSBit);                // RS low
+	lcdPort &= ~(1 << lcdEBit);                // E low
+	lcd_write(instruction);                   // write the upper 4 bits of data
+	_delay_us(10);
+	lcd_write(instruction << 4);             // write the lower 4 bits of data
+	_delay_ms(5);
 }
 
 
@@ -209,7 +209,7 @@ void frequency(uint32_t frequency)
 	else if (frequency == 1) {
 		for(volatile uint16_t i = 0; i < 2; i++);	//1 kHz
 	}
-		
+	
 
 }
 
@@ -246,8 +246,8 @@ volatile bool parity_error;
 volatile bool found_nine_ones;
 
 struct {
-	int8_t data[400];
-	volatile unsigned int index[4];
+	int8_t data[2000];
+	volatile unsigned int index[20];
 	volatile bool ready;
 	volatile bool done;
 	int8_t cardID[10];
@@ -281,20 +281,26 @@ cards[20] = {
 };
 
 
-void interr_init(void) {
+
+
+void timer1_init()
+{
 	DDRD &= ~(1 << PIND2);		//Receiver input
 	PORTD |= 1 << PIND2;		// pull up resistor
-	EIMSK = 1 << INT0;			//enable interrupt 0
-	EIFR = 1 << INTF0;			//clear flag
-	MCUCR = 1 << ISC00;			//trigger on any edge
+	DDRB |= (1 << PINB0); //output
+	TCCR1B |= (1<<CS10);	//Timer 1 no prescaler
+	TCNT1 = 0;	// initialize counter
+		
+	//(.375/.000125) - 1
 	
+	//OCR1A = 3999;		//Clear timer when it reaches this value, 500us delay
+
 }
 
-ISR(INT0_vect) {
-	
-	_delay_us(483);
-	
-	//483
+void read_value(void){
+	if (TCNT1 >= 4008){ //if 500us has passed
+	TCNT1 = 0;
+	PORTB ^= (1 << 0);	
 	
 	RFID.data[z] = ((PIND & 0x04)>>2);
 	
@@ -306,7 +312,7 @@ ISR(INT0_vect) {
 			
 			RFID.index[ones] = z+1;		//store each index of each 9 1s
 
-			if (ones == 3){
+			if (ones > 18){
 				RFID.ready = true;
 				found_nine_ones = true;
 				ones = 0;
@@ -318,71 +324,93 @@ ISR(INT0_vect) {
 		
 	}
 	
-	else count = 0;	
+	else count = 0;
 	
-	if (z < 398) z++;		
+	if (z < 1998) z++;
 	else { z = 0; RFID.done = true;}
-	
-	
-						
-	EIFR = 1 << INTF0;		//clear flag
-	
+			
+		
+	}
 }
 
 
 bool manchester_done(void) {
 	
-	if (RFID.done == true && found_nine_ones == true){	
-		cli();
+	if (RFID.done == true && found_nine_ones == true){
+		//cli();
+		
+		parity_error = false;
 		
 		unsigned int index;
 		index = RFID.index[ones];
-		volatile int8_t row_parity[10] = {0}; 
-			 
-		 for (int8_t i = 0; i < 10; i++) {					//10 parity bits = 50 total iterations 
-			 
+		volatile int row_parity[10] = {0};
+		volatile int col_parity[10] = {0};	
+		volatile int row_check[10] = {0};
+		volatile int col_check[10] = {0};
+			
+		
+		for (int8_t i = 0; i < 10; i++) {					//10 parity bits = 50 total iterations
+			
 			volatile int8_t rfid_char = 0;
 			
-			 for (int8_t j = 3; j >= 0; j--) {		
-				 int8_t decoded_data = RFID.data[index];		//save each bit
-				 rfid_char += decoded_data << j;				//shift 4 times to create 8 bit int
-				 index++;									//increment the index 4 times
-			 }
-			 
-			 RFID.cardID[i] = rfid_char;				//save each character
-			 index++;								//increment the index to the parity bit (5x)
-			 row_parity[i] = RFID.data[index];//save the row parity bit
-			 
-			 
-			if(row_parity[i] != (rfid_char & 1)) parity_error = true; //checking the row parity
+			for (int8_t j = 3; j >= 0; j--) {
+				int8_t decoded_data = RFID.data[index];		//save each bit
+				rfid_char += decoded_data << j;				//shift 4 times to create 8 bit int
+				
+				row_check[i] += RFID.data[index];  //Miguel
+				row_check[i] = row_check[i] & 0x01;
+				col_check[j] += RFID.data[index];
+				col_check[j] = RFID.data[index] & 0x01;
+				
+				index++;                                    //increment the index 4 times
+													
+			}
+			
+			RFID.cardID[i] = rfid_char;				//save each character
+			
+			row_parity[i] = RFID.data[index];//save the row parity bit
+			index++;								//increment the index to the parity bit (5x)
 
-		 }
-		 
-		 
-		volatile int valid_id = find_card(); //return an int if the decoded ID matches a card
-		 
-		 if (valid_id < 0){								//if the decoded rf id is noise
-			 if(ones <3) index = RFID.index[ones++];	//move on to the next index of 9 1s
-			 else {										//if we run out of indexes, leave the function and rescan
-				 RFID.done = false;
-				 RFID.ready = false;
-				 found_nine_ones = false;
-				 index = 0;
-				 ones = 0;
-				 z = 0;
-				 sei();
-			 }
-			 return false;
 		}
-			 
-			RFID.done = false;
-			RFID.ready = false;
-			found_nine_ones = false;
-			index = 0;
-			return true;		
-	 }
-	 
-	 return false;
+		
+		
+		for (int8_t j = 3; j >= 0; j--) {
+			col_parity[j] =RFID.data[index];
+			index++;
+		}
+		
+		int stopbit = RFID.data[index];
+		
+		for (int8_t i = 0; i < 10; i++) {
+			for (int8_t j = 3; j >= 0; j--) {			
+		if(row_parity[i] != row_check[i] ) parity_error = true; //checking the row parity
+		if(col_parity[j] != col_check[j] ) parity_error = true; //checking the row parity
+			}
+		}
+		
+		
+	if (stopbit != 0 || (parity_error = true)){								//if the decoded rf id is noise
+			if(ones < 18) index = RFID.index[ones++];	//move on to the next index of 9 1s
+			else {										//if we run out of indexes, leave the function and rescan
+				RFID.done = false;
+				RFID.ready = false;
+				found_nine_ones = false;
+				index = 0;
+				ones = 0;
+				z = 0;
+				sei();
+			}
+			return false;
+		} 
+		
+		RFID.done = false;
+		RFID.ready = false;
+		found_nine_ones = false;
+		index = 0;
+		return true;
+	}
+	
+	return false;
 }
 
 char toChar(int8_t i) {
@@ -393,35 +421,15 @@ char toChar(int8_t i) {
 	}
 }
 
-int find_card(void) {
-	char temp[10] = {0};
-	for(int i = 0; i < 10; i++) {
-		temp[i] = toChar(RFID.cardID[i]);	//converts each decoded ID into characters
-	}
-	
-	for(int i = 0; i < 3; i++) {
-		bool foundMismatch = false;
-		for (int j = 0; j < 10; j++) {
-			if (temp[j] != cards[i].card[j]) {	//if the ID does not match a valid value, discard
-				foundMismatch = true;
-				break;
-			}
-		}
-		if (!foundMismatch) {
-			return i;
-		}
-	}
-	return -1;
-}
 
 
 int main( void )
 {
- 
+	
 	lcd_init();
 	USART_init();
 	frequency_init();
-	interr_init();
+	timer1_init();
 	SPI_init();
 	
 	lcd_instruction(clear);
@@ -429,8 +437,11 @@ int main( void )
 
 	sei();
 	
-	while (1) {	
+	while (1) {
 		
+		 read_value();
+		 
+		 
 		if(!manchester_done()) continue;
 
 		lcd_instruction(clear);
@@ -448,11 +459,13 @@ int main( void )
 		
 		beep();
 		
-		_delay_ms(1000);
-			
+		//_delay_ms(500);
+		
 		ones = 0;
 		z = 0;
-		sei();
+		//sei();
+		
+	
 		
 	}
 	
