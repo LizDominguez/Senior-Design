@@ -1,0 +1,6 @@
+Added Pin To Net: NetName=XTAL1 Pin=P3-8
+Added Pin To Net: NetName=XTAL1 Pin=U1-13
+Added Net: Name=XTAL1
+Added Pin To Net: NetName=XTAL2 Pin=P3-9
+Added Pin To Net: NetName=XTAL2 Pin=U1-12
+Added Net: Name=XTAL2

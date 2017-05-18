@@ -1,0 +1,120 @@
+html, body {
+  margin: 0;
+  padding: 0; 
+}
+
+.navigation {
+  height: 100px;
+  background-color: #8d6e63;
+  font-family: 'Open Sans';
+  text-transform: uppercase;
+  font-size: 16px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 100px;
+  overflow: hidden;
+}
+
+a:link, a:visited {
+  color: #e3dfdc;
+}
+
+.active {
+  text-decoration: none !important;
+  color: #473731 !important;
+}
+
+a:hover, a:focus {
+  text-decoration: none !important;
+  color: #473731 !important;
+}
+
+.logo {
+  width: 150px;
+  height: auto;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  display: inline;
+  margin: 20px;
+}
+
+.cards {
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  color: rgba(255,255,255,0.3);
+  font-family: 'Open Sans Condensed';
+  font-size: 75px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 350px;
+  height: 350px;
+}
+
+.cards:hover {
+  transform: scale(1.1);
+  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.card1 {
+  background-image: url('card1.jpg');
+}
+
+.card2 {
+  background-image: url('card2.jpg');
+}
+
+.card3 {
+  background-image: url('card3.jpg');
+}
+
+.card4 {
+  background-image: url('card4.jpg');
+}
+
+.card5 {
+  background-image: url('adopted.jpg');
+}
+
+.card6 {
+  background-image: url('card6.jpeg');
+}
+
+.about {
+  height: 400px;
+  background-color: #101010;
+  text-align: center;
+  vertical-align: middle;
+  color: white;
+  font-family: 'Roboto';
+}
+
+.profiles {
+  height: 300px;
+  text-align: center;
+  vertical-align: middle;
+  color: #101010;
+  font-family: 'Roboto';
+}
+
+#profile {
+  height: 250px; width: auto;
+  float: left;
+  margin: 20px 0px 0px 0px;
+}
+
+h1 {
+  font-family: 'Merriweather' !important;
+}
+
+#description {
+  margin: 0px 20px 0px 280px;
+}

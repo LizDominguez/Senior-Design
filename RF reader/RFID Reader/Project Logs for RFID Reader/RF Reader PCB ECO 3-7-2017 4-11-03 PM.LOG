@@ -1,0 +1,87 @@
+Added Component: Designator=C1(RAD-0.3)
+Added Component: Designator=C2(RAD-0.3)
+Added Component: Designator=C3(RAD-0.3)
+Added Component: Designator=C4(RAD-0.3)
+Added Component: Designator=C5(RAD-0.3)
+Added Component: Designator=Coil(0402-A)
+Added Component: Designator=D1(DO-41)
+Added Component: Designator=P1(HDR1X4)
+Added Component: Designator=Q1(SO-G3)
+Added Component: Designator=Q2(TO-92A)
+Added Component: Designator=R1(AXIAL-0.3)
+Added Component: Designator=R2(AXIAL-0.3)
+Added Component: Designator=R3(AXIAL-0.3)
+Added Component: Designator=R4(AXIAL-0.3)
+Added Component: Designator=R5(AXIAL-0.3)
+Added Component: Designator=R6(AXIAL-0.3)
+Added Component: Designator=R7(AXIAL-0.3)
+Added Component: Designator=R8(AXIAL-0.3)
+Added Component: Designator=R9(VR5)
+Added Component: Designator=U1(D008_L)
+Added Pin To Net: NetName=GND Pin=C2-1
+Added Pin To Net: NetName=GND Pin=C3-1
+Added Pin To Net: NetName=GND Pin=C4-1
+Added Pin To Net: NetName=GND Pin=C5-1
+Added Pin To Net: NetName=GND Pin=P1-4
+Added Pin To Net: NetName=GND Pin=Q1-3
+Added Pin To Net: NetName=GND Pin=Q2-1
+Added Pin To Net: NetName=GND Pin=R8-2
+Added Pin To Net: NetName=GND Pin=R9-2
+Added Pin To Net: NetName=GND Pin=U1-4
+Added Net: Name=GND
+Added Pin To Net: NetName=NetC1_1 Pin=C1-1
+Added Pin To Net: NetName=NetC1_1 Pin=R6-1
+Added Net: Name=NetC1_1
+Added Pin To Net: NetName=NetC1_2 Pin=C1-2
+Added Pin To Net: NetName=NetC1_2 Pin=C5-2
+Added Pin To Net: NetName=NetC1_2 Pin=D1-2
+Added Pin To Net: NetName=NetC1_2 Pin=R8-1
+Added Net: Name=NetC1_2
+Added Pin To Net: NetName=NetC2_2 Pin=C2-2
+Added Pin To Net: NetName=NetC2_2 Pin=C3-2
+Added Pin To Net: NetName=NetC2_2 Pin=C4-2
+Added Pin To Net: NetName=NetC2_2 Pin=Coil-1
+Added Pin To Net: NetName=NetC2_2 Pin=D1-1
+Added Net: Name=NetC2_2
+Added Pin To Net: NetName=NetCoil_2 Pin=Coil-2
+Added Pin To Net: NetName=NetCoil_2 Pin=Q1-2
+Added Pin To Net: NetName=NetCoil_2 Pin=R1-1
+Added Net: Name=NetCoil_2
+Added Pin To Net: NetName=NetQ1_1 Pin=Q1-1
+Added Pin To Net: NetName=NetQ1_1 Pin=R2-1
+Added Net: Name=NetQ1_1
+Added Pin To Net: NetName=NetQ2_2 Pin=Q2-2
+Added Pin To Net: NetName=NetQ2_2 Pin=R7-2
+Added Net: Name=NetQ2_2
+Added Pin To Net: NetName=NetQ2_3 Pin=Q2-3
+Added Pin To Net: NetName=NetQ2_3 Pin=R3-2
+Added Pin To Net: NetName=NetQ2_3 Pin=R5-1
+Added Pin To Net: NetName=NetQ2_3 Pin=U1-2
+Added Net: Name=NetQ2_3
+Added Pin To Net: NetName=NetR4_1 Pin=R4-1
+Added Pin To Net: NetName=NetR4_1 Pin=R6-2
+Added Pin To Net: NetName=NetR4_1 Pin=U1-6
+Added Net: Name=NetR4_1
+Added Pin To Net: NetName=NetR4_2 Pin=R4-2
+Added Pin To Net: NetName=NetR4_2 Pin=R7-1
+Added Pin To Net: NetName=NetR4_2 Pin=U1-7
+Added Net: Name=NetR4_2
+Added Pin To Net: NetName=NetR9_3 Pin=R9-3
+Added Pin To Net: NetName=NetR9_3 Pin=U1-3
+Added Pin To Net: NetName=NetR9_3 Pin=U1-5
+Added Net: Name=NetR9_3
+Added Pin To Net: NetName=OUTPUT Pin=P1-3
+Added Pin To Net: NetName=OUTPUT Pin=R3-1
+Added Pin To Net: NetName=OUTPUT Pin=U1-1
+Added Net: Name=OUTPUT
+Added Pin To Net: NetName=SQR Pin=P1-2
+Added Pin To Net: NetName=SQR Pin=R2-2
+Added Net: Name=SQR
+Added Pin To Net: NetName=VCC Pin=P1-1
+Added Pin To Net: NetName=VCC Pin=R1-2
+Added Pin To Net: NetName=VCC Pin=R5-2
+Added Pin To Net: NetName=VCC Pin=R9-1
+Added Pin To Net: NetName=VCC Pin=U1-8
+Added Net: Name=VCC
+Added Class: Name=RFID reader circuit
+Added Room: Name=RFID reader circuit

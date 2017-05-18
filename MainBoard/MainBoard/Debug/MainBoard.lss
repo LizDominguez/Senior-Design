@@ -15,19 +15,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   5 .debug_aranges 000000c8  00000000  00000000  00000a40  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   0000121a  00000000  00000000  00000b08  2**0
+  6 .debug_info   0000121c  00000000  00000000  00000b08  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 000003a9  00000000  00000000  00001d22  2**0
+  7 .debug_abbrev 000003a9  00000000  00000000  00001d24  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00000880  00000000  00000000  000020cb  2**0
+  8 .debug_line   00000880  00000000  00000000  000020cd  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  0000028c  00000000  00000000  0000294c  2**2
+  9 .debug_frame  0000028c  00000000  00000000  00002950  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000357  00000000  00000000  00002bd8  2**0
+ 10 .debug_str    00000354  00000000  00000000  00002bdc  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    000009cc  00000000  00000000  00002f2f  2**0
+ 11 .debug_loc    000009cc  00000000  00000000  00002f30  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 000000d0  00000000  00000000  000038fb  2**0
+ 12 .debug_ranges 000000d0  00000000  00000000  000038fc  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -364,7 +364,7 @@ ISR(USART0_RX_vect) {
  28e:	bf 93       	push	r27
  290:	ef 93       	push	r30
  292:	ff 93       	push	r31
-	char c = USART_RF_receive();
+	char num = USART_RF_receive();
  294:	0e 94 12 01 	call	0x224	; 0x224 <USART_RF_receive>
 	
 	if (!RF.done) {
@@ -372,7 +372,7 @@ ISR(USART0_RX_vect) {
  29c:	91 11       	cpse	r25, r1
  29e:	19 c0       	rjmp	.+50     	; 0x2d2 <__vector_20+0x60>
 
-	RF.ID[RF.index++] = c;
+	RF.ID[RF.index++] = num;
  2a0:	ae e6       	ldi	r26, 0x6E	; 110
  2a2:	b2 e0       	ldi	r27, 0x02	; 2
  2a4:	1d 96       	adiw	r26, 0x0d	; 13
@@ -501,16 +501,16 @@ bool Wifi_response(char string[]) {
  34a:	7c 01       	movw	r14, r24
  34c:	0d e7       	ldi	r16, 0x7D	; 125
  34e:	12 e0       	ldi	r17, 0x02	; 2
-	for (int i = 0; i < ROW_SIZE - 1; i++) {
+	for (int i = 0; i < ROWS - 1; i++) {
  350:	c0 e0       	ldi	r28, 0x00	; 0
  352:	d0 e0       	ldi	r29, 0x00	; 0
-		if(strcmp((char *)Wifi.buffer[i], string) == 0) {
+		if(strcmp((char *)Wifi.response[i], string) == 0) {
  354:	b7 01       	movw	r22, r14
  356:	c8 01       	movw	r24, r16
  358:	0e 94 db 03 	call	0x7b6	; 0x7b6 <strcmp>
  35c:	89 2b       	or	r24, r25
  35e:	59 f4       	brne	.+22     	; 0x376 <Wifi_response+0x38>
-			Wifi.buffer[i][0] = 0; 
+			Wifi.response[i][0] = 0; 
  360:	84 e3       	ldi	r24, 0x34	; 52
  362:	8c 9f       	mul	r24, r28
  364:	f0 01       	movw	r30, r0
@@ -528,15 +528,15 @@ bool Wifi_response(char string[]) {
 }
 
 bool Wifi_response(char string[]) {
-	for (int i = 0; i < ROW_SIZE - 1; i++) {
+	for (int i = 0; i < ROWS - 1; i++) {
  376:	21 96       	adiw	r28, 0x01	; 1
  378:	0c 5c       	subi	r16, 0xCC	; 204
  37a:	1f 4f       	sbci	r17, 0xFF	; 255
  37c:	ce 30       	cpi	r28, 0x0E	; 14
  37e:	d1 05       	cpc	r29, r1
  380:	49 f7       	brne	.-46     	; 0x354 <Wifi_response+0x16>
-		if(strcmp((char *)Wifi.buffer[i], string) == 0) {
-			Wifi.buffer[i][0] = 0; 
+		if(strcmp((char *)Wifi.response[i], string) == 0) {
+			Wifi.response[i][0] = 0; 
 			return true;
 		}
 	}
@@ -551,13 +551,13 @@ bool Wifi_response(char string[]) {
  38e:	ef 90       	pop	r14
  390:	08 95       	ret
 
-00000392 <clear_Wifi_buffer>:
+00000392 <clear_response>:
 
-void clear_Wifi_buffer(void) {
-	for (int i = 0; i < ROW_SIZE - 1; i++) {
+void clear_response(void) {
+	for (int i = 0; i < ROWS - 1; i++) {
  392:	80 e0       	ldi	r24, 0x00	; 0
  394:	90 e0       	ldi	r25, 0x00	; 0
-		Wifi.buffer[i][0] = 0;
+		Wifi.response[i][0] = 0;
  396:	24 e3       	ldi	r18, 0x34	; 52
  398:	28 9f       	mul	r18, r24
  39a:	f0 01       	movw	r30, r0
@@ -571,13 +571,13 @@ void clear_Wifi_buffer(void) {
 	return false;
 }
 
-void clear_Wifi_buffer(void) {
-	for (int i = 0; i < ROW_SIZE - 1; i++) {
+void clear_response(void) {
+	for (int i = 0; i < ROWS - 1; i++) {
  3a8:	01 96       	adiw	r24, 0x01	; 1
  3aa:	8e 30       	cpi	r24, 0x0E	; 14
  3ac:	91 05       	cpc	r25, r1
- 3ae:	a1 f7       	brne	.-24     	; 0x398 <clear_Wifi_buffer+0x6>
-		Wifi.buffer[i][0] = 0;
+ 3ae:	a1 f7       	brne	.-24     	; 0x398 <clear_response+0x6>
+		Wifi.response[i][0] = 0;
 	}
 	Wifi.row_index = 0;
  3b0:	10 92 89 05 	sts	0x0589, r1	; 0x800589 <Wifi+0x30c>
@@ -599,7 +599,7 @@ bool is_connected(void) {
  3c4:	91 e0       	ldi	r25, 0x01	; 1
  3c6:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
 	
-	for (;;) {
+	while(1) {
 		lcd_instruction(setCursor | lineTwo);
  3ca:	80 ec       	ldi	r24, 0xC0	; 192
  3cc:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
@@ -635,11 +635,11 @@ bool is_connected(void) {
  3f8:	84 e5       	ldi	r24, 0x54	; 84
  3fa:	91 e0       	ldi	r25, 0x01	; 1
  3fc:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
-			clear_Wifi_buffer();
- 400:	0e 94 c9 01 	call	0x392	; 0x392 <clear_Wifi_buffer>
+			clear_response();
+ 400:	0e 94 c9 01 	call	0x392	; 0x392 <clear_response>
 			return true;
  404:	12 c0       	rjmp	.+36     	; 0x42a <__FUSE_REGION_LENGTH__+0x2a>
-			} 
+		} 
 			
 		else if (Wifi_response("STATUS:5")) {
  406:	86 e6       	ldi	r24, 0x66	; 102
@@ -652,8 +652,8 @@ bool is_connected(void) {
  414:	8f e6       	ldi	r24, 0x6F	; 111
  416:	91 e0       	ldi	r25, 0x01	; 1
  418:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
-			clear_Wifi_buffer();
- 41c:	0e 94 c9 01 	call	0x392	; 0x392 <clear_Wifi_buffer>
+			clear_response();
+ 41c:	0e 94 c9 01 	call	0x392	; 0x392 <clear_response>
 		else {
 			lcd_string((uint8_t *)"Not Responding.   ");
 			return false;
@@ -662,8 +662,8 @@ bool is_connected(void) {
 	}
  420:	d4 cf       	rjmp	.-88     	; 0x3ca <is_connected+0x10>
 			lcd_string((uint8_t *)"Not Connected.  ");
-			clear_Wifi_buffer();
-			} 
+			clear_response();
+		} 
 			
 		else {
 			lcd_string((uint8_t *)"Not Responding.   ");
@@ -808,18 +808,18 @@ void USART_Wifi_init(void) {
  4f0:	80 68       	ori	r24, 0x80	; 128
  4f2:	80 83       	st	Z, r24
 	
-	for (;;) {
-		clear_Wifi_buffer();
- 4f4:	0e 94 c9 01 	call	0x392	; 0x392 <clear_Wifi_buffer>
-		USART_Wifi_cmd("AT+RST");
+while(1){
+	clear_response();
+ 4f4:	0e 94 c9 01 	call	0x392	; 0x392 <clear_response>
+	USART_Wifi_cmd("AT+RST");
  4f8:	84 ee       	ldi	r24, 0xE4	; 228
  4fa:	91 e0       	ldi	r25, 0x01	; 1
  4fc:	0e 94 82 01 	call	0x304	; 0x304 <USART_Wifi_cmd>
 		
-		lcd_instruction(clear);
+	lcd_instruction(clear);
  500:	81 e0       	ldi	r24, 0x01	; 1
  502:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
-		lcd_string((uint8_t *)"Configuring Wifi...");
+	lcd_string((uint8_t *)"Configuring Wifi...");
  506:	8b ee       	ldi	r24, 0xEB	; 235
  508:	91 e0       	ldi	r25, 0x01	; 1
  50a:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
@@ -832,25 +832,25 @@ void USART_Wifi_init(void) {
  51a:	e1 f7       	brne	.-8      	; 0x514 <USART_Wifi_init+0x3e>
  51c:	00 c0       	rjmp	.+0      	; 0x51e <USART_Wifi_init+0x48>
  51e:	00 00       	nop
-		_delay_ms(1000);
+	_delay_ms(1000);
 		
-		if (!Wifi_response("ready")) { 
+	if (!Wifi_response("ready")) { 
  520:	8f ef       	ldi	r24, 0xFF	; 255
  522:	91 e0       	ldi	r25, 0x01	; 1
  524:	0e 94 9f 01 	call	0x33e	; 0x33e <Wifi_response>
  528:	81 11       	cpse	r24, r1
  52a:	18 c0       	rjmp	.+48     	; 0x55c <USART_Wifi_init+0x86>
-			lcd_instruction(clear);
+		lcd_instruction(clear);
  52c:	81 e0       	ldi	r24, 0x01	; 1
  52e:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
-			lcd_string((uint8_t *)"Hardware error"); //USART not connected 
+		lcd_string((uint8_t *)"Hardware error"); //USART not connected 
  532:	85 e0       	ldi	r24, 0x05	; 5
  534:	92 e0       	ldi	r25, 0x02	; 2
  536:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
-			lcd_instruction(setCursor | lineTwo);
+		lcd_instruction(setCursor | lineTwo);
  53a:	80 ec       	ldi	r24, 0xC0	; 192
  53c:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_instruction>
-			lcd_string((uint8_t *)"Restarting...");
+		lcd_string((uint8_t *)"Restarting...");
  540:	84 e1       	ldi	r24, 0x14	; 20
  542:	92 e0       	ldi	r25, 0x02	; 2
  544:	0e 94 82 00 	call	0x104	; 0x104 <lcd_string>
@@ -863,8 +863,8 @@ void USART_Wifi_init(void) {
  554:	e1 f7       	brne	.-8      	; 0x54e <USART_Wifi_init+0x78>
  556:	00 c0       	rjmp	.+0      	; 0x558 <USART_Wifi_init+0x82>
  558:	00 00       	nop
-			_delay_ms(1000);
-			continue;
+		_delay_ms(1000);
+		continue;
  55a:	cc cf       	rjmp	.-104    	; 0x4f4 <USART_Wifi_init+0x1e>
 		}
 		
@@ -883,12 +883,12 @@ void USART_Wifi_init(void) {
  574:	00 00       	nop
 		_delay_ms(500);
 		
-		if (!is_connected()) continue;       // restarting if wifi is not responding
+	if (!is_connected()) continue;       // restarting if wifi is not responding
  576:	0e 94 dd 01 	call	0x3ba	; 0x3ba <is_connected>
  57a:	88 23       	and	r24, r24
  57c:	09 f4       	brne	.+2      	; 0x580 <USART_Wifi_init+0xaa>
  57e:	ba cf       	rjmp	.-140    	; 0x4f4 <USART_Wifi_init+0x1e>
-		upload_to_server("----------",'b');  
+	upload_to_server("----------",'b');  
  580:	62 e6       	ldi	r22, 0x62	; 98
  582:	87 e2       	ldi	r24, 0x27	; 39
  584:	92 e0       	ldi	r25, 0x02	; 2
@@ -896,7 +896,7 @@ void USART_Wifi_init(void) {
  58a:	08 95       	ret
 
 0000058c <__vector_28>:
-		break;
+	break;
 	}
 }
 
@@ -927,7 +927,7 @@ ISR(USART1_RX_vect) {
  5b6:	20 91 8a 05 	lds	r18, 0x058A	; 0x80058a <Wifi+0x30d>
  5ba:	30 e0       	ldi	r19, 0x00	; 0
 	
-	Wifi.buffer[row][col] = c;
+	Wifi.response[row][col] = c;
  5bc:	49 2f       	mov	r20, r25
  5be:	50 e0       	ldi	r21, 0x00	; 0
  5c0:	f9 01       	movw	r30, r18
@@ -940,7 +940,7 @@ ISR(USART1_RX_vect) {
  5ce:	fd 4f       	sbci	r31, 0xFD	; 253
  5d0:	80 83       	st	Z, r24
 	
-	if ((col > 0 && Wifi.buffer[row][col - 1] == 0x0D && Wifi.buffer[row][col] == 0x0A)
+	if ((col > 0 && Wifi.response[row][col - 1] == 0x0D && Wifi.response[row][col] == 0x0A)
  5d2:	12 16       	cp	r1, r18
  5d4:	13 06       	cpc	r1, r19
  5d6:	d4 f4       	brge	.+52     	; 0x60c <__vector_28+0x80>
@@ -970,11 +970,11 @@ ISR(USART1_RX_vect) {
  606:	80 81       	ld	r24, Z
  608:	8a 30       	cpi	r24, 0x0A	; 10
  60a:	19 f0       	breq	.+6      	; 0x612 <__vector_28+0x86>
-	|| (col == COL_SIZE - 1)) {
+	|| (col == COLS - 1)) {
  60c:	23 33       	cpi	r18, 0x33	; 51
  60e:	31 05       	cpc	r19, r1
  610:	b9 f4       	brne	.+46     	; 0x640 <__vector_28+0xb4>
-		Wifi.buffer[row][col - 1] = 0; //null terminator
+		Wifi.response[row][col - 1] = 0; //null terminator
  612:	84 e3       	ldi	r24, 0x34	; 52
  614:	84 9f       	mul	r24, r20
  616:	f0 01       	movw	r30, r0
@@ -987,7 +987,7 @@ ISR(USART1_RX_vect) {
  624:	e4 58       	subi	r30, 0x84	; 132
  626:	fd 4f       	sbci	r31, 0xFD	; 253
  628:	10 82       	st	Z, r1
-		Wifi.row_index = (row == ROW_SIZE - 1)? 0: row + 1;
+		Wifi.row_index = (row == ROWS - 1)? 0: row + 1;
  62a:	4e 30       	cpi	r20, 0x0E	; 14
  62c:	51 05       	cpc	r21, r1
  62e:	11 f0       	breq	.+4      	; 0x634 <__vector_28+0xa8>

@@ -152,7 +152,7 @@ cards[3] = {
 	[0].status = surrendered,
 	[1].tag = {0x00, 0x33, 0x31, 0x30, 0x30, 0x33, 0x37, 0x44, 0x39, 0x33, 0x44, 0x00, 0x00}, //310037D93D
 	[1].status = surrendered,
-	[2].tag = {0x00, 0x44, 0x46, 0x46, 0x45, 0x46, 0x46, 0x46, 0x41, 0x45, 0x36, 0x00, 0x00}, //broken
+	[2].tag = {0x00, 0x36, 0x46, 0x30, 0x30, 0x35, 0x43, 0x41, 0x44, 0x36, 0x30, 0x00, 0x00}, //6F005CAD60
 	[2].status = surrendered
 };
 
@@ -220,11 +220,11 @@ int find_card(void) {
 }
 
 ISR(USART0_RX_vect) {
-	char c = USART_RF_receive();
+	char num = USART_RF_receive();
 	
 	if (!RF.done) {
 
-	RF.ID[RF.index++] = c;
+	RF.ID[RF.index++] = num;
 	if (RF.index >= 12) { 
 		RF.index = 0;
 		RF.ID[12 - 1] = RF.ID[0] = 0; 
@@ -236,18 +236,58 @@ ISR(USART0_RX_vect) {
 
 /******************************************************************* Wifi Configuration *****************************************************************/
 
-#define ROW_SIZE 15
-#define COL_SIZE 52
+#define ROWS 15
+#define COLS 52
 
 struct {
-	volatile char buffer[ROW_SIZE][COL_SIZE];
+	volatile char response[ROWS][COLS];
 	volatile uint8_t row_index;
 	volatile uint8_t col_index;
 } Wifi;
 
+void USART_Wifi_init(void) {
+	
+	UBRR1H = (BAUDRATE>>8);
+	UBRR1L = BAUDRATE;
+	UCSR1B = (1<<TXEN1) | (1<<RXEN1);
+	UCSR1C = (3<<UCSZ10);
+	UCSR1B |= (1 << RXCIE1);
+	
+	while(1){
+		clear_response();
+		USART_Wifi_cmd("AT+RST");
+		
+		lcd_instruction(clear);
+		lcd_string((uint8_t *)"Configuring Wifi...");
+		_delay_ms(1000);
+		
+		if (!Wifi_response("ready")) {
+			lcd_instruction(clear);
+			lcd_string((uint8_t *)"Hardware error"); //USART not connected
+			lcd_instruction(setCursor | lineTwo);
+			lcd_string((uint8_t *)"Restarting...");
+			_delay_ms(1000);
+			continue;
+		}
+		
+		USART_Wifi_cmd("ATE0");
+		_delay_ms(500);
+		
+		if (!connected()) continue;       // restarting if wifi is not responding
+		upload_to_server("----------",'b');
+		break;
+	}
+}
+
+
 void USART_Wifi_send(unsigned char data) {
 	while (!( UCSR1A & (1<<UDRE1)));
 	UDR1 = data;
+}
+
+unsigned char USART_Wifi_receive(void) {
+	while(~(UCSR1A) & (1<<RXC1));
+	return UDR1;
 }
 
 void USART_Wifi_cmd(char string[]) {
@@ -258,49 +298,44 @@ void USART_Wifi_cmd(char string[]) {
 	USART_Wifi_send(0x0A);
 }
 
-unsigned char USART_Wifi_receive(void) {
-	while(~(UCSR1A) & (1<<RXC1));
-	return UDR1;
-}
-
 bool Wifi_response(char string[]) {
-	for (int i = 0; i < ROW_SIZE - 1; i++) {
-		if(strcmp((char *)Wifi.buffer[i], string) == 0) {
-			Wifi.buffer[i][0] = 0; 
+	for (int i = 0; i < ROWS - 1; i++) {
+		if(strcmp((char *)Wifi.response[i], string) == 0) {
+			Wifi.response[i][0] = 0; 
 			return true;
 		}
 	}
 	return false;
 }
 
-void clear_Wifi_buffer(void) {
-	for (int i = 0; i < ROW_SIZE - 1; i++) {
-		Wifi.buffer[i][0] = 0;
+void clear_response(void) {
+	for (int i = 0; i < ROWS - 1; i++) {
+		Wifi.response[i][0] = 0;
 	}
 	Wifi.row_index = 0;
 	Wifi.col_index = 0;
 }
 
-bool is_connected(void) {
+bool connected(void) {
 	
 	lcd_instruction(clear);
 	lcd_string((uint8_t *) "Wifi is...         ");
 	
-	for (;;) {
+	while(1) {
 		lcd_instruction(setCursor | lineTwo);
 		USART_Wifi_cmd("AT+CIPSTATUS");
 		_delay_ms(500);
 		
 		if (Wifi_response("STATUS:2")) {
 			lcd_string((uint8_t *)"Connected!       ");
-			clear_Wifi_buffer();
+			clear_response();
 			return true;
-			} 
+		} 
 			
 		else if (Wifi_response("STATUS:5")) {
 			lcd_string((uint8_t *)"Not Connected.  ");
-			clear_Wifi_buffer();
-			} 
+			clear_response();
+		} 
 			
 		else {
 			lcd_string((uint8_t *)"Not Responding.   ");
@@ -329,53 +364,16 @@ void upload_to_server(char * rfid, char action) {
 	_delay_ms(1000);
 }
 
-void USART_Wifi_init(void) {
-	
-	UBRR1H = (BAUDRATE>>8);
-	UBRR1L = BAUDRATE;
-	UCSR1B = (1<<TXEN1) | (1<<RXEN1);
-	UCSR1C = (3<<UCSZ10);
-	UCSR1B |= (1 << RXCIE1); 
-	
-	for (;;) {
-		clear_Wifi_buffer();
-		USART_Wifi_cmd("AT+RST");
-		
-		lcd_instruction(clear);
-		lcd_string((uint8_t *)"Configuring Wifi...");
-		_delay_ms(1000);
-		
-		if (!Wifi_response("ready")) { 
-			lcd_instruction(clear);
-			lcd_string((uint8_t *)"Hardware error"); //USART not connected 
-			lcd_instruction(setCursor | lineTwo);
-			lcd_string((uint8_t *)"Restarting...");
-			_delay_ms(1000);
-			continue;
-		}
-		
-		USART_Wifi_cmd("ATE0"); 
-		_delay_ms(500);
-		
-		if (!is_connected()) continue;       // restarting if wifi is not responding
-		upload_to_server("----------",'b');  
-		break;
-	}
-}
-
 
 ISR(USART1_RX_vect) {
 	char c = USART_Wifi_receive();
-	
 	int row = Wifi.row_index, col = Wifi.col_index;
+	Wifi.response[row][col] = c;
 	
-	Wifi.buffer[row][col] = c;
-	
-	if ((col > 0 && Wifi.buffer[row][col - 1] == 0x0D && Wifi.buffer[row][col] == 0x0A)
-	|| (col == COL_SIZE - 1)) {
-		Wifi.buffer[row][col - 1] = 0; //null terminator
-		Wifi.row_index = (row == ROW_SIZE - 1)? 0: row + 1;
-		Wifi.col_index = 0;  // return to the beginning of the line
+	if ((col > 0 && Wifi.response[row][col - 1] == 0x0D && Wifi.response[row][col] == 0x0A) || (col == COLS - 1)) {
+		Wifi.response[row][col - 1] = 0; 
+		Wifi.row_index = (row == ROWS - 1)? 0: row + 1;
+		Wifi.col_index = 0;  
 		return;
 	}
 	Wifi.col_index++;
@@ -413,11 +411,13 @@ void Scan_for_tag(void) {
 	dog_status current_status = cards[card_index].status;
 	char status_to_upload = '?';
 	switch(current_status) {
+		
 		case adopted:
 		cards[card_index].status = surrendered;
 		lcd_string((uint8_t *) " surrendered");
 		status_to_upload = 's';
 		break;
+		
 		case surrendered:
 		cards[card_index].status = adopted;
 		lcd_string((uint8_t *) " adopted");
@@ -434,11 +434,12 @@ void Scan_for_tag(void) {
 int main( void )
 {
 	
-	sei();
 	lcd_init();
 	USART_RF_init();
 	USART_Wifi_init();
 	lcd_instruction(clear);
+	
+	sei();
 	
 	
 	while(1)

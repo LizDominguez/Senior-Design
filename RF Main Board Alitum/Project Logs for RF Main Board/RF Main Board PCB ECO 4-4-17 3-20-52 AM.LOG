@@ -1,0 +1,5 @@
+Added Pin To Net: NetName=GND Pin=P3-10
+Added Pin To Net: NetName=AREF Pin=P3-11
+Added Pin To Net: NetName=RESET Pin=P3-12
+Added Pin To Net: NetName=RESET Pin=U1-9
+Added Net: Name=RESET

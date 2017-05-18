@@ -1,0 +1,40 @@
+Removed Pin From Net: NetName=NetC2_2 Pin=Coil-1
+Removed Pin From Net: NetName=GND Pin=Q1-3
+Removed Pin From Net: NetName=GND Pin=Q2-1
+Removed Pin From Net: NetName=NetQ2_3 Pin=Q2-3
+Removed Pin From Net: NetName=VCC Pin=R9-1
+Removed Pin From Net: NetName=GND Pin=R9-2
+Removed Member From Class: ClassName=RFID reader circuit Member=Q1
+Removed Member From Class: ClassName=RFID reader circuit Member=Q2
+Removed Member From Class: ClassName=RFID reader circuit Member=R9
+Change Component DesignItemId : Designator=Coil Old DesignItemId=Inductor New DesignItemId=Header 2
+Change Component Footprint: Designator=Coil Old Footprint=INDC1608L New Footprint=HDR1X2
+Change Component Comment : Designator=Coil Old Comment=Inductor New Comment=Header 2
+Added Component: Designator=MOSFET(HDR1X3)
+Added Component: Designator=N BJT(HDR1X3)
+Added Component: Designator=Pot(HDR1X3)
+Added Pin To Net: NetName=NetC2_2 Pin=Coil-2
+Added Pin To Net: NetName=GND Pin=MOSFET-1
+Added Pin To Net: NetName=NetQ2_3 Pin=N BJT-1
+Added Pin To Net: NetName=GND Pin=N BJT-3
+Added Pin To Net: NetName=VCC Pin=Pot-1
+Added Pin To Net: NetName=GND Pin=Pot-3
+Change Net Name : Old Net Name=NetQ2_3 New Net Name=NetN BJT_1
+Added Pin To Net: NetName=NetCoil_1 Pin=Coil-1
+Added Pin To Net: NetName=NetCoil_1 Pin=MOSFET-3
+Added Pin To Net: NetName=NetCoil_1 Pin=R1-1
+Added Net: Name=NetCoil_1
+Added Pin To Net: NetName=NetMOSFET_2 Pin=MOSFET-2
+Added Pin To Net: NetName=NetMOSFET_2 Pin=R2-1
+Added Net: Name=NetMOSFET_2
+Added Pin To Net: NetName=NetN BJT_2 Pin=N BJT-2
+Added Pin To Net: NetName=NetN BJT_2 Pin=R7-2
+Added Net: Name=NetN BJT_2
+Added Pin To Net: NetName=NetPot_2 Pin=Pot-2
+Added Pin To Net: NetName=NetPot_2 Pin=U1-3
+Added Pin To Net: NetName=NetPot_2 Pin=U1-5
+Added Net: Name=NetPot_2
+Added Member To Class: ClassName=RFID reader circuit Member=Component MOSFET Header 3
+Added Member To Class: ClassName=RFID reader circuit Member=Component N BJT Header 3
+Added Member To Class: ClassName=RFID reader circuit Member=Component Pot Header 3
+Added Room: Name=RFID reader circuit

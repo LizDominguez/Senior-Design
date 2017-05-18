@@ -1,0 +1,183 @@
+*************************************************************
+FileName = AB_Amplifier.GBR
+AutoAperture = True
+*************************************************************
+Generating : Top Layer
+      File : AB_Amplifier.GTL
+
+    Adding Layer      : Top Layer
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D10
+    D11
+    D12
+    D13
+    D14
+    D15
+    D16
+    D17
+    D18
+    D19
+*************************************************************
+
+*************************************************************
+Generating : Bottom Layer
+      File : AB_Amplifier.GBL
+
+    Adding Layer      : Bottom Layer
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D10
+    D11
+    D12
+    D13
+    D14
+    D15
+    D16
+    D17
+    D18
+    D19
+    D20
+*************************************************************
+
+*************************************************************
+Generating : Bottom Pad Master
+      File : AB_Amplifier.GPB
+
+    Adding Layer      : Bottom Layer
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D11
+    D12
+    D13
+    D14
+    D15
+    D16
+    D17
+    D18
+    D19
+*************************************************************
+
+*************************************************************
+Generating : Top Pad Master
+      File : AB_Amplifier.GPT
+
+    Adding Layer      : Top Layer
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D11
+    D12
+    D13
+    D14
+    D15
+    D16
+    D17
+    D18
+    D19
+*************************************************************
+
+*************************************************************
+Generating : Top Overlay
+      File : AB_Amplifier.GTO
+
+    Adding Layer      : Top Overlay
+
+
+Used DCodes :
+    D20
+    D21
+    D22
+    D23
+*************************************************************
+
+*************************************************************
+Generating : Top Solder
+      File : AB_Amplifier.GTS
+
+    Adding Layer      : Top Solder
+
+    Adding Layer      : Top Layer
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D24
+    D25
+    D26
+    D27
+    D28
+    D29
+    D30
+    D31
+    D32
+*************************************************************
+
+*************************************************************
+Generating : Bottom Solder
+      File : AB_Amplifier.GBS
+
+    Adding Layer      : Bottom Solder
+
+    Adding Layer      : Bottom Layer
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D24
+    D25
+    D26
+    D27
+    D28
+    D29
+    D30
+    D31
+    D32
+*************************************************************
+
+*************************************************************
+Generating : Keep-Out Layer
+      File : AB_Amplifier.GKO
+
+    Adding Layer      : Keep-Out Layer
+
+
+Used DCodes :
+    D20
+*************************************************************
+
+*************************************************************
+Generating : Mechanical 13
+      File : AB_Amplifier.GM13
+
+    Adding Layer      : Mechanical 13
+
+
+Used DCodes :
+    D21
+*************************************************************
+
+*************************************************************
+Generating : Mechanical 15
+      File : AB_Amplifier.GM15
+
+    Adding Layer      : Mechanical 15
+
+
+Used DCodes :
+    D33
+*************************************************************
+

@@ -1,0 +1,7 @@
+Removed Pin From Net: NetName=GND Pin=Q4-3
+Change Component DesignItemId : Designator=Q4 Old DesignItemId=NPN New DesignItemId=PNP
+Change Component Footprint: Designator=Q4 Old Footprint=TO-226-AA New Footprint=SOT-23B_N
+Added Pin To Net: NetName=GND Pin=Q4-1
+Added Pin To Net: NetName=NetQ4_3 Pin=Q4-3
+Added Pin To Net: NetName=NetQ4_3 Pin=R10-1
+Added Net: Name=NetQ4_3

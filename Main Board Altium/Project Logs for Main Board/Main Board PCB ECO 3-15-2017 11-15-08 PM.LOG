@@ -1,0 +1,16 @@
+Removed Pin From Net: NetName=VCC Pin=CD4504BE-1
+Removed Pin From Net: NetName=TXD1OUT Pin=CD4504BE-2
+Removed Pin From Net: NetName=TXD1 Pin=CD4504BE-3
+Removed Pin From Net: NetName=GND Pin=CD4504BE-8
+Removed Pin From Net: NetName=3.3V Pin=CD4504BE-9
+Removed Pin From Net: NetName=GND Pin=CD4504BE-12
+Removed Member From Class: ClassName=Main Board Member=CD4504BE
+Added Component: Designator=S1(DIP-16-KEY)
+Added Pin To Net: NetName=VCC Pin=S1-1
+Added Pin To Net: NetName=TXD1OUT Pin=S1-2
+Added Pin To Net: NetName=TXD1 Pin=S1-3
+Added Pin To Net: NetName=GND Pin=S1-8
+Added Pin To Net: NetName=GND Pin=S1-13
+Added Pin To Net: NetName=3.3V Pin=S1-16
+Added Member To Class: ClassName=Main Board Member=Component S1 ESP8266
+Added Room: Name=Main Board

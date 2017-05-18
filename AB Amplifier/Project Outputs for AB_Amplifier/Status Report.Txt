@@ -1,0 +1,12 @@
+Output: NC Drill Files
+Type  : NC Drill
+From  : Project [AB_Amplifier.PrjPcb]
+   Generated File[AB_Amplifier.TXT]
+   Generated File[AB_Amplifier.LDP]
+   Generated File[AB_Amplifier.DRR]
+
+
+Files Generated   : 3
+Documents Printed : 0
+
+Finished Output Generation At 1:47:32 AM On 3/27/17

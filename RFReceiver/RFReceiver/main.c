@@ -259,7 +259,6 @@ void timer1_init()
 {
 	DDRD &= ~(1 << PIND2);		//Receiver input
 	PORTD |= 1 << PIND2;		// pull up resistor
-	DDRB |= (1 << PINB0); //output
 	TCCR1B |= (1<<CS10);	//Timer 1 no prescaler
 	TCNT1 = 0;	// initialize counter
 		
@@ -272,7 +271,6 @@ void timer1_init()
 void read_value(void){
 	if (TCNT1 >= 4008){ //if 500us has passed
 	TCNT1 = 0;
-	PORTB ^= (1 << 0);	
 	
 	RFID.data[z] = ((PIND & 0x04)>>2);
 	
@@ -405,7 +403,6 @@ int main( void )
 	lcd_instruction(clear);
 	lcd_string((uint8_t *)"Ready to Scan");
 
-	sei();
 	
 	while (1) {
 		

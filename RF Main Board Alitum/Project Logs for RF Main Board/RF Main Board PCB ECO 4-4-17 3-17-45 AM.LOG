@@ -1,0 +1,5 @@
+Removed Pin From Net: NetName=VIN Pin=P1-4
+Added Pin To Net: NetName=VCC Pin=P2-9
+Added Pin To Net: NetName=GND Pin=P2-10
+Added Pin To Net: NetName=VCC Pin=P2-11
+Change Net Name : Old Net Name=VCC New Net Name=AREF

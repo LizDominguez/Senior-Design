@@ -1,0 +1,4 @@
+Change Component DesignItemId : Designator=U1 Old DesignItemId=LM358AD New DesignItemId=LM358P
+Change Component Footprint: Designator=U1 Old Footprint=D008_L New Footprint=P008
+Change Component Comment : Designator=U1 Old Comment=LM358AD New Comment=LM358P
+Added Room: Name=RFID reader circuit

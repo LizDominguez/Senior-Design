@@ -1,0 +1,7 @@
+Removed Pin From Net: NetName=VCC Pin=LD1117-1
+Removed Pin From Net: NetName=GND Pin=LD1117-2
+Removed Pin From Net: NetName=3.3V Pin=LD1117-3
+Added Pin To Net: NetName=GND Pin=LD1117-1
+Added Pin To Net: NetName=3.3V Pin=LD1117-2
+Added Pin To Net: NetName=VCC Pin=LD1117-3
+Added Room: Name=RF main board

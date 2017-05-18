@@ -1,0 +1,101 @@
+Removed Pin From Net: NetName=VCC Pin=P1-1
+Change Component Designator: OldDesignator=VR1 NewDesignator=LD1117
+Added Component: Designator=1(HDR1X5)
+Added Component: Designator=C4(RAD-0.3)
+Added Component: Designator=C5(RAD-0.3)
+Added Component: Designator=ID-12LA(HDR1X6)
+Added Component: Designator=L7805(HDR1X3)
+Added Component: Designator=P2(HDR1X10)
+Added Component: Designator=P3(HDR1X16)
+Added Pin To Net: NetName=VCC Pin=1-4
+Added Pin To Net: NetName=GND Pin=1-5
+Added Pin To Net: NetName=GND Pin=C4-1
+Added Pin To Net: NetName=GND Pin=C5-1
+Added Pin To Net: NetName=VCC Pin=C5-2
+Added Pin To Net: NetName=VCC Pin=ID-12LA-1
+Added Pin To Net: NetName=RXD0 Pin=ID-12LA-2
+Added Pin To Net: NetName=GND Pin=ID-12LA-5
+Added Pin To Net: NetName=GND Pin=L7805-2
+Added Pin To Net: NetName=VCC Pin=L7805-3
+Added Pin To Net: NetName=125K HZ Pin=P3-1
+Added Pin To Net: NetName=TXD0 Pin=P3-7
+Added Pin To Net: NetName=RXD0 Pin=P3-8
+Added Pin To Net: NetName=OCOA Pin=P3-13
+Added Pin To Net: NetName=NetP2_1 Pin=P2-1
+Added Pin To Net: NetName=NetP2_1 Pin=U1-34
+Added Net: Name=NetP2_1
+Added Pin To Net: NetName=NetP2_2 Pin=P2-2
+Added Pin To Net: NetName=NetP2_2 Pin=U1-33
+Added Net: Name=NetP2_2
+Added Pin To Net: NetName=NetP2_3 Pin=P2-3
+Added Pin To Net: NetName=NetP2_3 Pin=U1-29
+Added Net: Name=NetP2_3
+Added Pin To Net: NetName=NetP2_4 Pin=P2-4
+Added Pin To Net: NetName=NetP2_4 Pin=U1-28
+Added Net: Name=NetP2_4
+Added Pin To Net: NetName=NetP2_5 Pin=P2-5
+Added Pin To Net: NetName=NetP2_5 Pin=U1-27
+Added Net: Name=NetP2_5
+Added Pin To Net: NetName=NetP2_6 Pin=P2-6
+Added Pin To Net: NetName=NetP2_6 Pin=U1-26
+Added Net: Name=NetP2_6
+Added Pin To Net: NetName=NetP2_7 Pin=P2-7
+Added Pin To Net: NetName=NetP2_7 Pin=U1-25
+Added Net: Name=NetP2_7
+Added Pin To Net: NetName=NetP2_8 Pin=P2-8
+Added Pin To Net: NetName=NetP2_8 Pin=U1-24
+Added Net: Name=NetP2_8
+Added Pin To Net: NetName=NetP2_9 Pin=P2-9
+Added Pin To Net: NetName=NetP2_9 Pin=U1-23
+Added Net: Name=NetP2_9
+Added Pin To Net: NetName=NetP2_10 Pin=P2-10
+Added Pin To Net: NetName=NetP2_10 Pin=U1-22
+Added Net: Name=NetP2_10
+Added Pin To Net: NetName=NetP3_2 Pin=P3-2
+Added Pin To Net: NetName=NetP3_2 Pin=U1-20
+Added Net: Name=NetP3_2
+Added Pin To Net: NetName=NetP3_3 Pin=P3-3
+Added Pin To Net: NetName=NetP3_3 Pin=U1-19
+Added Net: Name=NetP3_3
+Added Pin To Net: NetName=NetP3_4 Pin=P3-4
+Added Pin To Net: NetName=NetP3_4 Pin=U1-18
+Added Net: Name=NetP3_4
+Added Pin To Net: NetName=NetP3_5 Pin=P3-5
+Added Pin To Net: NetName=NetP3_5 Pin=U1-17
+Added Net: Name=NetP3_5
+Added Pin To Net: NetName=NetP3_6 Pin=P3-6
+Added Pin To Net: NetName=NetP3_6 Pin=U1-16
+Added Net: Name=NetP3_6
+Added Pin To Net: NetName=NetP3_9 Pin=P3-9
+Added Pin To Net: NetName=NetP3_9 Pin=U1-8
+Added Net: Name=NetP3_9
+Added Pin To Net: NetName=NetP3_10 Pin=P3-10
+Added Pin To Net: NetName=NetP3_10 Pin=U1-7
+Added Net: Name=NetP3_10
+Added Pin To Net: NetName=NetP3_11 Pin=P3-11
+Added Pin To Net: NetName=NetP3_11 Pin=U1-6
+Added Net: Name=NetP3_11
+Added Pin To Net: NetName=NetP3_12 Pin=P3-12
+Added Pin To Net: NetName=NetP3_12 Pin=U1-5
+Added Net: Name=NetP3_12
+Added Pin To Net: NetName=NetP3_14 Pin=P3-14
+Added Pin To Net: NetName=NetP3_14 Pin=U1-3
+Added Net: Name=NetP3_14
+Added Pin To Net: NetName=NetP3_15 Pin=P3-15
+Added Pin To Net: NetName=NetP3_15 Pin=U1-2
+Added Net: Name=NetP3_15
+Added Pin To Net: NetName=NetP3_16 Pin=P3-16
+Added Pin To Net: NetName=NetP3_16 Pin=U1-1
+Added Net: Name=NetP3_16
+Added Pin To Net: NetName=VIN Pin=C4-2
+Added Pin To Net: NetName=VIN Pin=L7805-1
+Added Pin To Net: NetName=VIN Pin=P1-1
+Added Net: Name=VIN
+Added Member To Class: ClassName=RF main board Member=Component 1 Header 5
+Added Member To Class: ClassName=RF main board Member=Component C4 Cap
+Added Member To Class: ClassName=RF main board Member=Component C5 Cap
+Added Member To Class: ClassName=RF main board Member=Component ID-12LA Header 6
+Added Member To Class: ClassName=RF main board Member=Component L7805 Volt Reg
+Added Member To Class: ClassName=RF main board Member=Component P2 Header 10
+Added Member To Class: ClassName=RF main board Member=Component P3 Header 16
+Added Room: Name=RF main board

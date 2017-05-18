@@ -1,0 +1,12 @@
+Output: NC Drill Files
+Type  : NC Drill
+From  : Project [RFID Reader.PrjPcb]
+   Generated File[RF Reader.TXT]
+   Generated File[RF Reader.LDP]
+   Generated File[RF Reader.DRR]
+
+
+Files Generated   : 3
+Documents Printed : 0
+
+Finished Output Generation At 10:04:06 PM On 3/21/2017
